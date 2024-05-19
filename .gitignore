@@ -37,5 +37,5 @@ next-env.d.ts
 
 # others
 .DS_store
-.env*
-*env*
+.env
+.env.local

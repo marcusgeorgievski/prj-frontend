@@ -4,9 +4,9 @@ import { FaBookReader } from "react-icons/fa"
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-between px-10 border border-b h-14">
+    <header className="flex items-center justify-between h-12 px-10 border border-b">
       <Link href={"/"}>
-        <h1 className="flex items-center gap-2 text-xl font-bold text-foreground">
+        <h1 className="flex items-center gap-2 font-bold text-md text-foreground">
           <FaBookReader className="text-primary" />
           StudyHome
         </h1>
