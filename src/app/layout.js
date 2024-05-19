@@ -14,11 +14,15 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const user = await currentUser()
-  console.log(user.primaryEmailAddress.emailAddress)
+  console.log(
+    `\nAUTH:\n${user ? `${user.firstName} ${user.lastName}` : "null"}\n`
+  )
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ClerkAuthProvider>{children}</ClerkAuthProvider>
+        <ClerkAuthProvider>
+          <main className="min-h-screen">{children}</main>
+        </ClerkAuthProvider>
       </body>
     </html>
   )
