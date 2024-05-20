@@ -1,8 +1,8 @@
-import PageTitle from "@/components/page-title"
-import { Card, CardHeader } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
-import Link from "next/link"
-import { PiChalkboardTeacherLight } from "react-icons/pi"
+import PageTitle from "@/components/page-title";
+import { Card, CardHeader } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { PiChalkboardTeacherLight } from "react-icons/pi";
 
 export default function ClassesPage() {
   return (
@@ -17,10 +17,10 @@ export default function ClassesPage() {
         <ClassCard />
       </div>
     </div>
-  )
+  );
 }
 
-function ClassCard({ classData }) {
+export function ClassCard({ classData }) {
   return (
     <Link href={`/classes/#`}>
       <Card
@@ -39,5 +39,5 @@ function ClassCard({ classData }) {
         </div>
       </Card>
     </Link>
-  )
+  );
 }
