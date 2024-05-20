@@ -72,10 +72,10 @@ function Navigation() {
       <SidebarItem icon={<PiChalkboardTeacherLight />} href="/classes">
         Classes
       </SidebarItem>
-      <SidebarItem icon={<PiListChecksLight />} href="#">
+      <SidebarItem icon={<PiListChecksLight />} href="/assessments">
         Assessments
       </SidebarItem>
-      <SidebarItem icon={<PiNotePencilLight />} href="#">
+      <SidebarItem icon={<PiNotePencilLight />} href="/notes">
         Notes
       </SidebarItem>
       <SidebarItem icon={<PiMagnifyingGlassLight />} href="#">
