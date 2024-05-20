@@ -2,12 +2,12 @@ import PageTitle from "@/components/page-title";
 import { Card, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { PiChalkboardTeacherLight } from "react-icons/pi";
+import { PiListChecksLight } from "react-icons/pi";
 
 export default function AssessmentsPage() {
   return (
     <div className="w-full ">
-      <PageTitle icon={PiChalkboardTeacherLight}>Assessments</PageTitle>
+      <PageTitle icon={PiListChecksLight}>Assessments</PageTitle>
 
       <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <AssessmentCard />
