@@ -12,7 +12,7 @@ export default function ProtectedLayout({ children }) {
 
   console.log(isOpen)
   return (
-    <div className="min-h-screen bg-black/0">
+    <div className="min-h-screen">
       <SignedIn>
         <Header />
         <main className="flex h-[calc(100vh-48px)]">

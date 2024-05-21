@@ -25,7 +25,7 @@ export default function Header() {
       </Link>
 
       <div>
-        <UserButton showName={false} />
+        <UserButton />
       </div>
     </header>
   )
