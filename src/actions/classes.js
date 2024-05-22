@@ -4,7 +4,7 @@ import axios from "axios"
 
 export async function getClasses(userId = "user_1") {
   return await axios
-    .get("http://localhost:8080/classes", {
+    .get(`${process.env.API_URL}/classes`, {
       data: {
         user_id: userId,
       },
@@ -17,7 +17,7 @@ export async function getClasses(userId = "user_1") {
 
 export async function createClass(userId, name, professor, details) {
   return await axios
-    .post("http://localhost:8080/classes", {
+    .post(`${process.env.API_URL}/classes`, {
       user_id: userId,
       name,
       professor,
@@ -31,7 +31,7 @@ export async function createClass(userId, name, professor, details) {
 
 export async function deleteClass(classId = "class_1") {
   return await axios
-    .delete(`http://localhost:8080/classes/${classId}`, {
+    .delete(`${process.env.API_URL}/classes/${classId}`, {
       params: {
         class_id: classId,
       },
