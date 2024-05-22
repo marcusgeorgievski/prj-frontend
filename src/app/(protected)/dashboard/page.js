@@ -27,9 +27,9 @@ export default function Dashboard() {
       <div className="w-full mb-8">
         <Heading icon={PiChalkboardTeacherLight}>Recent Classes</Heading>
         <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {/* <ClassCard />
           <ClassCard />
-          <ClassCard />
-          <ClassCard />
+          <ClassCard /> */}
         </div>
         <div className="flex justify-center mt-6">
           <Link href="/classes/" className="text-lg">
