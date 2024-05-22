@@ -4,11 +4,11 @@
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar/sidebar"
 import { cn } from "@/lib/utils"
-import { useSidebar } from "@/state/sidebar-state"
+// import { useSidebar } from "@/state/sidebar-state"
 import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/nextjs"
 
 export default function ProtectedLayout({ children }) {
-  const { isOpen } = useSidebar()
+  // const { isOpen } = useSidebar()
 
   return (
     <div className="min-h-screen">

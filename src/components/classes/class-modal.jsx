@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Dialog,
   DialogContent,
@@ -10,8 +12,12 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
 import { PiPlus } from "react-icons/pi"
+import { createClass } from "@/actions/classes"
+import { useAuth, useUser } from "@clerk/nextjs"
 
-export default function ClassModal() {
+export default function CreateClassModal() {
+  const { userId } = useAuth()
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -33,7 +39,12 @@ export default function ClassModal() {
             <Button variant="secondary">Confirm</Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button type="submit">Confirm</Button>
+            <Button
+              type="submit"
+              // onClick={async () => await createClass(userId)}
+            >
+              Confirm
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

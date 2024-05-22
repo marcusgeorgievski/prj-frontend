@@ -1,10 +1,13 @@
+"use client"
+
 import Link from "next/link"
 import { VscKebabVertical } from "react-icons/vsc"
 import { Card } from "../ui/card"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
 
-export default function ClassCard({ classData }) {
+export default function ClassCard({ class_id, name, professor, details }) {
+  console.log(class_id)
   return (
     <Link href={`/classes/#`}>
       <Card
@@ -14,9 +17,9 @@ export default function ClassCard({ classData }) {
       >
         <div>
           <ClassDropdown />
-          <h3 className="text-lg font-bold">PRJ123</h3>
+          <h3 className="text-lg font-bold">{name}</h3>
           <p className="mb-2 text-sm font-light text-muted-foreground">
-            Prof. Yasser Elmankabady
+            {professor} - {details}
           </p>
 
           <div className="text-sm font-light">
@@ -38,8 +41,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { PiTrash, PiPencil } from "react-icons/pi"
+import { deleteClass } from "@/actions/classes"
+import { useAuth } from "@clerk/nextjs"
 
 function ClassDropdown() {
+  const { userId } = useAuth()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -54,7 +61,12 @@ function ClassDropdown() {
           </button>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <button className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600">
+          <button
+            onClick={async () => {
+              await deleteClass(userId)
+            }}
+            className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
+          >
             <PiTrash /> Delete
           </button>
         </DropdownMenuItem>

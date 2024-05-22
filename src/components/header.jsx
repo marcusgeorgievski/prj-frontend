@@ -1,3 +1,5 @@
+"use client"
+
 import { useSidebar } from "@/state/sidebar-state"
 import { UserButton } from "@clerk/nextjs"
 import { ArrowRightLeftIcon } from "lucide-react"
@@ -9,7 +11,7 @@ export default function Header() {
 
   return (
     <header className="flex items-center justify-between h-12 px-10 border border-b">
-      {/* Sideber toggle */}
+      {/* Sidebar toggle */}
       <button
         onClick={(e) => {
           e.stopPropagation()
