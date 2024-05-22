@@ -10,7 +10,6 @@ import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/nextjs"
 export default function ProtectedLayout({ children }) {
   const { isOpen } = useSidebar()
 
-  console.log(isOpen)
   return (
     <div className="min-h-screen">
       <SignedIn>

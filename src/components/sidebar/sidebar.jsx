@@ -15,7 +15,8 @@ export default function Sidebar({ classes }) {
       if (
         sidebarRef.current &&
         !sidebarRef.current.contains(e.target) &&
-        window.innerWidth < 768
+        window.innerWidth < 768 &&
+        e.target.getAttribute("id") !== "sidebar-toggle"
       ) {
         toggleSidebar()
       }

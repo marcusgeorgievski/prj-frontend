@@ -11,7 +11,11 @@ export default function Header() {
     <header className="flex items-center justify-between h-12 px-10 border border-b">
       {/* Sideber toggle */}
       <button
-        onClick={toggleSidebar}
+        onClick={(e) => {
+          e.stopPropagation()
+          toggleSidebar()
+        }}
+        id="sidebar-toggle"
         className="bg-muted-foreground/20 px-1.5 py-0 rounded transition-all absolute left-3 "
       >
         <ArrowRightLeftIcon className="w-3 text-muted-foreground" />
