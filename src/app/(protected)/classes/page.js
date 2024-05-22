@@ -1,6 +1,6 @@
 import { getClasses } from "@/actions/classes"
 import ClassCard from "@/components/classes/class-card"
-import ClassModal from "@/components/classes/class-modal"
+import CreateClassModal from "@/components/classes/class-modal"
 import PageTitle from "@/components/page-title"
 import { cn } from "@/lib/utils"
 import { currentUser } from "@clerk/nextjs/server"
@@ -14,7 +14,7 @@ export default async function ClassesPage() {
       <PageTitle icon={PiChalkboardTeacherLight}>Classes</PageTitle>
 
       <div className="mb-2">
-        <ClassModal />
+        <CreateClassModal />
       </div>
 
       <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
