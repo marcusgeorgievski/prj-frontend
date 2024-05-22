@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
 
 export default function ClassCard({ class_id, name, professor, details }) {
-  console.log(class_id)
   return (
     <Link href={`/classes/#`}>
       <Card
@@ -16,7 +15,7 @@ export default function ClassCard({ class_id, name, professor, details }) {
         )}
       >
         <div>
-          <ClassDropdown />
+          <ClassDropdown classId={class_id} />
           <h3 className="text-lg font-bold">{name}</h3>
           <p className="mb-2 text-sm font-light text-muted-foreground">
             {professor} - {details}
@@ -36,17 +35,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { PiTrash, PiPencil } from "react-icons/pi"
 import { deleteClass } from "@/actions/classes"
-import { useAuth } from "@clerk/nextjs"
 
-function ClassDropdown() {
-  const { userId } = useAuth()
-
+function ClassDropdown({ classId }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -63,7 +57,7 @@ function ClassDropdown() {
         <DropdownMenuItem asChild>
           <button
             onClick={async () => {
-              await deleteClass(userId)
+              await deleteClass(classId)
             }}
             className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
           >

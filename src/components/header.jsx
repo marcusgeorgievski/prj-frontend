@@ -31,7 +31,7 @@ export default function Header() {
       </Link>
 
       <div>
-        <UserButton />
+        <UserButton afterSignOutUrl="/" />
       </div>
     </header>
   )

@@ -9,6 +9,7 @@ import { PiChalkboardTeacherLight } from "react-icons/pi"
 export default async function ClassesPage() {
   const { id } = await currentUser()
   const classes = await getClasses(id)
+
   return (
     <div className="w-full ">
       <PageTitle icon={PiChalkboardTeacherLight}>Classes</PageTitle>
@@ -17,13 +18,17 @@ export default async function ClassesPage() {
         <CreateClassModal />
       </div>
 
-      <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {classes.map((c) => (
-          <div key={c.id}>
-            <ClassCard key={c.id} {...c} />
-          </div>
-        ))}
-      </div>
+      {classes.length === 0 ? (
+        <p className="pt-[15vh] mx-auto text-center">No classes yet!</p>
+      ) : (
+        <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {classes.map((c) => (
+            <div key={c.id}>
+              <ClassCard {...c} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
