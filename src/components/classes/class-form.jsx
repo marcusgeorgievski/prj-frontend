@@ -14,16 +14,16 @@ import { useEffect } from "react"
 // Schema
 
 const formSchema = z.object({
-  // name: z.string().min(2, {
-  //   message: "Name must be at least 2 characters.",
-  // }),
-  // professor: z.string().optional(),
-  // details: z
-  //   .string()
-  //   .max(100, {
-  //     message: "Details must be at most 100 characters.",
-  //   })
-  //   .optional(),
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  professor: z.string().optional(),
+  details: z
+    .string()
+    .max(100, {
+      message: "Details must be at most 100 characters.",
+    })
+    .optional(),
 })
 
 // Component
@@ -34,48 +34,44 @@ export default function ClassForm({
   details,
   children,
   setDialogOpen,
-  classId,
-  actionType, // create || update
+  class_id,
+  action, // create || update
+  setSubmitFn,
 }) {
   const { userId } = useAuth()
-
-  useEffect(() => {
-    // console.log("CLASS FORM:", action, name, professor, details, userId)
-    console.log("CLASS FORM", form)
-  }, [])
-
-  // console.log(action, name, professor, details, userId)
-
   const router = useRouter()
 
   // 1. Define your form.
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // name: name || "",
-      // professor: professor || "",
-      // details: details || "",
+      name: name || "",
+      professor: professor || "",
+      details: details || "",
     },
   })
 
-  console.log(form.formState.errors)
+  // Set the submit function
+  useEffect(() => {
+    setSubmitFn(() => form.handleSubmit(onSubmit))
+  }, [])
 
   // 2. Define a submit handler.
   async function onSubmit(values) {
-    console.log("SUBMIT:", actionType, values, classId, userId)
-    if (actionType === "update") {
-      setDialogOpen(false)
+    if (action === "update") {
+      console.log("SUBMIT")
       // Update Class
-      // await updateClass(classId, values.name, values.professor, values.details)
-      //   .then(() => {
-      //     form.reset()
-      //     router.refresh()
-      //     setDialogOpen(false)
-      //   })
-      //   .catch((error) => {
-      //     console.error(error)
-      //   })
-    } else if (actionType === "create") {
+      await updateClass(class_id, values.name, values.professor, values.details)
+        .then(() => {
+          form.reset()
+          router.refresh()
+          setDialogOpen(false)
+          console.log("ok")
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } else if (action === "create") {
       // Create Class
       await createClass(userId, values.name, values.professor, values.details)
         .then(() => {
@@ -118,8 +114,7 @@ export default function ClassForm({
           description=""
         />
 
-        {/* {children} */}
-        <button type="submit">submit</button>
+        {children}
       </form>
     </Form>
   )

@@ -18,9 +18,10 @@ import { cn } from "@/lib/utils"
 
 const ClassModal = forwardRef(({ action, classData }, ref) => {
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [submitFn, setSubmitFn] = useState(false)
 
   return (
-    <Dialog open={dialogOpen}>
+    <Dialog open={dialogOpen} className="fixed">
       <DialogTrigger asChild>
         <Button
           ref={ref}
@@ -63,14 +64,22 @@ const ClassModal = forwardRef(({ action, classData }, ref) => {
         <ClassForm
           setDialogOpen={setDialogOpen}
           {...classData}
-          actionType={action}
+          action={action}
+          setSubmitFn={setSubmitFn}
         >
           <DialogFooter className="gap-2 mt-6">
             <DialogClose asChild onClick={() => setDialogOpen(false)}>
               <Button variant="secondary">Cancel</Button>
             </DialogClose>
 
-            <Button type="submit">Confirm</Button>
+            <Button
+              type="submit"
+              onClick={() => {
+                submitFn()
+              }}
+            >
+              Confirm
+            </Button>
           </DialogFooter>
         </ClassForm>
       </DialogContent>

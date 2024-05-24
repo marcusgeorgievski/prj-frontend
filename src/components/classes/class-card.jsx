@@ -59,12 +59,12 @@ function ClassDropdown({ classId, classData }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align={"end"}>
         <DropdownMenuItem asChild>
-          <ClassModal action={"create"} classData={classData} />
+          <ClassModal action={"update"} classData={classData} />
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <button
             onClick={async () => {
-              await deleteClass(classData.classId)
+              await deleteClass(classData.class_id)
             }}
             className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
           >
