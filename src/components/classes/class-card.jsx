@@ -7,6 +7,13 @@ import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
 
 export default function ClassCard({ class_id, name, professor, details }) {
+  const classData = {
+    class_id,
+    name,
+    professor,
+    details,
+  }
+
   return (
     <Link href={`/classes/#`}>
       <Card
@@ -15,10 +22,10 @@ export default function ClassCard({ class_id, name, professor, details }) {
         )}
       >
         <div>
-          <ClassDropdown classId={class_id} />
+          <ClassDropdown classData={classData} />
           <h3 className="text-lg font-bold">{name}</h3>
           <p className="mb-2 text-sm font-light text-muted-foreground">
-            {professor} - {details}
+            {professor} {details && <>{"-"} details</>}
           </p>
 
           <div className="text-sm font-light">
@@ -37,10 +44,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { PiTrash, PiPencil } from "react-icons/pi"
+import { PiTrash } from "react-icons/pi"
 import { deleteClass } from "@/actions/classes"
+import ClassModal from "./class-modal"
 
-function ClassDropdown({ classId }) {
+function ClassDropdown({ classId, classData }) {
+  // const { classId, name, professor, details } = classData
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -48,16 +57,14 @@ function ClassDropdown({ classId }) {
           <VscKebabVertical />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent align={"end"}>
         <DropdownMenuItem asChild>
-          <button className="flex items-center w-full gap-2">
-            <PiPencil /> Edit
-          </button>
+          <ClassModal action={"create"} classData={classData} />
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <button
             onClick={async () => {
-              await deleteClass(classId)
+              await deleteClass(classData.classId)
             }}
             className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
           >

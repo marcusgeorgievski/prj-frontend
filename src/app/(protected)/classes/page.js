@@ -1,6 +1,6 @@
 import { getClasses } from "@/actions/classes"
 import ClassCard from "@/components/classes/class-card"
-import CreateClassModal from "@/components/classes/class-modal"
+import ClassModal from "@/components/classes/class-modal"
 import PageTitle from "@/components/page-title"
 import { cn } from "@/lib/utils"
 import { currentUser } from "@clerk/nextjs/server"
@@ -15,19 +15,25 @@ export default async function ClassesPage() {
       <PageTitle icon={PiChalkboardTeacherLight}>Classes</PageTitle>
 
       <div className="mb-2">
-        <CreateClassModal />
+        <ClassModal action={"create"} />
       </div>
 
-      {classes.length === 0 ? (
-        <p className="pt-[15vh] mx-auto text-center">No classes yet!</p>
-      ) : (
-        <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {classes.map((c) => (
-            <div key={c.id}>
-              <ClassCard {...c} />
+      {classes ? (
+        <>
+          {classes.length === 0 ? (
+            <p className="pt-[15vh] mx-auto text-center">No classes yet!</p>
+          ) : (
+            <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {classes.map((c) => (
+                <div key={c.id}>
+                  <ClassCard {...c} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
+      ) : (
+        <p className="pt-[15vh] mx-auto text-center">No classes yet!</p>
       )}
     </div>
   )

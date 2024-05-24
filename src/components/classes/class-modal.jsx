@@ -1,5 +1,6 @@
 "use client"
 
+import { forwardRef, useState } from "react"
 import {
   Dialog,
   DialogContent,
@@ -11,50 +12,72 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
-import { PiPlus } from "react-icons/pi"
-import { createClass } from "@/actions/classes"
-import { useAuth, useUser } from "@clerk/nextjs"
+import { PiPencil, PiPlus } from "react-icons/pi"
 import ClassForm from "./class-form"
-import { useState } from "react"
+import { cn } from "@/lib/utils"
 
-export default function CreateClassModal() {
+const ClassModal = forwardRef(({ action, classData }, ref) => {
   const [dialogOpen, setDialogOpen] = useState(false)
 
   return (
     <Dialog open={dialogOpen}>
       <DialogTrigger asChild>
         <Button
+          ref={ref}
           onClick={() => setDialogOpen(true)}
-          size="sm"
+          size={action === "create" && "sm"}
           variant="ghost"
-          className="flex items-center gap-1"
+          className={cn(
+            "flex items-center",
+            action === "create" && "gap-1.5",
+            action === "update" &&
+              "w-full px-2 py-1.5 text-sm justify-start gap-2 font-[400]"
+          )}
         >
-          <PiPlus />
-          Create Class
+          {action === "create" ? (
+            <>
+              <PiPlus />
+              Create Class
+            </>
+          ) : (
+            <>
+              <PiPencil /> Edit
+            </>
+          )}
         </Button>
       </DialogTrigger>
+
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Class</DialogTitle>
-          <DialogDescription>Enter new class details</DialogDescription>
+          <DialogTitle>
+            {
+              {
+                create: "Create Class",
+                update: "Edit Class",
+              }[action]
+            }
+          </DialogTitle>
+          <DialogDescription>Enter class details</DialogDescription>
         </DialogHeader>
 
-        <ClassForm fn={setDialogOpen}>
+        <ClassForm
+          setDialogOpen={setDialogOpen}
+          {...classData}
+          actionType={action}
+        >
           <DialogFooter className="gap-2 mt-6">
             <DialogClose asChild onClick={() => setDialogOpen(false)}>
               <Button variant="secondary">Cancel</Button>
             </DialogClose>
-            {/* <DialogClose asChild onClick={() => setDialogOpen(false)}> */}
-            <Button
-              type="submit"
-              // onClick={async () => await createClass(userId)}
-            >
-              Confirm
-            </Button>
-            {/* </DialogClose> */}
+
+            <Button type="submit">Confirm</Button>
           </DialogFooter>
         </ClassForm>
       </DialogContent>
     </Dialog>
   )
-}
+})
+
+ClassModal.displayName = "ClassModal"
+
+export default ClassModal

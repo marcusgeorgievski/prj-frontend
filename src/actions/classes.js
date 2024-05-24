@@ -41,3 +41,16 @@ export async function deleteClass(classId = "class_1") {
       console.log("ERROR:", error)
     })
 }
+
+export async function updateClass(classId, name, professor, details) {
+  return await axios
+    .put(`${process.env.API_URL}/classes/${classId}`, {
+      name,
+      professor,
+      details,
+    })
+    .then((res) => res.data)
+    .catch((error) => {
+      console.log("ERROR:", error)
+    })
+}

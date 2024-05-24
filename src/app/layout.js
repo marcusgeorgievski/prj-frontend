@@ -18,7 +18,7 @@ export default async function RootLayout({ children }) {
   //   `\nAUTH:\n${user ? `${user.firstName} ${user.lastName}` : "null"}\n`
   // )
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ClerkAuthProvider>
           <main className="min-h-screen">{children}</main>
