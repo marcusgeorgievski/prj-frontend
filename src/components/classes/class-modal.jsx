@@ -21,7 +21,7 @@ const ClassModal = forwardRef(({ action, classData }, ref) => {
   const [submitFn, setSubmitFn] = useState(false)
 
   return (
-    <Dialog open={dialogOpen} className="fixed">
+    <Dialog open={dialogOpen} className="fixed" onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button
           ref={ref}
