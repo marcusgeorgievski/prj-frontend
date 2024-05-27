@@ -75,7 +75,9 @@ const ClassModal = forwardRef(({ action, classData }, ref) => {
             <Button
               type="submit"
               onClick={() => {
-                submitFn()
+                if (action === "update") {
+                  submitFn()
+                }
               }}
             >
               Confirm

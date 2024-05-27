@@ -20,13 +20,9 @@ import { RiRobot2Fill } from "react-icons/ri"
 export default async function Home() {
   return (
     <main className="relative flex flex-col items-center min-h-screen pt-[200px]">
-      {/* <header>
-        <nav>about</nav>
-      </header> */}
-
       <div className="absolute top-8 right-8">
         <SignedIn>
-          <UserButton />
+          <UserButton afterSignOutUrl="/" />
         </SignedIn>
       </div>
 
@@ -58,7 +54,6 @@ export default async function Home() {
       <SignedIn>
         <Link href="/dashboard">
           <Button href="/dashboard">
-            {" "}
             <RiDashboardFill className="mr-2" /> Dashboard
           </Button>
         </Link>

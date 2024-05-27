@@ -8,15 +8,11 @@ import ClerkAuthProvider from "@/components/auth/clerk-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "SMP",
-  description: "Student Management Platform",
+  title: "Study Home",
+  description: "The all-in-one Student Management Platform",
 }
 
 export default async function RootLayout({ children }) {
-  // const user = await currentUser()
-  // console.log(
-  //   `\nAUTH:\n${user ? `${user.firstName} ${user.lastName}` : "null"}\n`
-  // )
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
