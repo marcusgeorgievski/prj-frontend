@@ -12,16 +12,14 @@ export default function ProtectedLayout({ children }) {
 
   return (
     <div className="min-h-screen">
+      <Header />
       <SignedIn>
-        <>
-          <Header />
-          <main className="flex h-[calc(100vh-48px)]">
-            <div>
-              <Sidebar />
-            </div>
-            <div className={cn("p-5 sm:p-8 w-full")}>{children}</div>
-          </main>
-        </>
+        <main className="flex h-[calc(100vh-48px)]">
+          <div>
+            <Sidebar />
+          </div>
+          <div className={cn("p-5 sm:p-8 w-full")}>{children}</div>
+        </main>
       </SignedIn>
 
       <SignedOut>

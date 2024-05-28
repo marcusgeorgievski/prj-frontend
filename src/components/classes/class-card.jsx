@@ -47,9 +47,17 @@ import {
 import { PiTrash } from "react-icons/pi"
 import { deleteClass } from "@/actions/classes"
 import ClassModal from "./class-modal"
+import { useRouter } from "next/navigation"
 
 function ClassDropdown({ classId, classData }) {
   // const { classId, name, professor, details } = classData
+  const router = useRouter()
+  async function handleDelete(e) {
+    e.stopPropagation()
+    await deleteClass(classData.class_id)
+    router.refresh()
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -63,9 +71,7 @@ function ClassDropdown({ classId, classData }) {
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <button
-            onClick={async () => {
-              await deleteClass(classData.class_id)
-            }}
+            onClick={handleDelete}
             className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
           >
             <PiTrash /> Delete

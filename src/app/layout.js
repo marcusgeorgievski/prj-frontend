@@ -12,6 +12,12 @@ export const metadata = {
   description: "The all-in-one Student Management Platform",
 }
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+}
+
 export default async function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>

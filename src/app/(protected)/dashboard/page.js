@@ -20,6 +20,7 @@ import ClassCard from "@/components/classes/class-card"
 import { NoteCard } from "../notes/page"
 import { AssessmentCard } from "../assessments/page"
 import { currentUser } from "@clerk/nextjs/server"
+import ClassModal from "@/components/classes/class-modal"
 
 export default async function Dashboard() {
   const user = await currentUser()
@@ -53,9 +54,9 @@ export default async function Dashboard() {
         {classes.length === 0 ? (
           <div className="text-center">
             <p className="pt-[2vh]">No classes yet!</p>
-            <Link href="/classes/" className="text-lg">
-              <Button className="mt-4">Create a Class</Button>
-            </Link>
+            <div className="flex justify-center mt-4">
+              <ClassModal action="create" />
+            </div>
           </div>
         ) : (
           <div>
