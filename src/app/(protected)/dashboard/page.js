@@ -1,45 +1,47 @@
 // User Dashboard
 
-import PageTitle from "@/components/page-title";
-import Heading from "@/components/heading";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import PageTitle from "@/components/page-title"
+import Heading from "@/components/heading"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import {
   PiChalkboardTeacherLight,
   PiHouseLineLight,
   PiNotePencilLight,
   PiListChecksLight,
-} from "react-icons/pi";
+} from "react-icons/pi"
 
-import { recentItems } from "@/lib/utils";
+import { recentItems } from "@/lib/utils"
 
-import { getClasses, getAssessments, getNotes } from "@/actions/classes";
-import ClassCard from "@/components/classes/class-card";
+import { getClasses, getAssessments, getNotes } from "@/actions/classes"
+import ClassCard from "@/components/classes/class-card"
 // import NoteCard from "@/components/notes/note-card";
 // import AssessmentCard from "@/components/assessments/assessment-card";
-import { NoteCard } from "../notes/page";
-import { AssessmentCard } from "../assessments/page";
-import { currentUser } from "@clerk/nextjs/server";
+import { NoteCard } from "../notes/page"
+import { AssessmentCard } from "../assessments/page"
+import { currentUser } from "@clerk/nextjs/server"
 
 export default async function Dashboard() {
-  const { id } = await currentUser();
+  const user = await currentUser()
 
-  // Fetch data
-  const classes = await getClasses(id);
-  // const assessments = await getAssessments(id);
-  // const notes = await getNotes(id);
-  const assessments = [];
-  const notes = [];
+  if (!user) {
+    return null
+  }
 
+  const classes = await getClasses(user.id)
+  const assessments = []
+  const notes = []
+  // const assessments = await getAssessments(user.id);
+  // const notes = await getNotes(user.id);
 
   // Process recent items
-  const recentClasses = recentItems(classes, 4);
-  const recentAssessments = recentItems(assessments, 4);
-  const recentNotes = recentItems(notes, 4);
+  const recentClasses = recentItems(classes, 4)
+  const recentAssessments = recentItems(assessments, 4)
+  const recentNotes = recentItems(notes, 4)
   // Keep track of remaining items
-  const extraClasses = classes.length - recentClasses.length;
-  const extraAssessments = assessments.length - recentAssessments.length;
-  const extraNotes = notes.length - recentNotes.length;
+  const extraClasses = classes.length - recentClasses.length
+  const extraAssessments = assessments.length - recentAssessments.length
+  const extraNotes = notes.length - recentNotes.length
 
   return (
     <div className="w-full">
@@ -141,5 +143,5 @@ export default async function Dashboard() {
         )}
       </div>
     </div>
-  );
+  )
 }

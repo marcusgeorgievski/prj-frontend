@@ -7,8 +7,13 @@ import { currentUser } from "@clerk/nextjs/server"
 import { PiChalkboardTeacherLight } from "react-icons/pi"
 
 export default async function ClassesPage() {
-  const { id } = await currentUser()
-  const classes = await getClasses(id)
+  const user = await currentUser()
+
+  if (!user) {
+    return null
+  }
+
+  const classes = await getClasses(user.id)
 
   return (
     <div className="w-full ">
