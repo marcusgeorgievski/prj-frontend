@@ -25,7 +25,12 @@ export default function ClassCard({ class_id, name, professor, details }) {
           <ClassDropdown classData={classData} />
           <h3 className="text-lg font-bold">{name}</h3>
           <p className="mb-2 text-sm font-light text-muted-foreground">
-            {professor} {details && <>{"-"} details</>}
+            {professor}{" "}
+            {details && (
+              <>
+                {"-"} {details}
+              </>
+            )}
           </p>
 
           <div className="text-sm font-light">
