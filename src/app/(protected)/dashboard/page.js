@@ -21,6 +21,8 @@ import { NoteCard } from "../notes/page"
 import { AssessmentCard } from "../assessments/page"
 import { currentUser } from "@clerk/nextjs/server"
 import ClassActionButton from "@/components/classes/class-button"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Separator } from "@/components/ui/separator"
 
 export default async function Dashboard() {
   const user = await currentUser()

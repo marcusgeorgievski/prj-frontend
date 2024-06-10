@@ -9,7 +9,7 @@ export default function ClassCard({ classData = exampleClassData }) {
   const { class_id, name, professor, details } = classData
 
   return (
-    <Link href={`/classes/#`}>
+    <Link href={`/classes/${class_id}`}>
       <Card
         className={cn(
           "flex flex-col p-3 transition-all hover:bg-accent/50 mx-auto max-w-[500px] relative h-full justify-between"
