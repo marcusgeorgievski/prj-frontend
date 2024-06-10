@@ -29,17 +29,16 @@ const formSchema = z.object({
 // Component
 
 export default function ClassForm({
-  name,
-  professor,
-  details,
   children,
   setDialogOpen,
-  class_id,
   action, // create || update
   setSubmitFn,
+  classData,
 }) {
   const { userId } = useAuth()
   const router = useRouter()
+
+  const { class_id, name, professor, details } = classData || {}
 
   // 1. Define your form.
   const form = useForm({
@@ -59,14 +58,12 @@ export default function ClassForm({
   // 2. Define a submit handler.
   async function onSubmit(values) {
     if (action === "update") {
-      console.log("SUBMIT")
       // Update Class
       await updateClass(class_id, values.name, values.professor, values.details)
         .then(() => {
           form.reset()
           router.refresh()
           setDialogOpen(false)
-          console.log("ok")
         })
         .catch((error) => {
           console.error(error)

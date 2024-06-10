@@ -20,7 +20,7 @@ import ClassCard from "@/components/classes/class-card"
 import { NoteCard } from "../notes/page"
 import { AssessmentCard } from "../assessments/page"
 import { currentUser } from "@clerk/nextjs/server"
-import ClassModal from "@/components/classes/class-modal"
+import ClassActionButton from "@/components/classes/class-button"
 
 export default async function Dashboard() {
   const user = await currentUser()
@@ -55,7 +55,7 @@ export default async function Dashboard() {
           <div className="text-center">
             <p className="pt-[2vh]">No classes yet!</p>
             <div className="flex justify-center mt-4">
-              <ClassModal action="create" />
+              <ClassActionButton action="create" button />
             </div>
           </div>
         ) : (
@@ -63,7 +63,7 @@ export default async function Dashboard() {
             <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {recentClasses.map((c) => (
                 <div key={c.id}>
-                  <ClassCard key={c.id} {...c} />
+                  <ClassCard key={c.id} classData={c} />
                 </div>
               ))}
             </div>

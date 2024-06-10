@@ -1,35 +1,45 @@
 "use client"
-
 import Link from "next/link"
-import { VscKebabVertical } from "react-icons/vsc"
 import { Card } from "../ui/card"
 import { cn } from "@/lib/utils"
-import { Button } from "../ui/button"
+import ClassModal from "./class-modal"
+import { ClassDropdown } from "./class-dropdown"
 
-export default function ClassCard({ class_id, name, professor, details }) {
-  const classData = {
-    class_id,
-    name,
-    professor,
-    details,
-  }
+export default function ClassCard({ classData = exampleClassData }) {
+  const { class_id, name, professor, details } = classData
 
   return (
     <Link href={`/classes/#`}>
       <Card
         className={cn(
-          "flex flex-col p-3 transition-all hover:bg-accent/50 mx-auto max-w-[500px] relative"
+          "flex flex-col p-3 transition-all hover:bg-accent/50 mx-auto max-w-[500px] relative h-full justify-between"
         )}
       >
+        <div
+          className="absolute right-2 top-2"
+          onClick={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+          }}
+        >
+          <ClassModal classData={classData} action="update">
+            <ClassDropdown classData={classData} />
+          </ClassModal>
+        </div>
         <div>
-          <ClassDropdown classData={classData} />
           <h3 className="text-lg font-bold">{name}</h3>
-          <p className="mb-2 text-sm font-light text-muted-foreground">
-            {professor}{" "}
-            {details && (
+          <p className="mb-2 text-sm font-light text-muted-foreground line-clamp-1">
+            {professor || details ? (
               <>
-                {"-"} {details}
+                {professor || ""}
+                {details && (
+                  <>
+                    {"-"} {details}
+                  </>
+                )}
               </>
+            ) : (
+              <br />
             )}
           </p>
 
@@ -43,46 +53,9 @@ export default function ClassCard({ class_id, name, professor, details }) {
   )
 }
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { PiTrash } from "react-icons/pi"
-import { deleteClass } from "@/actions/classes"
-import ClassModal from "./class-modal"
-import { useRouter } from "next/navigation"
-
-function ClassDropdown({ classId, classData }) {
-  // const { classId, name, professor, details } = classData
-  const router = useRouter()
-  async function handleDelete(e) {
-    e.stopPropagation()
-    await deleteClass(classData.class_id)
-    router.refresh()
-  }
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size="icon" variant="ghost" className="absolute right-2 top-2">
-          <VscKebabVertical />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align={"end"}>
-        <DropdownMenuItem asChild>
-          <ClassModal action={"update"} classData={classData} />
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <button
-            onClick={handleDelete}
-            className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
-          >
-            <PiTrash /> Delete
-          </button>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
+const exampleClassData = {
+  class_id: 1,
+  name: "Math 101",
+  professor: "John Doe",
+  details: "MWF 9:00 - 10:00 AM",
 }
