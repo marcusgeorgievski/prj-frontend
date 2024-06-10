@@ -3,7 +3,6 @@
 import { Inter } from "next/font/google"
 import "./globals.css"
 import ClerkAuthProvider from "@/components/auth/clerk-provider"
-// import { currentUser } from "@clerk/nextjs/server"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,7 +17,7 @@ export const viewport = {
   minimumScale: 1,
 }
 
-export default async function RootLayout({ children }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
