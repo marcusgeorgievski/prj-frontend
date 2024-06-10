@@ -10,7 +10,7 @@ export async function axiosTokenInstance() {
     const token = await getToken()
 
     const instance = axios.create({
-      baseURL: process.env.API_URL,
+      baseURL: `${process.env.API_URL}/api`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

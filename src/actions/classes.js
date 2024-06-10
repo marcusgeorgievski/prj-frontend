@@ -1,10 +1,12 @@
 "use server"
 
-import axios from "axios"
+import { axiosTokenInstance } from "@/lib/axios"
 
 export async function getClasses(userId = "user_1") {
+  const axios = await axiosTokenInstance()
+
   return await axios
-    .get(`${process.env.API_URL}/classes`, {
+    .get("/classes", {
       data: {
         user_id: userId,
       },
@@ -16,8 +18,9 @@ export async function getClasses(userId = "user_1") {
 }
 
 export async function createClass(userId, name, professor, details) {
+  const axios = await axiosTokenInstance()
   return await axios
-    .post(`${process.env.API_URL}/classes`, {
+    .post(`/classes`, {
       user_id: userId,
       name,
       professor,
@@ -25,32 +28,34 @@ export async function createClass(userId, name, professor, details) {
     })
     .then((res) => res.data)
     .catch((error) => {
-      console.log("ERROR:", error)
+      console.log("ERROR:", error.response.data)
     })
 }
 
 export async function deleteClass(classId = "class_1") {
+  const axios = await axiosTokenInstance()
   return await axios
-    .delete(`${process.env.API_URL}/classes/${classId}`, {
+    .delete(`/classes/${classId}`, {
       params: {
         class_id: classId,
       },
     })
     .then((res) => res.data)
     .catch((error) => {
-      console.log("ERROR:", error)
+      console.log("ERROR:", error.response.data)
     })
 }
 
 export async function updateClass(classId, name, professor, details) {
+  const axios = await axiosTokenInstance()
   return await axios
-    .put(`${process.env.API_URL}/classes/${classId}`, {
+    .put(`/classes/${classId}`, {
       name,
       professor,
       details,
     })
     .then((res) => res.data)
     .catch((error) => {
-      console.log("ERROR:", error)
+      console.log("ERROR:", error.response.data)
     })
 }
