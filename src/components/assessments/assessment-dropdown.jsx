@@ -1,37 +1,43 @@
-"use client"
+"use client";
+import React, { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import AssessmentActionButton from "./assessment-button"
-import { Button } from "../ui/button"
-import { VscKebabVertical } from "react-icons/vsc"
-import { DialogTrigger } from "../ui/dialog"
+} from "@/components/ui/dropdown-menu";
+import { Button } from "../ui/button";
+import { FaPencilAlt } from "react-icons/fa";
+import { Dialog } from "../ui/dialog";
 
 export function AssessmentDropdown() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Button size="icon" variant="ghost" className="">
-          <VscKebabVertical />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align={"end"}>
-        {/* Edit */}
-        <DialogTrigger asChild>
-          <DropdownMenuItem>
-            {/* <AssessmentActionButton /> */}
-            Create
-          </DropdownMenuItem>
-        </DialogTrigger>
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-        {/* Delete */}
-        <DropdownMenuItem>Delete</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
+  const handleDialogOpen = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <span className="cursor-pointer">
+            <FaPencilAlt onClick={handleDialogOpen} />
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={handleDialogOpen}>Edit</DropdownMenuItem>
+          <DropdownMenuItem>Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Dialog isOpen={isDialogOpen} onClose={handleDialogClose}>
+        <div>
+        </div>
+      </Dialog>
+    </>
+  );
 }

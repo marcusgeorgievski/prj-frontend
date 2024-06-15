@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { getClasses } from "@/actions/classes"
 import { useAuth } from "@clerk/nextjs"
+import { AssessmentsTable } from "@/components/assessments/assessment-table"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function ClassSlugLayout({ params: { classId } }) {
@@ -28,6 +29,52 @@ export default function ClassSlugLayout({ params: { classId } }) {
 
     getClassData(userId)
   }, [])
+
+  const classData2 = [
+    {
+      id: 1,
+      title: "Midterm Exam",
+      class: "CCP555",
+      date: new Date(2024, 6, 20, 14, 45),
+      status: "Upcoming",
+    },
+    {
+      id: 2,
+      title: "Final Exam",
+      class: "CCP555",
+      date: new Date(2024, 5, 20, 14, 45),
+      status: "Completed",
+    },
+    {
+      id: 3,
+      title: "Quiz",
+      class: "CCP545",
+      date: new Date(2024, 6, 20, 14, 45),
+      status: "Overdue",
+    },
+    {
+      id: 4,
+      title: "Midterm Exam",
+      class: "CCP555",
+      date: new Date(2024, 6, 20, 14, 45),
+      status: "Upcoming",
+    },
+    {
+      id: 5,
+      title: "Final Exam",
+      class: "CCP555",
+      date: new Date(2024, 6, 20, 14, 45),
+      status: "Completed",
+    },
+    {
+      id: 6,
+      title: "Quiz",
+      class: "CCP545",
+      date: new Date(2024, 6, 20, 14, 45),
+      status: "Upcoming",
+    },
+    // Add more assessments as needed
+  ];
 
   console.log(classData)
   // Get tab search param on every render
@@ -75,6 +122,12 @@ export default function ClassSlugLayout({ params: { classId } }) {
         </Button>
       </div>
 
+      {tab === "assessments" && (
+        <div>
+          <AssessmentsTable title assessments={classData2} />
+        </div>
+      )}
+      
       <div></div>
     </div>
   )

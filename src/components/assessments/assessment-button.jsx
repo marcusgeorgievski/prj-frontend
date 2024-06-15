@@ -1,6 +1,8 @@
-"use client"
-import { Button } from "../ui/button"
-import { PiPencil, PiPlus } from "react-icons/pi"
+"use client";
+import { Button } from "../ui/button";
+import { PiPencil, PiPlus } from "react-icons/pi";
+import { AssessmentModal }from "./assessment-modal";
+import { DialogTrigger } from "../ui/dialog"
 
 export default function AssessmentActionButton(
   action = "create",
@@ -25,19 +27,23 @@ export default function AssessmentActionButton(
           }[action]
         }
       </span>
-    )
+    );
   }
 
   return (
-    <Button variant="ghost" className="gap-2" size="sm">
-      {
-        {
-          create: "Create Assessment",
-          update: "Update Assessment",
-        }[action]
-      }
-      <PiPlus />
-      Create Assessment
-    </Button>
-  )
+    <AssessmentModal>
+      <DialogTrigger asChild>
+        <Button variant="ghost" className="gap-2">
+          {
+            {
+              create: "Create Assessment",
+              update: "Update Assessment",
+            }[action]
+          }
+          <PiPlus />
+          Create Assessment
+        </Button>
+      </DialogTrigger>
+    </AssessmentModal>
+  );
 }
