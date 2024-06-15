@@ -3,50 +3,74 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Form } from "@/components/ui/form"
 import { FormInput, FormTextarea } from "../forms/text-inputs"
+import { FormSelect } from "../forms/select-input"
+import { Calendar } from "@/components/ui/calendar"
 import { useAuth } from "@clerk/nextjs"
-//import { createClass, updateClass } from "@/actions/classes"
+import { createAssessment, updateAssessment } from "@/actions/assessments"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+
+// Placeholder array for class options
+const placeholderClasses = [
+  { value: 'class1', label: 'Class 1' },
+  { value: 'class2', label: 'Class 2' },
+  { value: 'class3', label: 'Class 3' },
+]
 
 // Schema
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+  title: z.string().min(2, {
+    message: "Title must be at least 2 characters.",
   }),
-  professor: z.string().optional(),
-  details: z
+  class: z.string().min(1, {
+    message: "Please select a class.",
+  }),
+  status: z.string().min(1, {
+    message: "Please select a status.",
+  }),
+  description: z
     .string()
     .max(100, {
-      message: "Details must be at most 100 characters.",
+      message: "Description must be at most 100 characters.",
     })
     .optional(),
+  weight: z.coerce.number().min(0, {
+    message: "Weight must be at least 0.",
+  }).max(100, {
+    message: "Weight must be at most 100.",
+  }),
+  dueDate: z.date({
+    required_error: "Please select a due date.",
+  }),
 })
 
 // Component
 
-export default function ClassForm({
+export default function AssessmentForm({
   children,
   setDialogOpen,
   action, // create || update
   setSubmitFn,
-  classData,
+  assessmentData,
 }) {
   const { userId } = useAuth()
   const router = useRouter()
 
-  const { class_id, name, professor, details } = classData || {}
+  const { assessment_id, title, class: className, status, description, weight, dueDate } = assessmentData || {}
 
   // 1. Define your form.
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: name || "",
-      professor: professor || "",
-      details: details || "",
+      title: title || "",
+      class: className || "",
+      status: status || "",
+      description: description || "",
+      weight: weight || 0,
+      dueDate: dueDate ? new Date(dueDate) : new Date(),
     },
   })
 
@@ -57,59 +81,94 @@ export default function ClassForm({
 
   // 2. Define a submit handler.
   async function onSubmit(values) {
-    // if (action === "update") {
-    //   // Update Class
-    //   await updateClass(class_id, values.name, values.professor, values.details)
-    //     .then(() => {
-    //       form.reset()
-    //       router.refresh()
-    //       setDialogOpen(false)
-    //     })
-    //     .catch((error) => {
-    //       console.error(error)
-    //     })
-    // } else if (action === "create") {
-    //   // Create Class
-    //   await createClass(userId, values.name, values.professor, values.details)
-    //     .then(() => {
-    //       form.reset()
-    //       router.refresh()
-    //       setDialogOpen(false)
-    //     })
-    //     .catch((error) => {
-    //       console.error(error)
-    //     })
-    // }
+    if (action === "update") {
+      // Update Assessment
+      await updateAssessment(assessment_id, values)
+        .then(() => {
+          form.reset()
+          router.refresh()
+          setDialogOpen(false)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } else if (action === "create") {
+      // Create Assessment
+      await createAssessment(userId, values)
+        .then(() => {
+          form.reset()
+          router.refresh()
+          setDialogOpen(false)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
   }
 
   return (
     <Form {...form}>
-      <form action={form.handleSubmit(onSubmit)}>
-        <div className="flex flex-col flex-grow gap-2 md:flex-row md:justify-between">
-          <FormInput
-            form={form}
-            name="name"
-            label="Class"
-            placeholder="PRJ566"
-            description=""
-          />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="flex flex-col md:flex-row md:space-x-4">
+          <div className="flex-grow space-y-4">
+            <FormInput
+              form={form}
+              name="title"
+              label="Title"
+              placeholder="Midterm Exam"
+              description=""
+            />
 
-          <FormInput
-            form={form}
-            name="professor"
-            label="Professor"
-            placeholder="Prof. Yasser E"
-            description=""
-          />
+            <FormSelect
+              form={form}
+              name="class"
+              label="Class"
+              options={placeholderClasses}
+              description=""
+            />
+
+            <FormSelect
+              form={form}
+              name="status"
+              label="Status"
+              options={[
+                { value: 'not_started', label: 'Not Started' },
+                { value: 'in_progress', label: 'In Progress' },
+                { value: 'completed', label: 'Completed' }
+              ]}
+              description=""
+            />
+
+            <FormTextarea
+              form={form}
+              name="description"
+              label="Description"
+              placeholder="Description"
+              description=""
+            />
+
+            <FormInput
+              form={form}
+              name="weight"
+              label="Weight"
+              placeholder="20"
+              description="Weight of the assessment as a percentage"
+              type="number"
+            />
+          </div>
+
+          <div className="flex flex-col items-center justify-center">
+            <label htmlFor="dueDate">Due Date</label>
+            <Calendar
+              mode="single"
+              form={form}
+              selected={dueDate}
+              name="dueDate"
+              label="Due Date"
+              className="rounded-md border"
+            />
+          </div>
         </div>
-
-        <FormTextarea
-          form={form}
-          name="details"
-          label="Details"
-          placeholder="Details"
-          description=""
-        />
 
         {children}
       </form>
