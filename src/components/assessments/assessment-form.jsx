@@ -19,12 +19,7 @@ const formSchema = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters.",
   }),
-  class: z.string().min(1, {
-    message: "Please select a class.",
-  }),
-  status: z.string().min(1, {
-    message: "Please select a status.",
-  }),
+  professor: z.string().optional(),
   description: z
     .string()
     .max(100, {
@@ -52,33 +47,18 @@ export default function AssessmentForm({
 }) {
   const { userId } = useAuth()
   const router = useRouter()
-  const [classes, setClasses] = useState([])
 
-  useEffect(() => {
-    async function fetchClasses() {
-      const fetchedClasses = await getClasses(userId)
-      const classOptions = fetchedClasses.map(cls => ({
-        value: cls.id,
-        label: cls.name
-      }))
-      setClasses(classOptions)
-    }
-
-    fetchClasses()
-  }, [userId])
-
-  const { assessment_id, title, class: className, status, description, weight, dueDate } = assessmentData || {}
+  const { asessment_id, title, description, weight, dueDate } = classData || {}
 
   // 1. Define your form.
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: title || "",
-      class: className || "",
-      status: status || "",
       description: description || "",
-      weight: weight || 0,
-      dueDate: dueDate ? new Date(dueDate) : new Date(),
+      status: status || "",
+      weight: weight || "",
+      dueDate: dueDate || "",
     },
   })
 
@@ -89,97 +69,53 @@ export default function AssessmentForm({
 
   // 2. Define a submit handler.
   async function onSubmit(values) {
-    if (action === "update") {
-      // Update Assessment
-      await updateAssessment(assessment_id, values)
-        .then(() => {
-          form.reset()
-          router.refresh()
-          setDialogOpen(false)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    } else if (action === "create") {
-      // Create Assessment
-      await createAssessment(userId, values)
-        .then(() => {
-          form.reset()
-          router.refresh()
-          setDialogOpen(false)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    }
+    // if (action === "update") {
+    //   // Update Class
+    //   await updateClass(class_id, values.name, values.professor, values.details)
+    //     .then(() => {
+    //       form.reset()
+    //       router.refresh()
+    //       setDialogOpen(false)
+    //     })
+    //     .catch((error) => {
+    //       console.error(error)
+    //     })
+    // } else if (action === "create") {
+    //   // Create Class
+    //   await createClass(userId, values.name, values.professor, values.details)
+    //     .then(() => {
+    //       form.reset()
+    //       router.refresh()
+    //       setDialogOpen(false)
+    //     })
+    //     .catch((error) => {
+    //       console.error(error)
+    //     })
+    // }
+    console.log(values)
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex flex-col md:flex-row md:space-x-4">
-          <div className="flex-grow space-y-4">
-            <FormInput
-              form={form}
-              name="title"
-              label="Title"
-              placeholder="Midterm Exam"
-              description=""
-            />
-
-            <FormSelect
-              form={form}
-              name="class"
-              label="Class"
-              options={classes}
-              description=""
-              className="font-sans"
-            />
-
-            <FormSelect
-              form={form}
-              name="status"
-              label="Status"
-              options={[
-                { value: 'not_started', label: 'Not Started' },
-                { value: 'in_progress', label: 'In Progress' },
-                { value: 'completed', label: 'Completed' }
-              ]}
-              description=""
-              className="font-sans"
-            />
-
-            <FormTextarea
-              form={form}
-              name="description"
-              label="Description"
-              placeholder="Description"
-              description=""
-              className="font-sans"
-            />
-
-            <FormInput
-              form={form}
-              name="weight"
-              label="Weight"
-              placeholder="20"
-              description="Weight of the assessment as a percentage"
-              type="number"
-            />
-          </div>
-
-          <div className="flex flex-col items-center justify-center">
-            <label htmlFor="dueDate" className="font-medium text-gray-700">Due Date</label>
-            <Calendar
-              mode="single"
-              form={form}
-              selected={dueDate}
-              name="dueDate"
-              label="Due Date"
-              className="rounded-md border"
-            />
-          </div>
+      <form action={form.handleSubmit(onSubmit)}>
+        <div className="flex flex-col flex-grow gap-2 md:flex-row md:justify-between">
+          <FormInput
+            form={form}
+            name="title"
+            label="Title"
+            placeholder="Assessment"
+            description=""
+          />
         </div>
+        
+
+        <FormTextarea
+          form={form}
+          name="description"
+          label="Description"
+          placeholder="Description"
+          description=""
+        />
 
         {children}
       </form>
