@@ -9,15 +9,9 @@ import { FormSelect } from "../forms/select-input"
 import { Calendar } from "@/components/ui/calendar"
 import { useAuth } from "@clerk/nextjs"
 import { createAssessment, updateAssessment } from "@/actions/assessments"
+import { getClasses } from "@/actions/classes"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-
-// Placeholder array for class options
-const placeholderClasses = [
-  { value: 'class1', label: 'Class 1' },
-  { value: 'class2', label: 'Class 2' },
-  { value: 'class3', label: 'Class 3' },
-]
 
 // Schema
 
@@ -58,6 +52,20 @@ export default function AssessmentForm({
 }) {
   const { userId } = useAuth()
   const router = useRouter()
+  const [classes, setClasses] = useState([])
+
+  useEffect(() => {
+    async function fetchClasses() {
+      const fetchedClasses = await getClasses(userId)
+      const classOptions = fetchedClasses.map(cls => ({
+        value: cls.id,
+        label: cls.name
+      }))
+      setClasses(classOptions)
+    }
+
+    fetchClasses()
+  }, [userId])
 
   const { assessment_id, title, class: className, status, description, weight, dueDate } = assessmentData || {}
 
@@ -123,8 +131,9 @@ export default function AssessmentForm({
               form={form}
               name="class"
               label="Class"
-              options={placeholderClasses}
+              options={classes}
               description=""
+              className="font-sans"
             />
 
             <FormSelect
@@ -137,6 +146,7 @@ export default function AssessmentForm({
                 { value: 'completed', label: 'Completed' }
               ]}
               description=""
+              className="font-sans"
             />
 
             <FormTextarea
@@ -145,6 +155,7 @@ export default function AssessmentForm({
               label="Description"
               placeholder="Description"
               description=""
+              className="font-sans"
             />
 
             <FormInput
@@ -158,7 +169,7 @@ export default function AssessmentForm({
           </div>
 
           <div className="flex flex-col items-center justify-center">
-            <label htmlFor="dueDate">Due Date</label>
+            <label htmlFor="dueDate" className="font-medium text-gray-700">Due Date</label>
             <Calendar
               mode="single"
               form={form}
