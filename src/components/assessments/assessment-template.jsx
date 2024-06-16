@@ -1,6 +1,6 @@
 // assessment-page.jsx
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import PageTitle from "@/components/page-title";
 import { PiListChecksLight } from "react-icons/pi";
 import { DatePickerWithRange } from "@/components/ui/date-picker";
@@ -20,53 +20,66 @@ const getUniqueValues = (array, key) => {
   return [...new Set(array.map((item) => item[key]))];
 };
 
-export function AssessmentsTemplate({ assessments }) {
+export function AssessmentsTemplate({ assessments, classesList }) {
   const [classFilter, setClassFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [dueDateFilter, setDueDateFilter] = useState(null);
 
   const uniqueStatuses = getUniqueValues(assessments, "status");
-  const uniqueClasses = getUniqueValues(assessments, "class");
+  const uniqueClasses = classesList.map((classTemp) => classTemp.name);
 
   const today = new Date();
   const dueSoonDate = new Date(today.getTime() + 15 * 24 * 60 * 60 * 1000);
 
-  const filteredAssessments = assessments.filter(
-    (assessment) =>
-      assessment.status.toLowerCase() !== "completed" && // Exclude completed assessments
-      (statusFilter === "" ||
-        assessment.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
-      (classFilter === "" ||
-        assessment.class.toLowerCase().includes(classFilter.toLowerCase())) &&
-      (!dueDateFilter ||
-        (assessment.date >= dueDateFilter.from &&
-          assessment.date <= dueDateFilter.to))
-  );
+  const filteredAssessments = assessments.filter((assessment) => {
+    const dueDate = new Date(assessment.due_date);
 
-  const dueSoonAssessments = assessments.filter(
-    (assessment) =>
+    return (
       assessment.status.toLowerCase() !== "completed" &&
       (statusFilter === "" ||
         assessment.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
       (classFilter === "" ||
-        assessment.class.toLowerCase().includes(classFilter.toLowerCase())) &&
+        assessment.class_name
+          .toLowerCase()
+          .includes(classFilter.toLowerCase())) &&
       (!dueDateFilter ||
-        (assessment.date >= dueDateFilter.from &&
-          assessment.date <= dueDateFilter.to)) &&
-      assessment.date <= dueSoonDate
-  );
+        (dueDate >= dueDateFilter.from && dueDate <= dueDateFilter.to))
+    );
+  });
 
-  const archiveAssessments = assessments.filter(
-    (assessment) =>
+  const dueSoonAssessments = assessments.filter((assessment) => {
+    const dueDate = new Date(assessment.due_date);
+
+    return (
+      assessment.status.toLowerCase() !== "completed" &&
+      (statusFilter === "" ||
+        assessment.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
+      (classFilter === "" ||
+        assessment.class_name
+          .toLowerCase()
+          .includes(classFilter.toLowerCase())) &&
+      (!dueDateFilter ||
+        (dueDate >= dueDateFilter.from && dueDate <= dueDateFilter.to)) &&
+      dueDate <= dueSoonDate
+    );
+  });
+
+  const archiveAssessments = assessments.filter((assessment) => {
+    const dueDate = new Date(assessment.due_date);
+
+    return (
       assessment.status.toLowerCase() === "completed" &&
       (statusFilter === "" ||
         assessment.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
       (classFilter === "" ||
-        assessment.class.toLowerCase().includes(classFilter.toLowerCase())) &&
+        assessment.class_name
+          .toLowerCase()
+          .includes(classFilter.toLowerCase())) &&
       (!dueDateFilter ||
-        (assessment.date >= dueDateFilter.from &&
-          assessment.date <= dueDateFilter.to))
-  );
+        (dueDate >= dueDateFilter.from &&
+          dueDate<= dueDateFilter.to))
+    );
+  });
 
   const resetFilters = () => {
     setStatusFilter("");
@@ -116,12 +129,12 @@ export function AssessmentsTemplate({ assessments }) {
             <DropdownMenuItem onSelect={() => setClassFilter("")}>
               All Classes
             </DropdownMenuItem>
-            {uniqueClasses.map((className, index) => (
+            {uniqueClasses.map((class_name, index) => (
               <DropdownMenuItem
                 key={index}
-                onSelect={() => setClassFilter(className)}
+                onSelect={() => setClassFilter(class_name)}
               >
-                {className}
+                {class_name}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

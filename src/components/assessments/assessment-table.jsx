@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { AssessmentDropdown } from "@/components/assessments/assessment-dropdown";
 
@@ -33,7 +33,7 @@ export function AssessmentsTable({ title, assessments }) {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {assessments.map((assessment) => (
-              <tr key={assessment.id} className="hover:bg-gray-50">
+              <tr key={assessment.assessment_id} className="hover:bg-gray-50">
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                   <span
                     className={`inline-block w-3 h-3 mr-2 rounded-full ${getStatusColor(
@@ -43,11 +43,11 @@ export function AssessmentsTable({ title, assessments }) {
                   {assessment.status}
                 </td>
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
-                  {assessment.class}
+                  {assessment.class_name}
                 </td>
                 <td className="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900">
                   <Link href={`/notes/#${assessment.id}`}>
-                    {assessment.title}
+                    {assessment.name}
                   </Link>
                 </td>
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
@@ -57,7 +57,7 @@ export function AssessmentsTable({ title, assessments }) {
                   {assessment.weight} %
                 </td>
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
-                  {assessment.date.toLocaleDateString("en-US", {
+                  {new Date(assessment.due_date).toLocaleDateString("en-US", {
                     month: "long",
                     day: "numeric",
                     hour: "numeric",

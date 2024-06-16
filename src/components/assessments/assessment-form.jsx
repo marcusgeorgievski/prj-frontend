@@ -14,14 +14,14 @@ import { useEffect } from "react"
 // Schema
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+  title: z.string().min(2, {
+    message: "Title must be at least 2 characters.",
   }),
   professor: z.string().optional(),
-  details: z
+  description: z
     .string()
     .max(100, {
-      message: "Details must be at most 100 characters.",
+      message: "Description must be at most 100 characters.",
     })
     .optional(),
 })
@@ -38,15 +38,17 @@ export default function ClassForm({
   const { userId } = useAuth()
   const router = useRouter()
 
-  const { class_id, name, professor, details } = classData || {}
+  const { asessment_id, title, description, weight, dueDate } = classData || {}
 
   // 1. Define your form.
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: name || "",
-      professor: professor || "",
-      details: details || "",
+      title: title || "",
+      description: description || "",
+      status: status || "",
+      weight: weight || "",
+      dueDate: dueDate || "",
     },
   })
 
@@ -80,6 +82,7 @@ export default function ClassForm({
     //       console.error(error)
     //     })
     // }
+    console.log(values)
   }
 
   return (
@@ -88,26 +91,19 @@ export default function ClassForm({
         <div className="flex flex-col flex-grow gap-2 md:flex-row md:justify-between">
           <FormInput
             form={form}
-            name="name"
-            label="Class"
-            placeholder="PRJ566"
-            description=""
-          />
-
-          <FormInput
-            form={form}
-            name="professor"
-            label="Professor"
-            placeholder="Prof. Yasser E"
+            name="title"
+            label="Title"
+            placeholder="Assessment"
             description=""
           />
         </div>
+        
 
         <FormTextarea
           form={form}
-          name="details"
-          label="Details"
-          placeholder="Details"
+          name="description"
+          label="Description"
+          placeholder="Description"
           description=""
         />
 
