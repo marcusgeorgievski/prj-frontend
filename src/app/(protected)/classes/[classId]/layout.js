@@ -5,11 +5,14 @@ import React, { useEffect, useState } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { getClasses } from "@/actions/classes"
 import { useAuth } from "@clerk/nextjs"
+import { getAssessmentsByClassId } from "@/actions/assessments"
 import { AssessmentsTable } from "@/components/assessments/assessment-table"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function ClassSlugLayout({ params: { classId } }) {
   const [classData, setClassData] = useState(null)
+  const [assessments, setAssessments] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const { userId } = useAuth()
 
@@ -21,62 +24,30 @@ export default function ClassSlugLayout({ params: { classId } }) {
   useEffect(() => {
     router.push(pathname + "?tab=assessments")
 
-    const getClassData = async (userId) => {
-      const classes = await getClasses(userId)
-      const c = classes.find((c) => c.class_id === classId)
-      setClassData(c)
+     const getClassData = async (userId) => {
+      try {
+        const classes = await getClasses(userId)
+        const c = classes.find((c) => c.class_id === classId)
+        setClassData(c)
+
+        if (c) {
+          const assessmentsData = await getAssessmentsByClassId(c.class_id)
+          const assessmentsWithData = assessmentsData.map(assessment => ({
+            ...assessment,
+            class_name: c.name
+          }));
+          setAssessments(assessmentsWithData)
+        }
+      } catch (error) {
+        console.error("Error fetching class data or assessments:", error)
+      }  finally {
+        setLoading(false) // Set loading to false after data is fetched
+      }
     }
 
     getClassData(userId)
-  }, [])
+  },[userId, classId, pathname, router])
 
-  const classData2 = [
-    {
-      id: 1,
-      title: "Midterm Exam",
-      class: "CCP555",
-      date: new Date(2024, 6, 20, 14, 45),
-      status: "Upcoming",
-    },
-    {
-      id: 2,
-      title: "Final Exam",
-      class: "CCP555",
-      date: new Date(2024, 5, 20, 14, 45),
-      status: "Completed",
-    },
-    {
-      id: 3,
-      title: "Quiz",
-      class: "CCP545",
-      date: new Date(2024, 6, 20, 14, 45),
-      status: "Overdue",
-    },
-    {
-      id: 4,
-      title: "Midterm Exam",
-      class: "CCP555",
-      date: new Date(2024, 6, 20, 14, 45),
-      status: "Upcoming",
-    },
-    {
-      id: 5,
-      title: "Final Exam",
-      class: "CCP555",
-      date: new Date(2024, 6, 20, 14, 45),
-      status: "Completed",
-    },
-    {
-      id: 6,
-      title: "Quiz",
-      class: "CCP545",
-      date: new Date(2024, 6, 20, 14, 45),
-      status: "Upcoming",
-    },
-    // Add more assessments as needed
-  ];
-
-  console.log(classData)
   // Get tab search param on every render
   const tab = searchParams.get("tab")
 
@@ -84,8 +55,14 @@ export default function ClassSlugLayout({ params: { classId } }) {
     router.push(pathname + "?tab=" + tab)
   }
 
-  if (classData === null) {
-    return null
+  const handleDeleteAssessment = (assessmentId) => {
+    setAssessments((prevAssessments) =>
+      prevAssessments.filter((a) => a.assessment_id !== assessmentId)
+    );
+  };
+
+  if (classData === null || loading) {
+    return <Skeleton /> // Return tho loading while data is being fetched
   }
 
   return (
@@ -122,10 +99,13 @@ export default function ClassSlugLayout({ params: { classId } }) {
         </Button>
       </div>
 
-      {tab === "assessments" && (
-        <div>
-          <AssessmentsTable title assessments={classData2} />
-        </div>
+      {tab === "assessments"  && assessments && (
+         <div>
+            <AssessmentsTable
+            assessments={assessments}
+            onDelete={handleDeleteAssessment}
+          />
+         </div>
       )}
       
       <div></div>

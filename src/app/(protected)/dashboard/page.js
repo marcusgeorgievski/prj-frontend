@@ -13,7 +13,7 @@ import {
 
 import { recentItems } from "@/lib/utils"
 
-import { getClasses, getAssessments, getNotes } from "@/actions/classes"
+import { getClasses } from "@/actions/classes"
 import ClassCard from "@/components/classes/class-card"
 // import NoteCard from "@/components/notes/note-card";
 // import AssessmentCard from "@/components/assessments/assessment-card";
@@ -21,6 +21,8 @@ import { NoteCard } from "../notes/page"
 import { AssessmentCard } from "../assessments/page"
 import { currentUser } from "@clerk/nextjs/server"
 import ClassActionButton from "@/components/classes/class-button"
+import { getAssessmentsByUserId } from "@/actions/assessments";
+import { AssessmentsTable } from "@/components/assessments/assessment-table"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
 
@@ -32,15 +34,25 @@ export default async function Dashboard() {
   }
 
   const classes = await getClasses(user.id)
-  const assessments = []
   const notes = []
-  // const assessments = await getAssessments(user.id);
+   const assessments = await getAssessmentsByUserId(user.id);
   // const notes = await getNotes(user.id);
 
+  const assessmentsWithClassName = assessments.map((assessment) => {
+    const classInfo = classes.find(
+      (classTemp) => classTemp.class_id === assessment.class_id
+    );
+    return {
+      ...assessment,
+      class_name: classInfo ? classInfo.name : "Unknown Class",
+    };
+  });
+  
   // Process recent items
   const recentClasses = recentItems(classes, 4)
-  const recentAssessments = recentItems(assessments, 4)
+  const recentAssessments = recentItems(assessmentsWithClassName, 4)
   const recentNotes = recentItems(notes, 4)
+
   // Keep track of remaining items
   const extraClasses = classes.length - recentClasses.length
   const extraAssessments = assessments.length - recentAssessments.length
@@ -94,12 +106,8 @@ export default async function Dashboard() {
           </div>
         ) : (
           <div>
-            <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {recentAssessments.map((a) => (
-                <div key={a.id}>
-                  <AssessmentCard key={a.id} {...a} />
-                </div>
-              ))}
+            <div className="grid items-center">
+             <AssessmentsTable assessments={recentAssessments} isDashboard={true}/>
             </div>
             <div className="flex justify-center mt-6">
               <Link href="/assessments/" className="text-lg">

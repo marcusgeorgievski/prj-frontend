@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { AssessmentDropdown } from "@/components/assessments/assessment-dropdown";
 
-export function AssessmentsTable({ title, assessments }) {
+export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-bold">{title}</h3>
@@ -64,9 +64,14 @@ export function AssessmentsTable({ title, assessments }) {
                     minute: "numeric",
                   })}
                 </td>
-                <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
-                  <AssessmentDropdown />
-                </td>
+                {!isDashboard && (
+                  <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                    <AssessmentDropdown
+                      assessmentData={assessment}
+                      onDelete={onDelete}
+                    />
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -82,13 +87,13 @@ export function AssessmentsTable({ title, assessments }) {
 
 function getStatusColor(status) {
   switch (status) {
-    case "Completed":
+    case "completed":
       return "bg-green-500";
     case "not started":
       return "bg-gray-500";
-    case "Overdue":
+    case "overdue":
       return "bg-red-500";
-    case "Upcoming":
+    case "upcoming":
       return "bg-blue-900";
     default:
       return "bg-gray-500";
