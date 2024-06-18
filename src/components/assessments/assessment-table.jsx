@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { AssessmentDropdown } from "@/components/assessments/assessment-dropdown";
 
-export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) {
+export function AssessmentsTable({ title, assessments, onDelete, isDashboard, classesList }) {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-bold">{title}</h3>
@@ -69,6 +69,7 @@ export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) 
                     <AssessmentDropdown
                       assessmentData={assessment}
                       onDelete={onDelete}
+                      classesList={classesList}
                     />
                   </td>
                 )}
