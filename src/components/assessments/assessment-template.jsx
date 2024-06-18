@@ -1,4 +1,4 @@
-// assessment-page.jsx
+// src/components/assessments/assessment-template.jsx
 "use client";
 import React, { useState, useEffect } from "react";
 import PageTitle from "@/components/page-title";
@@ -76,8 +76,7 @@ export function AssessmentsTemplate({ assessments, classesList }) {
           .toLowerCase()
           .includes(classFilter.toLowerCase())) &&
       (!dueDateFilter ||
-        (dueDate >= dueDateFilter.from &&
-          dueDate<= dueDateFilter.to))
+        (dueDate >= dueDateFilter.from && dueDate <= dueDateFilter.to))
     );
   });
 
@@ -87,11 +86,17 @@ export function AssessmentsTemplate({ assessments, classesList }) {
     setDueDateFilter(null);
   };
 
+  console.log("classesList (assessment-template.jsx): ", classesList);
+
   return (
     <div className="w-full space-y-1">
       <div className="flex space-x-2">
         <PageTitle icon={PiListChecksLight}>Assessments</PageTitle>
-        <AssessmentActionButton action="create" button />
+        <AssessmentActionButton
+          action="create"
+          button={true}
+          classesList={classesList}
+        />
       </div>
       <div className="flex space-x-2 items-center">
         <DropdownMenu>
