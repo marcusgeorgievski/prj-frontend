@@ -44,3 +44,31 @@ export async function deleteAssessment(assessmentId = "assessment_1") {
       console.log("ERROR:", error.response.data)
     })
 }
+
+export async function createAssessment(userId, values) {
+  try {
+    const axios = await axiosTokenInstance(); // Ensure axios instance is used here
+    console.log("Creating assessment with values:", { userId, ...values }); // Debugging log
+    const response = await axios.post('/assessments', {
+      userId,
+      ...values,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error creating assessment:", error);
+    throw error;
+  }
+}
+
+export async function updateAssessment(assessmentId, values) {
+  try {
+    const axios = await axiosTokenInstance(); // Ensure axios instance is used here
+    console.log("Updating assessment with values:", values); // Debugging log
+    const response = await axios.put(`/assessments/${assessmentId}`, values);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating assessment:", error);
+    throw error;
+  }
+}
+
