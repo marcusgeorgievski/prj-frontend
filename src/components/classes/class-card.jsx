@@ -43,10 +43,10 @@ export default function ClassCard({ classData = exampleClassData }) {
             )}
           </p>
 
-          <div className="text-sm font-light">
+          {/* <div className="text-sm font-light">
             <p>Assessments: 12</p>
             <p>Notes: 4</p>
-          </div>
+          </div> */}
         </div>
       </Card>
     </Link>

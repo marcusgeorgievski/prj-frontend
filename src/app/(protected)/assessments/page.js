@@ -1,43 +1,75 @@
-import PageTitle from "@/components/page-title";
 import { Card, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { PiListChecksLight } from "react-icons/pi";
 
-export default function AssessmentsPage() {
+import { AssessmentsTemplate } from "@/components/assessments/assessment-template";
+import { getClasses } from "@/actions/classes";
+import { getAssessmentsByUserId } from "@/actions/assessments";
+import { currentUser } from "@clerk/nextjs/server";
+import { getAssessmentsByClassId } from "@/actions/assessments";
+
+export default async function AssessmentsPage() {
+  const user = await currentUser();
+
+  if (!user) {
+    return null;
+  }
+
+  const classes = await getClasses(user.id);
+
+  const assessments = await getAssessmentsByUserId(user.id);
+
+  const assessmentsWithClassName = assessments.map((assessment) => {
+    const classInfo = classes.find(
+      (classTemp) => classTemp.class_id === assessment.class_id
+    );
+    return {
+      ...assessment,
+      class_name: classInfo ? classInfo.name : "Unknown Class",
+    };
+  });
+
+  const classesList = classes.map((classTemp) => {
+    return {
+      class_id: classTemp.class_id,
+      name: classTemp.name,
+    };
+  });
+
   return (
     <div className="w-full ">
-      <PageTitle icon={PiListChecksLight}>Assessments</PageTitle>
-
-      <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <AssessmentCard />
-        <AssessmentCard />
-        <AssessmentCard />
-        <AssessmentCard />
-        <AssessmentCard />
-      </div>
+      <AssessmentsTemplate
+        assessments={assessmentsWithClassName}
+        classesList={classesList}
+      />
     </div>
   );
 }
 
-export function AssessmentCard({ assessmentData }) {
-  return (
-    <Link href={`/notes/#`}>
-      <Card
-        className={cn(
-          "flex flex-col p-3 transition-all hover:bg-accent/50 mx-auto max-w-[500px]"
-        )}
-      >
-        <h3 className="text-lg font-bold">Final Exam</h3>
-        <p className="mb-2 text-sm font-light text-muted-foreground">
-          CCP555
-        </p>
-
-        <div className="text-sm font-light">
-          <p>July 20, 2:45 PM</p>
-          <p>Room A3516</p>
-        </div>
-      </Card>
-    </Link>
-  );
-}
+// export function AssessmentCard({ assessment }) {
+//   return (
+//     <Link href={`/notes/#`}>
+//       <Card
+//         className={cn(
+//           "flex flex-col p-3 transition-all hover:bg-accent/50 mx-auto max-w-[500px]"
+//         )}
+//       >
+//         <h3 className="text-lg font-bold">{assessment.name}</h3>
+//         <p className="mb-2 text-sm font-light text-muted-foreground">
+//           {assessment.class}
+//         </p>
+//         <div className="text-sm font-light">
+//           <p>
+//             {assessment.due_date.toLocaleDateString("en-US", {
+//               month: "long",
+//               day: "numeric",
+//               hour: "numeric",
+//               minute: "numeric",
+//             })}
+//           </p>
+//           <p>{assessment.status}</p>
+//         </div>
+//       </Card>
+//     </Link>
+//   );
+// }

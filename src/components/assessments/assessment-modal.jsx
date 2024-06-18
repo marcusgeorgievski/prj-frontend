@@ -1,3 +1,4 @@
+// src/components/assessments/assessment-modal.jsx
 "use client"
 import {
   Dialog,
@@ -6,28 +7,57 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog"
-import { Button } from "../ui/button"
-import { DialogClose } from "@radix-ui/react-dialog"
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { useState } from "react";
+import AssessmentForm from "./assessment-form";
 
-export function AssessmentModal({ children }) {
+export function AssessmentModal({ children, assessmentData, action = "create", classesList }) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [submitFn, setSubmitFn] = useState(null);
+
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      {/* TRIGGER */}
       {children}
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. Are you sure you want to permanently
-            delete this file from our servers?
-          </DialogDescription>
+          <DialogTitle>
+            {action === "create" ? "Create Assessment" : "Edit Assessment"}
+          </DialogTitle>
+          <DialogDescription>Enter Assessment details</DialogDescription>
         </DialogHeader>
-        <DialogFooter>
+
+        <AssessmentForm
+          action={action}
+          assessmentData={assessmentData}
+          setDialogOpen={setDialogOpen}
+          setSubmitFn={setSubmitFn}
+          classesList={classesList}
+        />
+
+        <DialogFooter className="gap-2 mt-6">
           <DialogClose asChild>
-            <Button type="submit">Confirm</Button>
+            <Button onClick={() => setDialogOpen(false)} variant="secondary">
+              Cancel
+            </Button>
           </DialogClose>
+
+          <Button
+            type="submit"
+            onClick={() => {
+              if (action === "update") {
+                submitFn();
+              } else {
+                submitFn();
+              }
+            }}
+          >
+            Confirm
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
