@@ -86,8 +86,6 @@ export function AssessmentsTemplate({ assessments, classesList }) {
     setDueDateFilter(null);
   };
 
-  console.log("classesList (assessment-template.jsx): ", classesList);
-
   return (
     <div className="w-full space-y-1">
       <div className="flex space-x-2">
