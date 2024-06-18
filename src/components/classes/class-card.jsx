@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import ClassModal from "./class-modal"
 import { ClassDropdown } from "./class-dropdown"
 
-export default function ClassCard({ classData = exampleClassData }) {
+export default function ClassCard({ classData = exampleClassData, assessmentCount, noteCount }) {
   const { class_id, name, professor, details } = classData
 
   return (
@@ -43,10 +43,10 @@ export default function ClassCard({ classData = exampleClassData }) {
             )}
           </p>
 
-          {/* <div className="text-sm font-light">
-            <p>Assessments: 12</p>
-            <p>Notes: 4</p>
-          </div> */}
+          <div className="text-sm font-light">
+            <p>Assessments: {assessmentCount}</p>
+            <p>Notes: {noteCount}</p>
+          </div> 
         </div>
       </Card>
     </Link>

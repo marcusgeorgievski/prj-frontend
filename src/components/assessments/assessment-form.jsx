@@ -79,7 +79,7 @@ export default function AssessmentForm({ action, setSubmitFn, assessmentData, cl
   const defaultValues = {
     name: name || "",
     class: className || formattedClassesList[0]?.value || "",
-    status: status || "not_started",
+    status: status || "not started",
     description: description || "",
     weight: weight || 0,
     dueDate: dueDate ? new Date(dueDate) : new Date(),

@@ -1,41 +1,41 @@
 // User Dashboard
 
-import PageTitle from "@/components/page-title"
-import Heading from "@/components/heading"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import PageTitle from "@/components/page-title";
+import Heading from "@/components/heading";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   PiChalkboardTeacherLight,
   PiHouseLineLight,
   PiNotePencilLight,
   PiListChecksLight,
-} from "react-icons/pi"
+} from "react-icons/pi";
 
-import { recentItems } from "@/lib/utils"
+import { recentItems } from "@/lib/utils";
 
-import { getClasses } from "@/actions/classes"
-import ClassCard from "@/components/classes/class-card"
+import { getClasses } from "@/actions/classes";
+import ClassCard from "@/components/classes/class-card";
 // import NoteCard from "@/components/notes/note-card";
 // import AssessmentCard from "@/components/assessments/assessment-card";
-import { NoteCard } from "../notes/page"
-import { AssessmentCard } from "../assessments/page"
-import { currentUser } from "@clerk/nextjs/server"
-import ClassActionButton from "@/components/classes/class-button"
+import { NoteCard } from "../notes/page";
+import { AssessmentCard } from "../assessments/page";
+import { currentUser } from "@clerk/nextjs/server";
+import ClassActionButton from "@/components/classes/class-button";
 import { getAssessmentsByUserId } from "@/actions/assessments";
-import { AssessmentsTable } from "@/components/assessments/assessment-table"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Separator } from "@/components/ui/separator"
+import { AssessmentsTable } from "@/components/assessments/assessment-table";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
 
 export default async function Dashboard() {
-  const user = await currentUser()
+  const user = await currentUser();
 
   if (!user) {
-    return null
+    return null;
   }
 
-  const classes = await getClasses(user.id)
-  const notes = []
-   const assessments = await getAssessmentsByUserId(user.id);
+  const classes = await getClasses(user.id);
+  const notes = [];
+  const assessments = await getAssessmentsByUserId(user.id);
   // const notes = await getNotes(user.id);
 
   const assessmentsWithClassName = assessments.map((assessment) => {
@@ -47,16 +47,35 @@ export default async function Dashboard() {
       class_name: classInfo ? classInfo.name : "Unknown Class",
     };
   });
-  
+
   // Process recent items
-  const recentClasses = recentItems(classes, 4)
-  const recentAssessments = recentItems(assessmentsWithClassName, 4)
-  const recentNotes = recentItems(notes, 4)
+  const recentClasses = recentItems(classes, 4);
+  const recentAssessments = recentItems(assessmentsWithClassName, 4);
+  const recentNotes = recentItems(notes, 4);
 
   // Keep track of remaining items
-  const extraClasses = classes.length - recentClasses.length
-  const extraAssessments = assessments.length - recentAssessments.length
-  const extraNotes = notes.length - recentNotes.length
+  const extraClasses = classes.length - recentClasses.length;
+  const extraAssessments = assessments.length - recentAssessments.length;
+  const extraNotes = notes.length - recentNotes.length;
+
+  const classAssessmentCounts = {};
+  const classNoteCounts = {};
+
+  assessments.forEach((assessment) => {
+    if (classAssessmentCounts[assessment.class_id]) {
+      classAssessmentCounts[assessment.class_id]++;
+    } else {
+      classAssessmentCounts[assessment.class_id] = 1;
+    }
+  });
+
+  notes.forEach((note) => {
+    if (classNoteCounts[note.class_id]) {
+      classNoteCounts[note.class_id]++;
+    } else {
+      classNoteCounts[note.class_id] = 1;
+    }
+  });
 
   return (
     <div className="w-full">
@@ -77,7 +96,12 @@ export default async function Dashboard() {
             <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {recentClasses.map((c) => (
                 <div key={c.id}>
-                  <ClassCard key={c.id} classData={c} />
+                  <ClassCard
+                    key={c.id}
+                    classData={c}
+                    assessmentCount={classAssessmentCounts[c.class_id] || 0}
+                    noteCount={classNoteCounts[c.class_id] || 0}
+                  />
                 </div>
               ))}
             </div>
@@ -107,7 +131,10 @@ export default async function Dashboard() {
         ) : (
           <div>
             <div className="grid items-center">
-             <AssessmentsTable assessments={recentAssessments} isDashboard={true}/>
+              <AssessmentsTable
+                assessments={recentAssessments}
+                isDashboard={true}
+              />
             </div>
             <div className="flex justify-center mt-6">
               <Link href="/assessments/" className="text-lg">
@@ -154,5 +181,5 @@ export default async function Dashboard() {
         )}
       </div>
     </div>
-  )
+  );
 }
