@@ -40,8 +40,7 @@ export function AssessmentsTemplate({ assessments, classesList }) {
         assessment.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
       (classFilter === "" ||
         assessment.class_name
-          .toLowerCase()
-          .includes(classFilter.toLowerCase())) &&
+          .includes(classFilter)) &&
       (!dueDateFilter ||
         (dueDate >= dueDateFilter.from && dueDate <= dueDateFilter.to))
     );
@@ -56,8 +55,7 @@ export function AssessmentsTemplate({ assessments, classesList }) {
         assessment.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
       (classFilter === "" ||
         assessment.class_name
-          .toLowerCase()
-          .includes(classFilter.toLowerCase())) &&
+          .includes(classFilter)) &&
       (!dueDateFilter ||
         (dueDate >= dueDateFilter.from && dueDate <= dueDateFilter.to)) &&
       dueDate <= dueSoonDate
@@ -73,8 +71,7 @@ export function AssessmentsTemplate({ assessments, classesList }) {
         assessment.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
       (classFilter === "" ||
         assessment.class_name
-          .toLowerCase()
-          .includes(classFilter.toLowerCase())) &&
+          .includes(classFilter)) &&
       (!dueDateFilter ||
         (dueDate >= dueDateFilter.from && dueDate <= dueDateFilter.to))
     );

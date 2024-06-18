@@ -9,7 +9,7 @@ export default function AssessmentActionButton({
   button = true,
   classesList,
 }) {
-  console.log("classesList in AssessmentActionButton:", classesList);
+  //console.log("classesList in AssessmentActionButton:", classesList);
 
   if (!button) {
     return (
