@@ -7,14 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
-import { FaPencilAlt } from "react-icons/fa";
 import { Dialog } from "../ui/dialog";
 import { deleteAssessment } from "@/actions/assessments";
 import { useRouter } from "next/navigation";
-import { PiTrash } from "react-icons/pi";
+import { PiTrash, PiPencilBold, PiNotePencil } from "react-icons/pi";
 
-export function AssessmentDropdown({ assessmentData, onDelete }) {
+export function AssessmentDropdown({ assessmentData, onDelete, classesList }) {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -33,10 +31,9 @@ export function AssessmentDropdown({ assessmentData, onDelete }) {
       await deleteAssessment(assessmentData.assessment_id);
       //ensure router refresh
       router.refresh();
-      if (onDelete)
-        {
-          onDelete(assessmentData.assessment_id);
-        }
+      if (onDelete) {
+        onDelete(assessmentData.assessment_id);
+      }
     } catch (error) {
       console.error("Failed to delete assessment:", error);
     }
@@ -47,12 +44,19 @@ export function AssessmentDropdown({ assessmentData, onDelete }) {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <span className="cursor-pointer">
-            <FaPencilAlt onClick={handleDialogOpen} />
+            <PiPencilBold onClick={handleDialogOpen} />
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={handleDialogOpen}>Edit</DropdownMenuItem>
-
+          <DropdownMenuItem asChild>
+            <button 
+              onClick={handleDialogOpen}
+              className="flex items-center w-full gap-2"
+              classesList={classesList}
+              >
+              <PiNotePencil /> Edit
+            </button>
+          </DropdownMenuItem>
           {/*Delete*/}
           <DropdownMenuItem asChild>
             <button
