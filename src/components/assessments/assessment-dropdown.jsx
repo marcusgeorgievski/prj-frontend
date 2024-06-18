@@ -12,7 +12,7 @@ import { FaPencilAlt } from "react-icons/fa";
 import { Dialog } from "../ui/dialog";
 import { deleteAssessment } from "@/actions/assessments";
 import { useRouter } from "next/navigation";
-import { PiTrash } from "react-icons/pi";
+import { PiTrash, PiNotePencil } from "react-icons/pi";
 
 export function AssessmentDropdown({ assessmentData, onDelete }) {
   const router = useRouter();
@@ -33,10 +33,9 @@ export function AssessmentDropdown({ assessmentData, onDelete }) {
       await deleteAssessment(assessmentData.assessment_id);
       //ensure router refresh
       router.refresh();
-      if (onDelete)
-        {
-          onDelete(assessmentData.assessment_id);
-        }
+      if (onDelete) {
+        onDelete(assessmentData.assessment_id);
+      }
     } catch (error) {
       console.error("Failed to delete assessment:", error);
     }
@@ -51,7 +50,16 @@ export function AssessmentDropdown({ assessmentData, onDelete }) {
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={handleDialogOpen}>Edit</DropdownMenuItem>
+
+          {/*Edit*/}
+          <DropdownMenuItem asChild disabled>
+            <button
+              //onClick={...}
+              className="flex items-center w-full gap-2"
+            >
+              <PiNotePencil /> Edit
+            </button>
+          </DropdownMenuItem>
 
           {/*Delete*/}
           <DropdownMenuItem asChild>
