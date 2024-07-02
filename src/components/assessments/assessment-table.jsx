@@ -3,14 +3,17 @@ import Link from "next/link";
 import { AssessmentDropdown } from "@/components/assessments/assessment-dropdown";
 import { useState, useEffect } from "react";
 
-export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) {
+export function AssessmentsTable({ title, assessments, onDelete }) {
   const [sortedAssessments, setSortedAssessments] = useState([...assessments]);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
 
   const onSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
     }
     setSortConfig({ key, direction });
   };
@@ -21,16 +24,16 @@ export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) 
     if (sortConfig.key) {
       sortedData = sortedData.sort((a, b) => {
         const { key, direction } = sortConfig;
-        if (key === 'due_date') {
-          return direction === 'ascending'
+        if (key === "due_date") {
+          return direction === "ascending"
             ? new Date(a[key]) - new Date(b[key])
             : new Date(b[key]) - new Date(a[key]);
-        } else if (typeof a[key] === 'string') {
-          return direction === 'ascending'
+        } else if (typeof a[key] === "string") {
+          return direction === "ascending"
             ? a[key].localeCompare(b[key])
             : b[key].localeCompare(a[key]);
         } else {
-          return direction === 'ascending' ? a[key] - b[key] : b[key] - a[key];
+          return direction === "ascending" ? a[key] - b[key] : b[key] - a[key];
         }
       });
     }
@@ -40,9 +43,9 @@ export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) 
 
   const getSortArrow = (key) => {
     if (sortConfig.key === key) {
-      return sortConfig.direction === 'ascending' ? ' ↑' : ' ↓';
+      return sortConfig.direction === "ascending" ? " ↑" : " ↓";
     }
-    return ' ↑↓';
+    return " ↑↓";
   };
 
   return (
@@ -50,15 +53,22 @@ export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) 
       <h3 className="text-lg font-bold">{title}</h3>
       {sortedAssessments.length > 0 ? (
         <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <thead className="bg-gray-50">
             <tr>
-              {['status', 'class_name', 'name', 'description', 'weight', 'due_date'].map((key) => (
+              {[
+                "status",
+                "class_name",
+                "name",
+                "description",
+                "weight",
+                "due_date",
+              ].map((key) => (
                 <th
                   key={key}
                   className="px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                   onClick={() => onSort(key)}
                 >
-                  {key.replace('_', ' ')}
+                  {key.replace("_", " ")}
                   {getSortArrow(key)}
                 </th>
               ))}
@@ -98,14 +108,13 @@ export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) 
                     minute: "numeric",
                   })}
                 </td>
-                {!isDashboard && (
-                  <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
-                    <AssessmentDropdown
-                      assessmentData={assessment}
-                      onDelete={onDelete}
-                    />
-                  </td>
-                )}
+
+                <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                  <AssessmentDropdown
+                    assessmentData={assessment}
+                    onDelete={onDelete}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
