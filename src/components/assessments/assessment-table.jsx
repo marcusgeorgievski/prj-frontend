@@ -1,5 +1,3 @@
-"use client";
-import Link from "next/link";
 import { AssessmentDropdown } from "@/components/assessments/assessment-dropdown";
 import { useState, useEffect } from "react";
 
@@ -48,6 +46,10 @@ export function AssessmentsTable({ title, assessments, onDelete }) {
     return " ↑↓";
   };
 
+  const handleRowClick = (assessmentId) => {
+    window.location.href = `/notes/#${assessmentId}`;
+  };
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-bold">{title}</h3>
@@ -77,7 +79,11 @@ export function AssessmentsTable({ title, assessments, onDelete }) {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedAssessments.map((assessment) => (
-              <tr key={assessment.assessment_id} className="hover:bg-gray-50">
+              <tr
+                key={assessment.assessment_id}
+                className="hover:bg-gray-50 cursor-pointer"
+                onClick={() => handleRowClick(assessment.id)}
+              >
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                   <span
                     className={`inline-block w-3 h-3 mr-2 rounded-full ${getStatusColor(
@@ -89,10 +95,8 @@ export function AssessmentsTable({ title, assessments, onDelete }) {
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                   {assessment.class_name}
                 </td>
-                <td className="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900">
-                  <Link href={`/notes/#${assessment.id}`}>
-                    {assessment.name}
-                  </Link>
+                <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                  {assessment.name}
                 </td>
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                   {assessment.description}
@@ -108,7 +112,6 @@ export function AssessmentsTable({ title, assessments, onDelete }) {
                     minute: "numeric",
                   })}
                 </td>
-
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                   <AssessmentDropdown
                     assessmentData={assessment}
