@@ -1,81 +1,84 @@
 // User Dashboard
 
-import PageTitle from "@/components/page-title";
-import Heading from "@/components/heading";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import PageTitle from '@/components/page-title'
+import Heading from '@/components/heading'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import {
   PiChalkboardTeacherLight,
   PiHouseLineLight,
   PiNotePencilLight,
   PiListChecksLight,
-} from "react-icons/pi";
+} from 'react-icons/pi'
 
-import { recentItems } from "@/lib/utils";
+import { recentItems } from '@/lib/utils'
 
-import { getClasses } from "@/actions/classes";
-import ClassCard from "@/components/classes/class-card";
+import { getClasses } from '@/actions/classes'
+import ClassCard from '@/components/classes/class-card'
 // import NoteCard from "@/components/notes/note-card";
 // import AssessmentCard from "@/components/assessments/assessment-card";
-import { NoteCard } from "../notes/page";
-import { AssessmentCard } from "../assessments/page";
-import { currentUser } from "@clerk/nextjs/server";
-import ClassActionButton from "@/components/classes/class-button";
-import { getAssessmentsByUserId } from "@/actions/assessments";
-import { AssessmentsTable } from "@/components/assessments/assessment-table";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
+import { NoteCard } from '../notes/page'
+import { AssessmentCard } from '../assessments/page'
+import { currentUser } from '@clerk/nextjs/server'
+import ClassActionButton from '@/components/classes/class-button'
+import { getAssessmentsByUserId } from '@/actions/assessments'
+import { AssessmentsTable } from '@/components/assessments/assessment-table'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Separator } from '@/components/ui/separator'
 
 export default async function Dashboard() {
-  const user = await currentUser();
+  const user = await currentUser()
 
   if (!user) {
-    return null;
+    return null
   }
 
-  const classes = await getClasses(user.id);
-  const notes = [];
-  const assessments = await getAssessmentsByUserId(user.id);
-  // const notes = await getNotes(user.id);
+  // Await the Promise.all and destructure the results
+  const [classes, assessments, notes] = await Promise.all([
+    getClasses(user.id),
+    getAssessmentsByUserId(user.id),
+    // Add getNotes(user.id) if you decide to use it
+    Promise.resolve([]), // Temporarily using an empty array for notes
+  ])
 
   const assessmentsWithClassName = assessments.map((assessment) => {
     const classInfo = classes.find(
-      (classTemp) => classTemp.class_id === assessment.class_id
-    );
+      (classTemp) => classTemp.class_id === assessment.class_id,
+    )
     return {
       ...assessment,
-      class_name: classInfo ? classInfo.name : "Unknown Class",
-    };
-  });
+      class_name: classInfo ? classInfo.name : 'Unknown Class',
+    }
+  })
 
   // Process recent items
-  const recentClasses = recentItems(classes, 4);
-  const recentAssessments = recentItems(assessmentsWithClassName, 4);
-  const recentNotes = recentItems(notes, 4);
+  const recentClasses = recentItems(classes, 4)
+  const recentAssessments = recentItems(assessmentsWithClassName, 4)
+  const recentNotes = recentItems(notes, 4)
 
   // Keep track of remaining items
-  const extraClasses = classes.length - recentClasses.length;
-  const extraAssessments = assessments.length - recentAssessments.length;
-  const extraNotes = notes.length - recentNotes.length;
+  const extraClasses = classes.length - recentClasses.length
+  const extraAssessments = assessments.length - recentAssessments.length
+  const extraNotes = notes.length - recentNotes.length
 
-  const classAssessmentCounts = {};
-  const classNoteCounts = {};
+  const classAssessmentCounts = {}
+  const classNoteCounts = {}
 
   assessments.forEach((assessment) => {
     if (classAssessmentCounts[assessment.class_id]) {
-      classAssessmentCounts[assessment.class_id]++;
+      classAssessmentCounts[assessment.class_id]++
     } else {
-      classAssessmentCounts[assessment.class_id] = 1;
+      classAssessmentCounts[assessment.class_id] = 1
     }
-  });
+  })
 
   notes.forEach((note) => {
     if (classNoteCounts[note.class_id]) {
-      classNoteCounts[note.class_id]++;
+      classNoteCounts[note.class_id]++
     } else {
-      classNoteCounts[note.class_id] = 1;
+      classNoteCounts[note.class_id] = 1
     }
-  });
+  })
 
   return (
     <div className="w-full">
@@ -109,7 +112,7 @@ export default async function Dashboard() {
               <Link href="/classes/" className="text-lg">
                 <Button>
                   {`View All Classes${
-                    extraClasses > 0 ? ` (${extraClasses} more)` : ""
+                    extraClasses > 0 ? ` (${extraClasses} more)` : ''
                   }`}
                 </Button>
               </Link>
@@ -140,7 +143,7 @@ export default async function Dashboard() {
               <Link href="/assessments/" className="text-lg">
                 <Button>
                   {`View All Assessments${
-                    extraAssessments > 0 ? ` (${extraAssessments} more)` : ""
+                    extraAssessments > 0 ? ` (${extraAssessments} more)` : ''
                   }`}
                 </Button>
               </Link>
@@ -172,7 +175,7 @@ export default async function Dashboard() {
               <Link href="/notes/" className="text-lg">
                 <Button>
                   {`View All Notes${
-                    extraNotes > 0 ? ` (${extraNotes} more)` : ""
+                    extraNotes > 0 ? ` (${extraNotes} more)` : ''
                   }`}
                 </Button>
               </Link>
@@ -181,5 +184,5 @@ export default async function Dashboard() {
         )}
       </div>
     </div>
-  );
+  )
 }
