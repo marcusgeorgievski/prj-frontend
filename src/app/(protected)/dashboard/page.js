@@ -6,12 +6,12 @@ import { getAssessmentsByUserId } from "@/actions/assessments";
 import { DashboardTemplate } from "@/components/dashboard/dashboard-template";
 
 export default async function Dashboard() {
-  const user = await currentUser();
+  const user = await currentUser()
 
   if (!user) {
-    return null;
+    return null
   }
-
+  
   // Await the Promise.all and destructure the results
   const [classes, assessments, notes] = await Promise.all([
     getClasses(user.id),
@@ -22,8 +22,8 @@ export default async function Dashboard() {
 
   const assessmentsWithClassName = assessments.map((assessment) => {
     const classInfo = classes.find(
-      (classTemp) => classTemp.class_id === assessment.class_id
-    );
+      (classTemp) => classTemp.class_id === assessment.class_id,
+    )
     return {
       ...assessment,
       class_name: classInfo ? classInfo.name : "Unknown Class",
@@ -38,5 +38,5 @@ export default async function Dashboard() {
         assessments={assessmentsWithClassName}
       />
     </div>
-  );
+  )
 }
