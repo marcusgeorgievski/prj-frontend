@@ -12,10 +12,13 @@ export default async function Dashboard() {
     return null;
   }
 
-  const classes = await getClasses(user.id);
-  const notes = [];
-  const assessments = await getAssessmentsByUserId(user.id);
-  // const notes = await getNotes(user.id);
+  // Await the Promise.all and destructure the results
+  const [classes, assessments, notes] = await Promise.all([
+    getClasses(user.id),
+    getAssessmentsByUserId(user.id),
+    // Add getNotes(user.id) if you decide to use it
+    Promise.resolve([]), // Temporarily using an empty array for notes
+  ])
 
   const assessmentsWithClassName = assessments.map((assessment) => {
     const classInfo = classes.find(
