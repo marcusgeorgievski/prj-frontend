@@ -1,39 +1,89 @@
-"use client";
-import Link from "next/link";
 import { AssessmentDropdown } from "@/components/assessments/assessment-dropdown";
+import { useState, useEffect } from "react";
 
-export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) {
+export function AssessmentsTable({ title, assessments, onDelete }) {
+  const [sortedAssessments, setSortedAssessments] = useState([...assessments]);
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
+
+  const onSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  useEffect(() => {
+    let sortedData = [...assessments];
+
+    if (sortConfig.key) {
+      sortedData = sortedData.sort((a, b) => {
+        const { key, direction } = sortConfig;
+        if (key === "due_date") {
+          return direction === "ascending"
+            ? new Date(a[key]) - new Date(b[key])
+            : new Date(b[key]) - new Date(a[key]);
+        } else if (typeof a[key] === "string") {
+          return direction === "ascending"
+            ? a[key].localeCompare(b[key])
+            : b[key].localeCompare(a[key]);
+        } else {
+          return direction === "ascending" ? a[key] - b[key] : b[key] - a[key];
+        }
+      });
+    }
+
+    setSortedAssessments(sortedData);
+  }, [assessments, sortConfig]);
+
+  const getSortArrow = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === "ascending" ? " ↑" : " ↓";
+    }
+    return " ↑↓";
+  };
+
+  const handleRowClick = (assessmentId) => {
+    window.location.href = `/notes/#${assessmentId}`;
+  };
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-bold">{title}</h3>
-      {assessments.length > 0 ? (
+      {sortedAssessments.length > 0 ? (
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Class
-              </th>
-              <th className="px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Title
-              </th>
-              <th className="px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Description
-              </th>
-              <th className="px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Weight
-              </th>
-              <th className="px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Date
-              </th>
+              {[
+                "status",
+                "class_name",
+                "name",
+                "description",
+                "weight",
+                "due_date",
+              ].map((key) => (
+                <th
+                  key={key}
+                  className="px-6 py-1 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                  onClick={() => onSort(key)}
+                >
+                  {key.replace("_", " ")}
+                  {getSortArrow(key)}
+                </th>
+              ))}
               <th></th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {assessments.map((assessment) => (
-              <tr key={assessment.assessment_id} className="hover:bg-gray-50">
+            {sortedAssessments.map((assessment) => (
+              <tr
+                key={assessment.assessment_id}
+                className="hover:bg-gray-50 cursor-pointer"
+                onClick={() => handleRowClick(assessment.id)}
+              >
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                   <span
                     className={`inline-block w-3 h-3 mr-2 rounded-full ${getStatusColor(
@@ -45,10 +95,8 @@ export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) 
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                   {assessment.class_name}
                 </td>
-                <td className="px-6 py-1 whitespace-nowrap text-sm font-medium text-gray-900">
-                  <Link href={`/notes/#${assessment.id}`}>
-                    {assessment.name}
-                  </Link>
+                <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                  {assessment.name}
                 </td>
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                   {assessment.description}
@@ -64,14 +112,12 @@ export function AssessmentsTable({ title, assessments, onDelete, isDashboard }) 
                     minute: "numeric",
                   })}
                 </td>
-                {!isDashboard && (
-                  <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
-                    <AssessmentDropdown
-                      assessmentData={assessment}
-                      onDelete={onDelete}
-                    />
-                  </td>
-                )}
+                <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
+                  <AssessmentDropdown
+                    assessmentData={assessment}
+                    onDelete={onDelete}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
