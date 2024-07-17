@@ -35,14 +35,16 @@ export default async function ClassSlugLayout({
 
   return (
     <div>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="flex items-center gap-2 mb-4 text-muted-foreground"
-      >
-        <ArrowLeft size={14} />
-        <Link href="/classes">All classes</Link>
-      </Button>
+      <Link href="/classes">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex items-center gap-2 mb-4 text-muted-foreground"
+        >
+          <ArrowLeft size={14} />
+          All classes
+        </Button>
+      </Link>
 
       <div className="mb-5">
         <h1 className="text-3xl font-bold">{classData.name}</h1>

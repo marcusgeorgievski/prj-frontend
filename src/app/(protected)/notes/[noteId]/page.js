@@ -17,14 +17,16 @@ export default async function NotePage({ params: { noteId } }) {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <Button
-        variant="ghost"
-        size="sm"
-        className="flex items-center gap-2 mb-4 text-muted-foreground"
-      >
-        <ArrowLeft size={14} />
-        <Link href="/notes">All notes</Link>
-      </Button>
+      <Link href="/notes">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex items-center gap-2 mb-4 text-muted-foreground"
+        >
+          <ArrowLeft size={14} />
+          All notes
+        </Button>
+      </Link>
 
       <Editor note={note} />
     </div>
