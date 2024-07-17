@@ -1,84 +1,66 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import React, { useEffect, useState } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { getClasses } from "@/actions/classes"
-import { useAuth } from "@clerk/nextjs"
-import { Skeleton } from "@/components/ui/skeleton"
-import { AssessmentsTab } from "@/components/assessments/assessment-tab"
+// import { getClasses } from '@/actions/classes';
+import { currentUser } from '@clerk/nextjs/server';
+import NotesTab from './notes-tab';
+import SearchParamButtons from './search-params-buttons';
+import { getClassById } from '@/actions/classes';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
-export default function ClassSlugLayout({ params: { classId } }) {
-  const [classData, setClassData] = useState(null)
+export default async function ClassSlugLayout({
+  children,
+  params: { classId },
+}) {
+  // const [classData, setClassData] = useState(null);
+  // // Set intial tab to `assessments`
+  // useEffect(() => {
+  //   const getClassData = async (userId) => {
+  //     const classes = await getClasses(userId);
+  //     const c = classes.find((c) => c.class_id === classId);
+  //     setClassData(c);
+  //   };
 
-  const { userId } = useAuth()
+  //   getClassData(userId);
+  // }, []);
 
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
+  // if (classData === null) {
+  //   return null;
+  // }
 
-  // Set intial tab to `assessments`
-  useEffect(() => {
-    router.push(pathname + "?tab=assessments")
+  // const { userId } = currentUser();
 
-    const getClassData = async (userId) => {
-      const classes = await getClasses(userId)
-      const c = classes.find((c) => c.class_id === classId)
-      setClassData(c)
-    }
-
-    getClassData(userId)
-  }, [])
-
-  // Get tab search param on every render
-  const tab = searchParams.get("tab")
-
-  function setSearchParam(tab) {
-    router.push(pathname + "?tab=" + tab)
-  }
-
-  if (classData === null) {
-    return null
-  }
+  let classData = await getClassById(classId);
+  classData = classData[0];
 
   return (
     <div>
+      <Link href="/classes">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex items-center gap-2 mb-4 text-muted-foreground"
+        >
+          <ArrowLeft size={14} />
+          All classes
+        </Button>
+      </Link>
+
       <div className="mb-5">
         <h1 className="text-3xl font-bold">{classData.name}</h1>
         <p className="text-muted-foreground">{classData.professor}</p>
         <p className="text-muted-foreground">{classData.details}</p>
       </div>
-      <div className="flex gap-4">
-        <Button
-          variant="ghost"
-          className={cn(
-            tab == "assessments" &&
-              "text-white bg-black hover:text-white hover:bg-black"
-          )}
-          onClick={() => {
-            setSearchParam("assessments")
-          }}
-        >
-          Assessments
-        </Button>
-        <Button
-          variant="ghost"
-          className={cn(
-            tab == "notes" &&
-              "text-white bg-black hover:text-white hover:bg-black"
-          )}
-          onClick={() => {
-            setSearchParam("notes")
-          }}
-        >
-          Notes
-        </Button>
-      </div>
 
-      <div>
-      {tab === 'assessments' && <AssessmentsTab classId={classId} classData = {classData} />}
-      {/* {tab === 'notes' && <NotesTab />} */}
-      </div>
+      <SearchParamButtons />
+
+      {children}
+
+      {/* <div>
+        {tab === 'assessments' && (
+          <AssessmentsTab classId={classId} classData={classData} />
+        )}
+        {tab === 'notes' && <NotesTab userId={userId} classId={classId} />}
+      </div> */}
     </div>
-  )
+  );
 }

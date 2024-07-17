@@ -1,10 +1,10 @@
 // src/components/assessments/assessment-template.jsx
-"use client";
-import React, { useState, useEffect } from "react";
-import PageTitle from "@/components/page-title";
-import { PiListChecksLight } from "react-icons/pi";
-import { DatePickerWithRange } from "@/components/ui/date-picker";
-import { Button } from "@/components/ui/button";
+'use client';
+import React, { useState, useEffect } from 'react';
+import PageTitle from '@/components/page-title';
+import { PiListChecksLight } from 'react-icons/pi';
+import { DatePickerWithRange } from '@/components/ui/date-picker';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,20 +12,20 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { AssessmentsTable } from "@/components/assessments/assessment-table";
-import AssessmentActionButton from "@/components/assessments/assessment-button";
+} from '@/components/ui/dropdown-menu';
+import { AssessmentsTable } from '@/components/assessments/assessment-table';
+import AssessmentActionButton from '@/components/assessments/assessment-button';
 
 const getUniqueValues = (array, key) => {
   return [...new Set(array.map((item) => item[key]))];
 };
 
 export function AssessmentsTemplate({ assessments, classesList }) {
-  const [classFilter, setClassFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [classFilter, setClassFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [dueDateFilter, setDueDateFilter] = useState(null);
 
-  const uniqueStatuses = getUniqueValues(assessments, "status");
+  const uniqueStatuses = getUniqueValues(assessments, 'status');
   const uniqueClasses = classesList.map((classTemp) => classTemp.name);
 
   const today = new Date();
@@ -35,12 +35,13 @@ export function AssessmentsTemplate({ assessments, classesList }) {
     const dueDate = new Date(assessment.due_date);
 
     return (
-      assessment.status.toLowerCase() !== "completed" &&
-      (statusFilter === "" ||
-        assessment.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
-      (classFilter === "" ||
-        assessment.class_name
-          .includes(classFilter)) &&
+      assessment.status.toLowerCase() !== 'completed' &&
+      (statusFilter === '' ||
+        assessment.status
+          .toLowerCase()
+          .includes(statusFilter.toLowerCase())) &&
+      (classFilter === '' ||
+        assessment.class_name.includes(classFilter)) &&
       (!dueDateFilter ||
         (dueDate >= dueDateFilter.from && dueDate <= dueDateFilter.to))
     );
@@ -50,15 +51,17 @@ export function AssessmentsTemplate({ assessments, classesList }) {
     const dueDate = new Date(assessment.due_date);
 
     return (
-      assessment.status.toLowerCase() !== "completed" &&
-      (statusFilter === "" ||
-        assessment.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
-      (classFilter === "" ||
-        assessment.class_name
-          .includes(classFilter)) &&
+      assessment.status.toLowerCase() !== 'completed' && assessment.status.toLowerCase() !== 'overdue' &&
+      (statusFilter === '' ||
+        assessment.status
+          .toLowerCase()
+          .includes(statusFilter.toLowerCase())) &&
+      (classFilter === '' ||
+        assessment.class_name.includes(classFilter)) &&
       (!dueDateFilter ||
         (dueDate >= dueDateFilter.from && dueDate <= dueDateFilter.to)) &&
-      dueDate <= dueSoonDate
+        dueDate >= today &&
+        dueDate <= dueSoonDate
     );
   });
 
@@ -66,20 +69,21 @@ export function AssessmentsTemplate({ assessments, classesList }) {
     const dueDate = new Date(assessment.due_date);
 
     return (
-      assessment.status.toLowerCase() === "completed" &&
-      (statusFilter === "" ||
-        assessment.status.toLowerCase().includes(statusFilter.toLowerCase())) &&
-      (classFilter === "" ||
-        assessment.class_name
-          .includes(classFilter)) &&
+      assessment.status.toLowerCase() === 'completed' &&
+      (statusFilter === '' ||
+        assessment.status
+          .toLowerCase()
+          .includes(statusFilter.toLowerCase())) &&
+      (classFilter === '' ||
+        assessment.class_name.includes(classFilter)) &&
       (!dueDateFilter ||
         (dueDate >= dueDateFilter.from && dueDate <= dueDateFilter.to))
     );
   });
 
   const resetFilters = () => {
-    setStatusFilter("");
-    setClassFilter("");
+    setStatusFilter('');
+    setClassFilter('');
     setDueDateFilter(null);
   };
 
@@ -87,25 +91,29 @@ export function AssessmentsTemplate({ assessments, classesList }) {
 
   return (
     <div className="w-full space-y-1">
-      <div className="flex space-x-2">
-        <PageTitle icon={PiListChecksLight}>Assessments</PageTitle>
+      <PageTitle icon={PiListChecksLight}>Assessments</PageTitle>
+
+      <div>
         <AssessmentActionButton
           action="create"
           button={true}
           classesList={classesList}
         />
       </div>
-      <div className="flex space-x-2 items-center">
+
+      <br />
+
+      <div className="flex items-center space-x-2">
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <div className="cursor-pointer text-md border border-gray-300 rounded px-2 py-1">
-              {statusFilter || "Status"}
+            <div className="px-2 py-1 border border-gray-300 rounded cursor-pointer text-md">
+              {statusFilter || 'Status'}
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Status</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => setStatusFilter("")}>
+            <DropdownMenuItem onSelect={() => setStatusFilter('')}>
               All Status
             </DropdownMenuItem>
             {uniqueStatuses.map((status, index) => (
@@ -121,14 +129,14 @@ export function AssessmentsTemplate({ assessments, classesList }) {
 
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <div className="cursor-pointer text-md border border-gray-300 rounded px-2 py-1">
-              {classFilter || "Classes"}
+            <div className="px-2 py-1 border border-gray-300 rounded cursor-pointer text-md">
+              {classFilter || 'Classes'}
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Class</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => setClassFilter("")}>
+            <DropdownMenuItem onSelect={() => setClassFilter('')}>
               All Classes
             </DropdownMenuItem>
             {uniqueClasses.map((class_name, index) => (
@@ -148,7 +156,10 @@ export function AssessmentsTemplate({ assessments, classesList }) {
         </Button>
       </div>
 
-      <AssessmentsTable title="Due Soon" assessments={dueSoonAssessments} />
+      <AssessmentsTable
+        title="Due Soon"
+        assessments={dueSoonAssessments}
+      />
 
       <AssessmentsTable
         title="All Assessments"

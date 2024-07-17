@@ -5,8 +5,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 export function FormInput({
   form,
@@ -17,7 +17,7 @@ export function FormInput({
   className,
 }) {
   return (
-    <div className={cn(className, "w-full")}>
+    <div className={cn(className, 'w-full')}>
       <FormField
         className="bg-red-50"
         control={form.control}
@@ -34,11 +34,11 @@ export function FormInput({
         )}
       />
     </div>
-  )
+  );
 }
 
-import { Textarea } from "../ui/textarea"
-import { cn } from "@/lib/utils"
+import { Textarea } from '../ui/textarea';
+import { cn } from '@/lib/utils';
 
 export function FormTextarea({
   form,
@@ -49,7 +49,7 @@ export function FormTextarea({
   className,
 }) {
   return (
-    <div className={cn(className, "w-full")}>
+    <div className={cn(className, 'w-full')}>
       <FormField
         control={form.control}
         name={name}
@@ -69,5 +69,5 @@ export function FormTextarea({
         )}
       />
     </div>
-  )
+  );
 }

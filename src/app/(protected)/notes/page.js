@@ -1,43 +1,36 @@
-import PageTitle from "@/components/page-title";
-import { Card, CardHeader } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { PiNotePencilLight } from "react-icons/pi";
+import { getNoteById, getNotesByUserId } from '@/actions/notes';
+import NoteActionButton from '@/components/notes/note-button';
+import NoteCard from '@/components/notes/note-card';
+import PageTitle from '@/components/page-title';
+import { currentUser } from '@clerk/nextjs/server';
+import { PiNotePencilLight } from 'react-icons/pi';
 
-export default function NotesPage() {
+export default async function NotesPage() {
+  const user = await currentUser();
+
+  if (!user) {
+    return null;
+  }
+
+  const notes = await getNotesByUserId(user.id);
+
   return (
     <div className="w-full ">
       <PageTitle icon={PiNotePencilLight}>Notes</PageTitle>
 
-      <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <NoteCard />
-        <NoteCard />
-        <NoteCard />
-        <NoteCard />
-        <NoteCard />
+      <div className="mb-4">
+        <NoteActionButton button />
       </div>
-    </div>
-  );
-}
 
-export function NoteCard({ noteData }) {
-  return (
-    <Link href={`/notes/#`}>
-      <Card
-        className={cn(
-          "flex flex-col p-3 transition-all hover:bg-accent/50 mx-auto max-w-[500px]"
-        )}
-      >
-        <h3 className="text-lg font-bold">Pointers</h3>
-        <p className="mb-2 text-sm font-light text-muted-foreground">
-          OOP345
-        </p>
-
-        <div className="text-sm font-light">
-          <p>Note Detail</p>
-          <p>Note Content</p>
+      {notes.length === 0 ? (
+        <p className="pt-[15vh] mx-auto text-center">No notes yet!</p>
+      ) : (
+        <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {notes.map((note) => (
+            <NoteCard key={note.note_id} noteData={note} />
+          ))}
         </div>
-      </Card>
-    </Link>
+      )}
+    </div>
   );
 }

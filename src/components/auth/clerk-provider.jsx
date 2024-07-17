@@ -1,6 +1,6 @@
-"use client"
-import { ClerkProvider } from "@clerk/nextjs"
+'use client';
+import { ClerkProvider } from '@clerk/nextjs';
 
 export default function ClerkAuthProvider({ children }) {
-  return <ClerkProvider>{children}</ClerkProvider>
+  return <ClerkProvider>{children}</ClerkProvider>;
 }

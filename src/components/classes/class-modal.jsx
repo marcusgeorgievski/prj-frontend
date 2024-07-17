@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import {
   Dialog,
   DialogContent,
@@ -6,16 +6,20 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog"
-import { Button } from "../ui/button"
-import { DialogClose } from "@radix-ui/react-dialog"
-import ClassForm from "./class-form"
-import { useState } from "react"
-import { set } from "react-hook-form"
+} from '@/components/ui/dialog';
+import { Button } from '../ui/button';
+import { DialogClose } from '@radix-ui/react-dialog';
+import ClassForm from './class-form';
+import { useState } from 'react';
+import { set } from 'react-hook-form';
 
-export default function ClassModal({ children, classData, action = "create" }) {
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [submitFn, setSubmitFn] = useState(false)
+export default function ClassModal({
+  children,
+  classData,
+  action = 'create',
+}) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [submitFn, setSubmitFn] = useState(false);
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -29,8 +33,8 @@ export default function ClassModal({ children, classData, action = "create" }) {
           <DialogTitle>
             {
               {
-                create: "Create Class",
-                update: "Edit Class",
+                create: 'Create Class',
+                update: 'Edit Class',
               }[action]
             }
           </DialogTitle>
@@ -46,7 +50,10 @@ export default function ClassModal({ children, classData, action = "create" }) {
         >
           <DialogFooter className="gap-2 mt-6">
             <DialogClose asChild>
-              <Button onClick={() => setDialogOpen(false)} variant="secondary">
+              <Button
+                onClick={() => setDialogOpen(false)}
+                variant="secondary"
+              >
                 Cancel
               </Button>
             </DialogClose>
@@ -54,8 +61,8 @@ export default function ClassModal({ children, classData, action = "create" }) {
             <Button
               type="submit"
               onClick={() => {
-                if (action === "update") {
-                  submitFn()
+                if (action === 'update') {
+                  submitFn();
                 }
               }}
             >
@@ -65,5 +72,5 @@ export default function ClassModal({ children, classData, action = "create" }) {
         </ClassForm>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

@@ -1,5 +1,5 @@
 // src/components/assessments/assessment-modal.jsx
-"use client"
+'use client';
 import {
   Dialog,
   DialogContent,
@@ -7,13 +7,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { useState } from "react";
-import AssessmentForm from "./assessment-form";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { DialogClose } from '@radix-ui/react-dialog';
+import { useState } from 'react';
+import AssessmentForm from './assessment-form';
 
-export function AssessmentModal({ children, assessmentData, action = "create", classesList }) {
+export function AssessmentModal({
+  children,
+  assessmentData,
+  action = 'create',
+  classesList,
+  onCreate,
+}) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [submitFn, setSubmitFn] = useState(null);
 
@@ -24,7 +30,7 @@ export function AssessmentModal({ children, assessmentData, action = "create", c
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {action === "create" ? "Create Assessment" : "Edit Assessment"}
+            {action === 'create' ? 'Create Assessment' : 'Edit Assessment'}
           </DialogTitle>
           <DialogDescription>Enter Assessment details</DialogDescription>
         </DialogHeader>
@@ -35,11 +41,15 @@ export function AssessmentModal({ children, assessmentData, action = "create", c
           setDialogOpen={setDialogOpen}
           setSubmitFn={setSubmitFn}
           classesList={classesList}
+          onCreate={onCreate}
         />
 
         <DialogFooter className="gap-2 mt-6">
           <DialogClose asChild>
-            <Button onClick={() => setDialogOpen(false)} variant="secondary">
+            <Button
+              onClick={() => setDialogOpen(false)}
+              variant="secondary"
+            >
               Cancel
             </Button>
           </DialogClose>
@@ -47,7 +57,7 @@ export function AssessmentModal({ children, assessmentData, action = "create", c
           <Button
             type="submit"
             onClick={() => {
-              if (action === "update") {
+              if (action === 'update') {
                 submitFn();
               } else {
                 submitFn();

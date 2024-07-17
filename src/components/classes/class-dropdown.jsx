@@ -1,26 +1,26 @@
-"use client"
+'use client';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu';
 
-import { Button } from "../ui/button"
-import { VscKebabVertical } from "react-icons/vsc"
-import { DialogTrigger } from "../ui/dialog"
-import ClassActionButton from "./class-button"
-import { PiTrash } from "react-icons/pi"
-import { deleteClass } from "@/actions/classes"
-import { useRouter } from "next/navigation"
+import { Button } from '../ui/button';
+import { VscKebabVertical } from 'react-icons/vsc';
+import { DialogTrigger } from '../ui/dialog';
+import ClassActionButton from './class-button';
+import { PiTrash } from 'react-icons/pi';
+import { deleteClass } from '@/actions/classes';
+import { useRouter } from 'next/navigation';
 
 export function ClassDropdown({ classData }) {
-  const router = useRouter()
+  const router = useRouter();
 
   async function handleDelete(e) {
-    e.stopPropagation()
-    await deleteClass(classData.class_id)
-    router.refresh()
+    e.stopPropagation();
+    await deleteClass(classData.class_id);
+    router.refresh();
   }
 
   return (
@@ -33,7 +33,7 @@ export function ClassDropdown({ classData }) {
       </DropdownMenuTrigger>
 
       {/* CONTENT */}
-      <DropdownMenuContent align={"end"}>
+      <DropdownMenuContent align={'end'}>
         {/* Edit */}
         <DialogTrigger asChild>
           <DropdownMenuItem>
@@ -52,5 +52,5 @@ export function ClassDropdown({ classData }) {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

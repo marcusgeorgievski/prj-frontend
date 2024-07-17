@@ -1,21 +1,20 @@
-// App layout
+import { Inter } from 'next/font/google';
+import './globals.css';
+import ClerkAuthProvider from '@/components/auth/clerk-provider';
+import { Toaster } from '@/components/ui/toaster';
 
-import { Inter } from 'next/font/google'
-import './globals.css'
-import ClerkAuthProvider from '@/components/auth/clerk-provider'
-
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Study Home',
   description: 'The all-in-one Student Management Platform',
-}
+};
 
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
   minimumScale: 1,
-}
+};
 
 export default async function RootLayout({ children }) {
   return (
@@ -23,8 +22,9 @@ export default async function RootLayout({ children }) {
       <body className={inter.className}>
         <ClerkAuthProvider suppressHydrationWarning>
           <main className="min-h-screen">{children}</main>
+          <Toaster />
         </ClerkAuthProvider>
       </body>
     </html>
-  )
+  );
 }

@@ -1,14 +1,14 @@
 // src/components/assessments/assessment-form.jsx
-import React, { useEffect, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { Form } from "@/components/ui/form";
-import { FormInput, FormTextarea } from "../forms/text-inputs";
-import { Calendar } from "@/components/ui/calendar";
-import { useAuth } from "@clerk/nextjs";
-import { createAssessment, updateAssessment } from "@/actions/assessments";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { Form } from '@/components/ui/form';
+import { FormInput, FormTextarea } from '../forms/text-inputs';
+import { Calendar } from '@/components/ui/calendar';
+import { useAuth } from '@clerk/nextjs';
+import { createAssessment, updateAssessment } from '@/actions/assessments';
+import { useRouter } from 'next/navigation';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,47 +16,54 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: 'Name must be at least 2 characters.',
   }),
   class: z.string().min(1, {
-    message: "Please select a class.",
+    message: 'Please select a class.',
   }),
   status: z.string().min(1, {
-    message: "Please select a status.",
+    message: 'Please select a status.',
   }),
   description: z
     .string()
     .max(100, {
-      message: "Description must be at most 100 characters.",
+      message: 'Description must be at most 100 characters.',
     })
     .optional(),
   weight: z.coerce
     .number()
     .min(0, {
-      message: "Weight must be at least 0.",
+      message: 'Weight must be at least 0.',
     })
     .max(100, {
-      message: "Weight must be at most 100.",
+      message: 'Weight must be at most 100.',
     }),
   dueDate: z.date({
-    required_error: "Please select a due date.",
+    required_error: 'Please select a due date.',
   }),
 });
 
 // Mapping for status names
 const statusMapping = {
-  "not started": "Not Started",
-  "upcoming": "Upcoming",
-  "completed": "Completed",
-  "overdue": "Overdue",
+  'not started': 'Not Started',
+  upcoming: 'Upcoming',
+  completed: 'Completed',
+  overdue: 'Overdue',
 };
 
-export default function AssessmentForm({ action, setSubmitFn, assessmentData, classesList, setDialogOpen }) {
+export default function AssessmentForm({
+  action,
+  setSubmitFn,
+  assessmentData,
+  classesList,
+  setDialogOpen,
+  onCreate
+}) {
   const { userId } = useAuth();
   const router = useRouter();
 
@@ -71,16 +78,16 @@ export default function AssessmentForm({ action, setSubmitFn, assessmentData, cl
   } = assessmentData || {};
 
   // Ensure the options are in the correct format
-  const formattedClassesList = classesList.map(cls => ({
+  const formattedClassesList = classesList.map((cls) => ({
     value: cls.class_id,
     label: cls.name,
   }));
 
   const defaultValues = {
-    name: name || "",
-    class: className || formattedClassesList[0]?.value || "",
-    status: status || "not started",
-    description: description || "",
+    name: name || '',
+    class: className || formattedClassesList[0]?.value || '',
+    status: status || 'not started',
+    description: description || '',
     weight: weight || 0,
     dueDate: dueDate ? new Date(dueDate) : new Date(),
   };
@@ -99,25 +106,34 @@ export default function AssessmentForm({ action, setSubmitFn, assessmentData, cl
 
   async function onSubmit(values) {
     try {
-      if (action === "update") {
-        await updateAssessment(assessment_id, values);
-      } else if (action === "create") {
-        await createAssessment(userId, {
+      if (action === 'update') {
+        await updateAssessment(assessment_id, {
           ...values,
           classId: values.class,
         });
+      } else if (action === 'create') {
+        const newAssessment = await createAssessment(userId, {
+          ...values,
+          classId: values.class,
+        });
+        if (onCreate){
+          onCreate(newAssessment);
+        }
       }
       form.reset();
       router.refresh();
       setDialogOpen(false);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error('Error submitting form:', error);
     }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8"
+      >
         <div className="space-y-4">
           <FormInput
             form={form}
@@ -128,15 +144,19 @@ export default function AssessmentForm({ action, setSubmitFn, assessmentData, cl
           />
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Class</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Class
+            </label>
             <Controller
               name="class"
               control={form.control}
               render={({ field }) => (
                 <DropdownMenu>
                   <DropdownMenuTrigger>
-                    <div className="cursor-pointer text-md border border-gray-300 rounded px-2 py-1">
-                      {formattedClassesList.find(cls => cls.value === field.value)?.label || "Select Class"}
+                    <div className="px-2 py-1 border border-gray-300 rounded cursor-pointer text-md">
+                      {formattedClassesList.find(
+                        (cls) => cls.value === field.value
+                      )?.label || 'Select Class'}
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
@@ -157,15 +177,17 @@ export default function AssessmentForm({ action, setSubmitFn, assessmentData, cl
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Status</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Status
+            </label>
             <Controller
               name="status"
               control={form.control}
               render={({ field }) => (
                 <DropdownMenu>
                   <DropdownMenuTrigger>
-                    <div className="cursor-pointer text-md border border-gray-300 rounded px-2 py-1">
-                      {statusMapping[field.value] || "Select Status"}
+                    <div className="px-2 py-1 border border-gray-300 rounded cursor-pointer text-md">
+                      {statusMapping[field.value] || 'Select Status'}
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
@@ -204,7 +226,10 @@ export default function AssessmentForm({ action, setSubmitFn, assessmentData, cl
         </div>
 
         <div className="flex flex-col items-center justify-center">
-          <label htmlFor="dueDate" className="font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="dueDate"
+            className="mb-2 font-medium text-gray-700"
+          >
             Due Date
           </label>
           <Controller
@@ -215,7 +240,7 @@ export default function AssessmentForm({ action, setSubmitFn, assessmentData, cl
                 mode="single"
                 selected={field.value}
                 onSelect={field.onChange}
-                className="rounded-md border"
+                className="border rounded-md"
               />
             )}
           />

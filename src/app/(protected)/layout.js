@@ -1,14 +1,22 @@
 // Check if the user is authenticated, otherwise it will redirect to the login page.
-"use client"
+'use client';
 
-import Header from "@/components/header"
-import Sidebar from "@/components/sidebar/sidebar"
-import { cn } from "@/lib/utils"
-// import { useSidebar } from "@/state/sidebar-state"
-import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/nextjs"
+import Header from '@/components/header';
+import Sidebar from '@/components/sidebar/sidebar';
+import { cn } from '@/lib/utils';
+import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/nextjs';
+import { useEffect, useState } from 'react';
 
 export default function ProtectedLayout({ children }) {
-  // const { isOpen } = useSidebar()
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; // or a placeholder/loading indicator
+  }
 
   return (
     <div className="min-h-screen">
@@ -18,7 +26,7 @@ export default function ProtectedLayout({ children }) {
           <div>
             <Sidebar />
           </div>
-          <div className={cn("p-5 sm:p-8 w-full")}>{children}</div>
+          <div className={cn('p-5 sm:p-8 w-full')}>{children}</div>
         </main>
       </SignedIn>
 
@@ -26,5 +34,5 @@ export default function ProtectedLayout({ children }) {
         <RedirectToSignIn />
       </SignedOut>
     </div>
-  )
+  );
 }

@@ -1,30 +1,30 @@
-"use client"
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { Form } from "@/components/ui/form"
-import { FormInput, FormTextarea } from "../forms/text-inputs"
-import { useAuth } from "@clerk/nextjs"
-import { createClass, updateClass } from "@/actions/classes"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { Form } from '@/components/ui/form';
+import { FormInput, FormTextarea } from '../forms/text-inputs';
+import { useAuth } from '@clerk/nextjs';
+import { createClass, updateClass } from '@/actions/classes';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 // Schema
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: 'Name must be at least 2 characters.',
   }),
   professor: z.string().optional(),
   details: z
     .string()
     .max(100, {
-      message: "Details must be at most 100 characters.",
+      message: 'Details must be at most 100 characters.',
     })
     .optional(),
-})
+});
 
 // Component
 
@@ -35,50 +35,60 @@ export default function ClassForm({
   setSubmitFn,
   classData,
 }) {
-  const { userId } = useAuth()
-  const router = useRouter()
+  const { userId } = useAuth();
+  const router = useRouter();
 
-  const { class_id, name, professor, details } = classData || {}
+  const { class_id, name, professor, details } = classData || {};
 
   // 1. Define your form.
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: name || "",
-      professor: professor || "",
-      details: details || "",
+      name: name || '',
+      professor: professor || '',
+      details: details || '',
     },
-  })
+  });
 
   // Set the submit function
   useEffect(() => {
-    setSubmitFn(() => form.handleSubmit(onSubmit))
-  }, [])
+    setSubmitFn(() => form.handleSubmit(onSubmit));
+  }, []);
 
   // 2. Define a submit handler.
   async function onSubmit(values) {
-    if (action === "update") {
+    if (action === 'update') {
       // Update Class
-      await updateClass(class_id, values.name, values.professor, values.details)
+      await updateClass(
+        class_id,
+        values.name,
+        values.professor,
+        values.details
+      )
         .then(() => {
-          form.reset()
-          router.refresh()
-          setDialogOpen(false)
+          form.reset();
+          router.refresh();
+          setDialogOpen(false);
         })
         .catch((error) => {
-          console.error(error)
-        })
-    } else if (action === "create") {
+          console.error(error);
+        });
+    } else if (action === 'create') {
       // Create Class
-      await createClass(userId, values.name, values.professor, values.details)
+      await createClass(
+        userId,
+        values.name,
+        values.professor,
+        values.details
+      )
         .then(() => {
-          form.reset()
-          router.refresh()
-          setDialogOpen(false)
+          form.reset();
+          router.refresh();
+          setDialogOpen(false);
         })
         .catch((error) => {
-          console.error(error)
-        })
+          console.error(error);
+        });
     }
   }
 
@@ -114,5 +124,5 @@ export default function ClassForm({
         {children}
       </form>
     </Form>
-  )
+  );
 }
