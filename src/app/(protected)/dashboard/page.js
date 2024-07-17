@@ -4,6 +4,7 @@ import { getClasses } from '@/actions/classes';
 import { currentUser } from '@clerk/nextjs/server';
 import { getAssessmentsByUserId } from '@/actions/assessments';
 import { DashboardTemplate } from '@/components/dashboard/dashboard-template';
+import { getNotesByUserId } from '@/actions/notes';
 
 export default async function Dashboard() {
   const user = await currentUser();
@@ -16,8 +17,7 @@ export default async function Dashboard() {
   const [classes, assessments, notes] = await Promise.all([
     getClasses(user.id),
     getAssessmentsByUserId(user.id),
-    // Add getNotes(user.id) if you decide to use it
-    Promise.resolve([]), // Temporarily using an empty array for notes
+    getNotesByUserId(user.id),
   ]);
 
   const assessmentsWithClassName = assessments.map((assessment) => {

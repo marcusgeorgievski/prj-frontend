@@ -17,6 +17,21 @@ export async function getClasses(userId = 'user_1') {
     });
 }
 
+// get class by id
+export async function getClassById(classId) {
+  const axios = await axiosTokenInstance();
+  return await axios
+    .get(`/classes/${classId}`, {
+      params: {
+        class_id: classId,
+      },
+    })
+    .then((res) => res.data)
+    .catch((error) => {
+      console.log('ERROR:', error.response.data);
+    });
+}
+
 export async function createClass(userId, name, professor, details) {
   const axios = await axiosTokenInstance();
   return await axios

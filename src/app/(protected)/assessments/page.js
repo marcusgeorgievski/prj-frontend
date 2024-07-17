@@ -7,6 +7,7 @@ import { getClasses } from '@/actions/classes';
 import { getAssessmentsByUserId } from '@/actions/assessments';
 import { currentUser } from '@clerk/nextjs/server';
 import { getAssessmentsByClassId } from '@/actions/assessments';
+import Loading from './loading';
 
 export default async function AssessmentsPage() {
   const user = await currentUser();

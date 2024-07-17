@@ -23,7 +23,7 @@ export function FormSelect({
         control={form.control}
         name={name}
         render={({ field }) => {
-          console.log('Field:', field); // Log the field object
+          // console.log('Field:', field); // Log the field object
 
           return (
             <FormItem>

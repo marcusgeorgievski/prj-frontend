@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { DatePickerWithRange } from '@/components/ui/date-picker';
+import AssessmentActionButton from './assessment-button';
 
 const getUniqueValues = (array, key) => {
   return [...new Set(array.map((item) => item[key]))];
@@ -24,6 +25,8 @@ export function AssessmentsTab({ classId, classData }) {
 
   const [statusFilter, setStatusFilter] = useState('');
   const [dueDateFilter, setDueDateFilter] = useState(null);
+
+  console.log({ classData });
 
   useEffect(() => {
     const fetchAssessments = async () => {
@@ -47,6 +50,8 @@ export function AssessmentsTab({ classId, classData }) {
 
   let uniqueStatuses = [];
   let filteredAssessments = [];
+
+  console.log(uniqueStatuses);
 
   // Filter assessment
   if (assessments) {
@@ -86,7 +91,8 @@ export function AssessmentsTab({ classId, classData }) {
   }
 
   return (
-    <div style={{ marginTop: '10px' }}>
+    <div className="mt-6">
+      {/* <AssessmentActionButton />  */}
       <div className="flex items-center ml-auto space-x-2">
         <DropdownMenu>
           <DropdownMenuTrigger>
