@@ -1,3 +1,6 @@
+import { getNoteById, getNotesByUserId } from '@/actions/notes';
+import NoteActionButton from '@/components/notes/note-button';
+import NoteCard from '@/components/notes/note-card';
 import PageTitle from '@/components/page-title';
 import { currentUser } from '@clerk/nextjs/server';
 import { PiNotePencilLight } from 'react-icons/pi';
@@ -9,33 +12,25 @@ export default async function NotesPage() {
     return null;
   }
 
-  // simulate fetch with timeout promise
-  const getNotes = async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([
-          { id: 1, title: 'Note 1', content: 'Content 1' },
-          { id: 2, title: 'Note 2', content: 'Content 2' },
-          { id: 3, title: 'Note 3', content: 'Content 3' },
-        ]);
-      }, 1000);
-    });
-  };
-
-  const notes = await getNotes(user);
+  const notes = await getNotesByUserId(user.id);
 
   return (
     <div className="w-full ">
       <PageTitle icon={PiNotePencilLight}>Notes</PageTitle>
 
-      <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
+      <div className="mb-4">
+        <NoteActionButton button />
       </div>
+
+      {notes.length === 0 ? (
+        <p className="pt-[15vh] mx-auto text-center">No notes yet!</p>
+      ) : (
+        <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {notes.map((note) => (
+            <NoteCard key={note.note_id} noteData={note} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

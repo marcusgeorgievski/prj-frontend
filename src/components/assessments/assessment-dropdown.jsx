@@ -21,8 +21,11 @@ export function AssessmentDropdown({ assessmentData, onDelete, classesList }) {
 
   const handleDialogOpen = () => {
     setIsDialogOpen(true);
+<<<<<<< HEAD
     console.log(router);
     console.log(assessmentData);
+=======
+>>>>>>> origin/main
   };
 
   const handleDialogClose = () => {

@@ -10,8 +10,6 @@ export default function AssessmentActionButton({
   button = true,
   classesList,
 }) {
-  //console.log("classesList in AssessmentActionButton:", classesList);
-
   if (!button) {
     return (
       <span variant="ghost" className="gap-2" size="sm">

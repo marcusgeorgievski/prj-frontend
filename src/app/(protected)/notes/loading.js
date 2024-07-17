@@ -12,12 +12,12 @@ export default function Loading() {
       </div>
 
       <div className="flex flex-wrap gap-6">
-        <Skeleton className="w-[300px] h-[200px]" />
-        <Skeleton className="w-[300px] h-[200px]" />
-        <Skeleton className="w-[300px] h-[200px]" />
-        <Skeleton className="w-[300px] h-[200px]" />
-        <Skeleton className="w-[300px] h-[200px]" />
-        <Skeleton className="w-[300px] h-[200px]" />
+        <Skeleton className="w-[300px] h-[130px]" />
+        <Skeleton className="w-[300px] h-[130px]" />
+        <Skeleton className="w-[300px] h-[130px]" />
+        <Skeleton className="w-[300px] h-[130px]" />
+        <Skeleton className="w-[300px] h-[130px]" />
+        <Skeleton className="w-[300px] h-[130px]" />
       </div>
     </div>
   );
