@@ -1,22 +1,23 @@
-// src/components/assessments/assessment-button.jsx
+'use client';
 import { Button } from '../ui/button';
 import { PiPencil, PiPlus } from 'react-icons/pi';
-import { AssessmentModal } from './assessment-modal';
-import { DialogTrigger } from '../ui/dialog';
 
-export default function AssessmentActionButton({
+import { DialogTrigger } from '../ui/dialog';
+import NoteModal from './note-modal';
+
+export default function NoteActionButton({
   action = 'create',
-  button = true,
-  classesList,
+  button = false,
 }) {
   if (!button) {
     return (
-      <span variant="ghost" className="gap-2" size="sm">
+      <span variant="ghost" className="flex items-center gap-2 " size="sm">
         {
           {
             create: (
               <>
-                <PiPlus />C
+                <PiPlus />
+                Create Note
               </>
             ),
             update: (
@@ -31,18 +32,26 @@ export default function AssessmentActionButton({
   }
 
   return (
-    <AssessmentModal classesList={classesList}>
+    <NoteModal>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="gap-2">
-          <PiPlus />
+        <Button variant="ghost" className="gap-2" size="sm">
           {
             {
-              create: 'Create Assessment',
-              update: 'Update Assessment',
+              create: (
+                <>
+                  <PiPlus />
+                  Create Note
+                </>
+              ),
+              update: (
+                <>
+                  <PiPencil /> Edit
+                </>
+              ),
             }[action]
           }
         </Button>
       </DialogTrigger>
-    </AssessmentModal>
+    </NoteModal>
   );
 }

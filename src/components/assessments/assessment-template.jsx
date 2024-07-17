@@ -90,14 +90,18 @@ export function AssessmentsTemplate({ assessments, classesList }) {
 
   return (
     <div className="w-full space-y-1">
-      <div className="flex space-x-2">
-        <PageTitle icon={PiListChecksLight}>Assessments</PageTitle>
+      <PageTitle icon={PiListChecksLight}>Assessments</PageTitle>
+
+      <div>
         <AssessmentActionButton
           action="create"
           button={true}
           classesList={classesList}
         />
       </div>
+
+      <br />
+
       <div className="flex items-center space-x-2">
         <DropdownMenu>
           <DropdownMenuTrigger>

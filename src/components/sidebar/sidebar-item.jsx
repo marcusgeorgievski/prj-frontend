@@ -21,7 +21,7 @@ export function SidebarItem({ icon, href, children }) {
         href={href}
         target={href.startsWith('http') ? '_blank' : ''}
         className={cn(
-          'flex items-center gap-4 text-muted-foreground px-1.5 py-1 transition-all rounded-md ',
+          'flex items-center gap-4 text-muted-foreground px-1.5 py-1 transition-all rounded-md z-30',
           {
             'bg-primary/10 text-primary font-semibold':
               pathname.endsWith(href) && href !== '/signin',
@@ -34,12 +34,15 @@ export function SidebarItem({ icon, href, children }) {
       >
         <div className="text-xl">{icon}</div>
         <div
-          className={cn('font-medium transition-all whitespace-nowrap', {
-            'group-hover:bg-primary/10 px-2 rounded':
-              !isOpen && pathname.endsWith(href),
-            'group-hover:bg-accent/90 px-2 rounded':
-              !isOpen && !pathname.endsWith(href),
-          })}
+          className={cn(
+            'font-medium transition-all whitespace-nowrap z-30',
+            {
+              'group-hover:bg-primary/90 px-2 rounded text-blue-100 z-30':
+                !isOpen && pathname.endsWith(href),
+              'group-hover:bg-accent/90 px-2 rounded z-30':
+                !isOpen && !pathname.endsWith(href),
+            }
+          )}
         >
           {children}
         </div>

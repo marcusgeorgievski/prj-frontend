@@ -20,7 +20,7 @@ export async function getAssessmentsByUserId(userId = 'user_1') {
 export async function getAssessmentsByClassId(classId = '1') {
   const axios = await axiosTokenInstance();
   return await axios
-    .get(`/classes/${classId}`, {
+    .get(`/assessments/${classId}`, {
       params: {
         class_id: classId,
       },

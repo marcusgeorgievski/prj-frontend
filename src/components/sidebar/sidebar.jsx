@@ -36,7 +36,7 @@ export default function Sidebar({ classes }) {
       ref={sidebarRef}
       className={cn(
         classes,
-        'h-full border-r transition-all z-40 py-4 bg-background',
+        'h-full border-r transition-all z-50 py-4 bg-background',
         {
           'md:w-[53px] md:px-2.5 w-0 -translate-x-4 md:translate-x-0':
             !isOpen,

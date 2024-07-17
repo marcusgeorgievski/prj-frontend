@@ -21,6 +21,7 @@ import ClassCard from '@/components/classes/class-card';
 //import { NoteCard } from "../notes/page";
 //import { AssessmentCard } from "../assessments/page";
 import { recentItems } from '@/lib/utils';
+import NoteCard from '../notes/note-card';
 
 export function DashboardTemplate({ classes, notes, assessments }) {
   // Process recent items
@@ -143,7 +144,7 @@ export function DashboardTemplate({ classes, notes, assessments }) {
             <div className="grid items-center grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {recentNotes.map((n) => (
                 <div key={n.id}>
-                  <NoteCard key={n.id} {...n} />
+                  <NoteCard key={n.id} noteData={n} />
                 </div>
               ))}
             </div>
