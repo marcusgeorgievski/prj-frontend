@@ -154,16 +154,19 @@ export function AssessmentsTemplate({ assessments, classesList }) {
       <AssessmentsTable
         title="Due Soon"
         assessments={dueSoonAssessments}
+        classesList={classesList}
       />
 
       <AssessmentsTable
         title="All Assessments"
         assessments={filteredAssessments}
+        classesList={classesList}
       />
 
       <AssessmentsTable
         title="Archive Assessment"
         assessments={archiveAssessments}
+        classesList={classesList}
       />
     </div>
   );

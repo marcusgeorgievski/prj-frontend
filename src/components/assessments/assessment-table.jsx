@@ -1,7 +1,7 @@
 import { AssessmentDropdown } from '@/components/assessments/assessment-dropdown';
 import { useState, useEffect } from 'react';
 
-export function AssessmentsTable({ title, assessments, onDelete }) {
+export function AssessmentsTable({ title, assessments, onDelete, classesList }) {
   const [sortedAssessments, setSortedAssessments] = useState([
     ...assessments,
   ]);
@@ -123,6 +123,7 @@ export function AssessmentsTable({ title, assessments, onDelete }) {
                   <AssessmentDropdown
                     assessmentData={assessment}
                     onDelete={onDelete}
+                    classesList={classesList}
                   />
                 </td>
               </tr>

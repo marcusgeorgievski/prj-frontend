@@ -106,7 +106,11 @@ export default function AssessmentForm({
   async function onSubmit(values) {
     try {
       if (action === 'update') {
-        await updateAssessment(assessment_id, values);
+        console.log('#################### ACTION MUST BE SET TO UPDATE FOR THIS TO SHOW');
+        await updateAssessment(assessment_id, {
+          ...values,
+          classId: values.class,
+        });
       } else if (action === 'create') {
         await createAssessment(userId, {
           ...values,

@@ -13,14 +13,16 @@ import { Dialog } from '../ui/dialog';
 import { deleteAssessment } from '@/actions/assessments';
 import { useRouter } from 'next/navigation';
 import { PiTrash, PiNotePencil } from 'react-icons/pi';
+import AssessmentActionButton from '@/components/assessments/assessment-button';
 
-export function AssessmentDropdown({ assessmentData, onDelete }) {
+export function AssessmentDropdown({ assessmentData, onDelete, classesList }) {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleDialogOpen = () => {
     setIsDialogOpen(true);
     console.log(router);
+    console.log(assessmentData);
   };
 
   const handleDialogClose = () => {
@@ -51,14 +53,20 @@ export function AssessmentDropdown({ assessmentData, onDelete }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           {/*Edit*/}
-          <DropdownMenuItem asChild disabled>
+          <AssessmentActionButton
+          action="update"
+          button={true}
+          classesList={classesList}
+          assessmentData={assessmentData}
+        />
+          {/* <DropdownMenuItem asChild>
             <button
-              //onClick={...}
+              onClick={handleDialogOpen}
               className="flex items-center w-full gap-2"
             >
               <PiNotePencil /> Edit
             </button>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
 
           {/*Delete*/}
           <DropdownMenuItem asChild>
