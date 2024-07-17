@@ -1,12 +1,12 @@
-import { Card, CardHeader } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { Card, CardHeader } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
-import { AssessmentsTemplate } from "@/components/assessments/assessment-template";
-import { getClasses } from "@/actions/classes";
-import { getAssessmentsByUserId } from "@/actions/assessments";
-import { currentUser } from "@clerk/nextjs/server";
-import { getAssessmentsByClassId } from "@/actions/assessments";
+import { AssessmentsTemplate } from '@/components/assessments/assessment-template';
+import { getClasses } from '@/actions/classes';
+import { getAssessmentsByUserId } from '@/actions/assessments';
+import { currentUser } from '@clerk/nextjs/server';
+import { getAssessmentsByClassId } from '@/actions/assessments';
 
 export default async function AssessmentsPage() {
   const user = await currentUser();
@@ -25,7 +25,7 @@ export default async function AssessmentsPage() {
     );
     return {
       ...assessment,
-      class_name: classInfo ? classInfo.name : "Unknown Class",
+      class_name: classInfo ? classInfo.name : 'Unknown Class',
     };
   });
 

@@ -1,18 +1,18 @@
 // src/components/assessments/assessment-dropdown.jsx
-"use client";
-import React, { useState } from "react";
+'use client';
+import React, { useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
-import { FaPencilAlt } from "react-icons/fa";
-import { Dialog } from "../ui/dialog";
-import { deleteAssessment } from "@/actions/assessments";
-import { useRouter } from "next/navigation";
-import { PiTrash, PiNotePencil } from "react-icons/pi";
+} from '@/components/ui/dropdown-menu';
+import { Button } from '../ui/button';
+import { FaPencilAlt } from 'react-icons/fa';
+import { Dialog } from '../ui/dialog';
+import { deleteAssessment } from '@/actions/assessments';
+import { useRouter } from 'next/navigation';
+import { PiTrash, PiNotePencil } from 'react-icons/pi';
 
 export function AssessmentDropdown({ assessmentData, onDelete }) {
   const router = useRouter();
@@ -37,7 +37,7 @@ export function AssessmentDropdown({ assessmentData, onDelete }) {
         onDelete(assessmentData.assessment_id);
       }
     } catch (error) {
-      console.error("Failed to delete assessment:", error);
+      console.error('Failed to delete assessment:', error);
     }
   }
 
@@ -50,7 +50,6 @@ export function AssessmentDropdown({ assessmentData, onDelete }) {
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-
           {/*Edit*/}
           <DropdownMenuItem asChild disabled>
             <button

@@ -1,44 +1,44 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import React, { useEffect, useState } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { getClasses } from "@/actions/classes"
-import { useAuth } from "@clerk/nextjs"
-import { Skeleton } from "@/components/ui/skeleton"
-import { AssessmentsTab } from "@/components/assessments/assessment-tab"
+'use client';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import React, { useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { getClasses } from '@/actions/classes';
+import { useAuth } from '@clerk/nextjs';
+import { Skeleton } from '@/components/ui/skeleton';
+import { AssessmentsTab } from '@/components/assessments/assessment-tab';
 
 export default function ClassSlugLayout({ params: { classId } }) {
-  const [classData, setClassData] = useState(null)
+  const [classData, setClassData] = useState(null);
 
-  const { userId } = useAuth()
+  const { userId } = useAuth();
 
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Set intial tab to `assessments`
   useEffect(() => {
-    router.push(pathname + "?tab=assessments")
+    router.push(pathname + '?tab=assessments');
 
     const getClassData = async (userId) => {
-      const classes = await getClasses(userId)
-      const c = classes.find((c) => c.class_id === classId)
-      setClassData(c)
-    }
+      const classes = await getClasses(userId);
+      const c = classes.find((c) => c.class_id === classId);
+      setClassData(c);
+    };
 
-    getClassData(userId)
-  }, [])
+    getClassData(userId);
+  }, []);
 
   // Get tab search param on every render
-  const tab = searchParams.get("tab")
+  const tab = searchParams.get('tab');
 
   function setSearchParam(tab) {
-    router.push(pathname + "?tab=" + tab)
+    router.push(pathname + '?tab=' + tab);
   }
 
   if (classData === null) {
-    return null
+    return null;
   }
 
   return (
@@ -52,11 +52,11 @@ export default function ClassSlugLayout({ params: { classId } }) {
         <Button
           variant="ghost"
           className={cn(
-            tab == "assessments" &&
-              "text-white bg-black hover:text-white hover:bg-black"
+            tab == 'assessments' &&
+              'text-white bg-black hover:text-white hover:bg-black'
           )}
           onClick={() => {
-            setSearchParam("assessments")
+            setSearchParam('assessments');
           }}
         >
           Assessments
@@ -64,11 +64,11 @@ export default function ClassSlugLayout({ params: { classId } }) {
         <Button
           variant="ghost"
           className={cn(
-            tab == "notes" &&
-              "text-white bg-black hover:text-white hover:bg-black"
+            tab == 'notes' &&
+              'text-white bg-black hover:text-white hover:bg-black'
           )}
           onClick={() => {
-            setSearchParam("notes")
+            setSearchParam('notes');
           }}
         >
           Notes
@@ -76,9 +76,11 @@ export default function ClassSlugLayout({ params: { classId } }) {
       </div>
 
       <div>
-      {tab === 'assessments' && <AssessmentsTab classId={classId} classData = {classData} />}
-      {/* {tab === 'notes' && <NotesTab />} */}
+        {tab === 'assessments' && (
+          <AssessmentsTab classId={classId} classData={classData} />
+        )}
+        {/* {tab === 'notes' && <NotesTab />} */}
       </div>
     </div>
-  )
+  );
 }

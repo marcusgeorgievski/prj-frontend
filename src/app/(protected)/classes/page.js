@@ -1,12 +1,12 @@
-import { getClasses } from "@/actions/classes";
-import ClassActionButton from "@/components/classes/class-button";
-import ClassCard from "@/components/classes/class-card";
-import PageTitle from "@/components/page-title";
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
-import { currentUser } from "@clerk/nextjs/server";
-import { PiChalkboardTeacherLight } from "react-icons/pi";
-import { getAssessmentsByUserId } from "@/actions/assessments";
+import { getClasses } from '@/actions/classes';
+import ClassActionButton from '@/components/classes/class-button';
+import ClassCard from '@/components/classes/class-card';
+import PageTitle from '@/components/page-title';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import { currentUser } from '@clerk/nextjs/server';
+import { PiChalkboardTeacherLight } from 'react-icons/pi';
+import { getAssessmentsByUserId } from '@/actions/assessments';
 
 export default async function ClassesPage() {
   const user = await currentUser();

@@ -1,12 +1,12 @@
-import PageTitle from '@/components/page-title'
-import { currentUser } from '@clerk/nextjs/server'
-import { PiNotePencilLight } from 'react-icons/pi'
+import PageTitle from '@/components/page-title';
+import { currentUser } from '@clerk/nextjs/server';
+import { PiNotePencilLight } from 'react-icons/pi';
 
 export default async function NotesPage() {
-  const user = await currentUser()
+  const user = await currentUser();
 
   if (!user) {
-    return null
+    return null;
   }
 
   // simulate fetch with timeout promise
@@ -17,12 +17,12 @@ export default async function NotesPage() {
           { id: 1, title: 'Note 1', content: 'Content 1' },
           { id: 2, title: 'Note 2', content: 'Content 2' },
           { id: 3, title: 'Note 3', content: 'Content 3' },
-        ])
-      }, 1000)
-    })
-  }
+        ]);
+      }, 1000);
+    });
+  };
 
-  const notes = await getNotes(user)
+  const notes = await getNotes(user);
 
   return (
     <div className="w-full ">
@@ -37,5 +37,5 @@ export default async function NotesPage() {
         <div>a</div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,9 +1,9 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { getAssessmentsByClassId } from "@/actions/assessments";
-import { AssessmentsTable } from "@/components/assessments/assessment-table";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { getAssessmentsByClassId } from '@/actions/assessments';
+import { AssessmentsTable } from '@/components/assessments/assessment-table';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +11,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { DatePickerWithRange } from "@/components/ui/date-picker";
+} from '@/components/ui/dropdown-menu';
+import { DatePickerWithRange } from '@/components/ui/date-picker';
 
 const getUniqueValues = (array, key) => {
   return [...new Set(array.map((item) => item[key]))];
@@ -22,7 +22,7 @@ export function AssessmentsTab({ classId, classData }) {
   const [assessments, setAssessments] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [statusFilter, setStatusFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState('');
   const [dueDateFilter, setDueDateFilter] = useState(null);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export function AssessmentsTab({ classId, classData }) {
         }));
         setAssessments(updatedAssessments);
       } catch (error) {
-        console.error("Error fetching assessments:", error);
+        console.error('Error fetching assessments:', error);
       } finally {
         setLoading(false);
       }
@@ -50,16 +50,16 @@ export function AssessmentsTab({ classId, classData }) {
 
   // Filter assessment
   if (assessments) {
-    uniqueStatuses = getUniqueValues(assessments, "status").filter(
-      (status) => status.toLowerCase() !== "completed"
+    uniqueStatuses = getUniqueValues(assessments, 'status').filter(
+      (status) => status.toLowerCase() !== 'completed'
     );
 
     filteredAssessments = assessments.filter((assessment) => {
       const dueDate = new Date(assessment.due_date);
 
       return (
-        assessment.status.toLowerCase() !== "completed" &&
-        (statusFilter === "" ||
+        assessment.status.toLowerCase() !== 'completed' &&
+        (statusFilter === '' ||
           assessment.status
             .toLowerCase()
             .includes(statusFilter.toLowerCase())) &&
@@ -71,7 +71,7 @@ export function AssessmentsTab({ classId, classData }) {
 
   // Reset filter
   const resetFilters = () => {
-    setStatusFilter("");
+    setStatusFilter('');
     setDueDateFilter(null);
   };
 
@@ -86,18 +86,18 @@ export function AssessmentsTab({ classId, classData }) {
   }
 
   return (
-    <div style={{ marginTop: "10px" }}>
-      <div className="ml-auto flex space-x-2 items-center">
+    <div style={{ marginTop: '10px' }}>
+      <div className="flex items-center ml-auto space-x-2">
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <div className="cursor-pointer text-md border border-gray-300 rounded px-2 py-1">
-              {statusFilter || "Status"}
+            <div className="px-2 py-1 border border-gray-300 rounded cursor-pointer text-md">
+              {statusFilter || 'Status'}
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Status</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => setStatusFilter("")}>
+            <DropdownMenuItem onSelect={() => setStatusFilter('')}>
               All Status
             </DropdownMenuItem>
             {uniqueStatuses.map((status, index) => (

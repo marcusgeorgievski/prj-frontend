@@ -1,11 +1,11 @@
-"use client"
-import { Button } from "../ui/button"
-import { PiPencil, PiPlus } from "react-icons/pi"
-import ClassModal from "./class-modal"
-import { DialogTrigger } from "../ui/dialog"
+'use client';
+import { Button } from '../ui/button';
+import { PiPencil, PiPlus } from 'react-icons/pi';
+import ClassModal from './class-modal';
+import { DialogTrigger } from '../ui/dialog';
 
 export default function ClassActionButton({
-  action = "create",
+  action = 'create',
   button = false,
 }) {
   if (!button) {
@@ -27,7 +27,7 @@ export default function ClassActionButton({
           }[action]
         }
       </span>
-    )
+    );
   }
 
   return (
@@ -52,5 +52,5 @@ export default function ClassActionButton({
         </Button>
       </DialogTrigger>
     </ClassModal>
-  )
+  );
 }

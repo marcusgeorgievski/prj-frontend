@@ -1,5 +1,5 @@
-import { Separator } from '@/components/ui/separator'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Loading() {
   return (
@@ -20,5 +20,5 @@ export default function Loading() {
         <Skeleton className="w-[300px] h-[200px]" />
       </div>
     </div>
-  )
+  );
 }

@@ -1,8 +1,8 @@
 // Landing page
 
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   ClerkLoaded,
   ClerkLoading,
@@ -11,11 +11,11 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
-} from "@clerk/nextjs"
-import Link from "next/link"
-import { RiDashboardFill } from "react-icons/ri"
-import { LuFileType2 } from "react-icons/lu"
-import { RiRobot2Fill } from "react-icons/ri"
+} from '@clerk/nextjs';
+import Link from 'next/link';
+import { RiDashboardFill } from 'react-icons/ri';
+import { LuFileType2 } from 'react-icons/lu';
+import { RiRobot2Fill } from 'react-icons/ri';
 
 export default async function Home() {
   return (
@@ -27,7 +27,9 @@ export default async function Home() {
       </div>
 
       <div className="flex flex-col items-center justify-center mb-10">
-        <h1 className="mb-4 text-6xl font-bold text-primary">Study Home</h1>
+        <h1 className="mb-4 text-6xl font-bold text-primary">
+          Study Home
+        </h1>
         <p className="text-foreground">
           The student management platform for all your needs
         </p>
@@ -65,7 +67,8 @@ export default async function Home() {
         </InfoBox>
 
         <InfoBox title="Features" icon={LuFileType2}>
-          Write and save notes in a rich text editor for all your study needs
+          Write and save notes in a rich text editor for all your study
+          needs
         </InfoBox>
 
         <InfoBox title="Features" icon={RiRobot2Fill}>
@@ -73,15 +76,15 @@ export default async function Home() {
         </InfoBox>
       </div>
     </main>
-  )
+  );
 }
 
 function InfoBox({ title, icon, children }) {
-  const Icon = icon
+  const Icon = icon;
   return (
     <Card className="flex gap-3 p-4 ">
       <Icon className="flex-shrink-0 text-xl translate-y-1" />
       {children}
     </Card>
-  )
+  );
 }

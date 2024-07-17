@@ -1,58 +1,58 @@
-"use client";
+'use client';
 
-import PageTitle from "@/components/page-title";
-import Heading from "@/components/heading";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import PageTitle from '@/components/page-title';
+import Heading from '@/components/heading';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import {
   PiChalkboardTeacherLight,
   PiHouseLineLight,
   PiNotePencilLight,
   PiListChecksLight,
-} from "react-icons/pi";
+} from 'react-icons/pi';
 
-import { AssessmentsTable } from "@/components/assessments/assessment-table";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
-import ClassActionButton from "@/components/classes/class-button";
-import ClassCard from "@/components/classes/class-card";
+import { AssessmentsTable } from '@/components/assessments/assessment-table';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
+import ClassActionButton from '@/components/classes/class-button';
+import ClassCard from '@/components/classes/class-card';
 // import NoteCard from "@/components/notes/note-card";
 // import AssessmentCard from "@/components/assessments/assessment-card";
 //import { NoteCard } from "../notes/page";
 //import { AssessmentCard } from "../assessments/page";
-import { recentItems } from "@/lib/utils";
+import { recentItems } from '@/lib/utils';
 
-export function DashboardTemplate({classes, notes, assessments}){
- // Process recent items
- const recentClasses = recentItems(classes, 4);
- const recentAssessments = recentItems(assessments, 4);
- const recentNotes = recentItems(notes, 4);
+export function DashboardTemplate({ classes, notes, assessments }) {
+  // Process recent items
+  const recentClasses = recentItems(classes, 4);
+  const recentAssessments = recentItems(assessments, 4);
+  const recentNotes = recentItems(notes, 4);
 
- // Keep track of remaining items
- const extraClasses = classes.length - recentClasses.length;
- const extraAssessments = assessments.length - recentAssessments.length;
- const extraNotes = notes.length - recentNotes.length;
+  // Keep track of remaining items
+  const extraClasses = classes.length - recentClasses.length;
+  const extraAssessments = assessments.length - recentAssessments.length;
+  const extraNotes = notes.length - recentNotes.length;
 
- const classAssessmentCounts = {};
- const classNoteCounts = {};
+  const classAssessmentCounts = {};
+  const classNoteCounts = {};
 
- assessments.forEach((assessment) => {
-   if (classAssessmentCounts[assessment.class_id]) {
-     classAssessmentCounts[assessment.class_id]++;
-   } else {
-     classAssessmentCounts[assessment.class_id] = 1;
-   }
- });
+  assessments.forEach((assessment) => {
+    if (classAssessmentCounts[assessment.class_id]) {
+      classAssessmentCounts[assessment.class_id]++;
+    } else {
+      classAssessmentCounts[assessment.class_id] = 1;
+    }
+  });
 
- notes.forEach((note) => {
-   if (classNoteCounts[note.class_id]) {
-     classNoteCounts[note.class_id]++;
-   } else {
-     classNoteCounts[note.class_id] = 1;
-   }
- });
+  notes.forEach((note) => {
+    if (classNoteCounts[note.class_id]) {
+      classNoteCounts[note.class_id]++;
+    } else {
+      classNoteCounts[note.class_id] = 1;
+    }
+  });
 
- return (
+  return (
     <div className="w-full">
       <PageTitle icon={PiHouseLineLight}>Dashboard</PageTitle>
 
@@ -74,7 +74,9 @@ export function DashboardTemplate({classes, notes, assessments}){
                   <ClassCard
                     key={c.id}
                     classData={c}
-                    assessmentCount={classAssessmentCounts[c.class_id] || 0}
+                    assessmentCount={
+                      classAssessmentCounts[c.class_id] || 0
+                    }
                     noteCount={classNoteCounts[c.class_id] || 0}
                   />
                 </div>
@@ -84,7 +86,7 @@ export function DashboardTemplate({classes, notes, assessments}){
               <Link href="/classes/" className="text-lg">
                 <Button>
                   {`View All Classes${
-                    extraClasses > 0 ? ` (${extraClasses} more)` : ""
+                    extraClasses > 0 ? ` (${extraClasses} more)` : ''
                   }`}
                 </Button>
               </Link>
@@ -115,7 +117,9 @@ export function DashboardTemplate({classes, notes, assessments}){
               <Link href="/assessments/" className="text-lg">
                 <Button>
                   {`View All Assessments${
-                    extraAssessments > 0 ? ` (${extraAssessments} more)` : ""
+                    extraAssessments > 0
+                      ? ` (${extraAssessments} more)`
+                      : ''
                   }`}
                 </Button>
               </Link>
@@ -147,7 +151,7 @@ export function DashboardTemplate({classes, notes, assessments}){
               <Link href="/notes/" className="text-lg">
                 <Button>
                   {`View All Notes${
-                    extraNotes > 0 ? ` (${extraNotes} more)` : ""
+                    extraNotes > 0 ? ` (${extraNotes} more)` : ''
                   }`}
                 </Button>
               </Link>

@@ -1,4 +1,4 @@
-import { create } from "zustand"
+import { create } from 'zustand';
 
 // Sidebar state
 
@@ -16,4 +16,4 @@ export const useSidebar = create((set, get) => ({
   closeSidebar: () => set({ isOpen: false }),
   toggleSidebar: () => set({ isOpen: !get().isOpen }),
   setSidebar: (state) => set({ isOpen: state }),
-}))
+}));

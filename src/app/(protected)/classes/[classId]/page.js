@@ -1,3 +1,3 @@
 export default function ClassSlugPage() {
-  return <div></div>
+  return <div></div>;
 }

@@ -1,13 +1,13 @@
-import { cn } from "@/lib/utils"
-import { useSidebar } from "@/state/sidebar-state"
-import React, { useEffect } from "react"
-import { ArrowRightLeftIcon } from "lucide-react"
-import { Separator } from "../ui/separator"
-import { SidebarItem } from "./sidebar-item"
+import { cn } from '@/lib/utils';
+import { useSidebar } from '@/state/sidebar-state';
+import React, { useEffect } from 'react';
+import { ArrowRightLeftIcon } from 'lucide-react';
+import { Separator } from '../ui/separator';
+import { SidebarItem } from './sidebar-item';
 
 export default function Sidebar({ classes }) {
-  const { isOpen, toggleSidebar } = useSidebar()
-  const sidebarRef = React.useRef(null)
+  const { isOpen, toggleSidebar } = useSidebar();
+  const sidebarRef = React.useRef(null);
 
   // Close sidebar when clicking outside of it for small screens
   useEffect(() => {
@@ -16,30 +16,31 @@ export default function Sidebar({ classes }) {
         sidebarRef.current &&
         !sidebarRef.current.contains(e.target) &&
         window.innerWidth < 768 &&
-        e.target.getAttribute("id") !== "sidebar-toggle"
+        e.target.getAttribute('id') !== 'sidebar-toggle'
       ) {
-        toggleSidebar()
+        toggleSidebar();
       }
     }
 
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [isOpen, toggleSidebar])
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, toggleSidebar]);
 
   return (
     <aside
       ref={sidebarRef}
       className={cn(
         classes,
-        "h-full border-r transition-all z-40 py-4 bg-background",
+        'h-full border-r transition-all z-40 py-4 bg-background',
         {
-          "md:w-[53px] md:px-2.5 w-0 -translate-x-4 md:translate-x-0": !isOpen,
-          "w-[210px] px-4 ": isOpen,
+          'md:w-[53px] md:px-2.5 w-0 -translate-x-4 md:translate-x-0':
+            !isOpen,
+          'w-[210px] px-4 ': isOpen,
         }
       )}
     >
@@ -56,13 +57,13 @@ export default function Sidebar({ classes }) {
         <div></div>
       </div>
     </aside>
-  )
+  );
 }
 
-import { PiChalkboardTeacherLight } from "react-icons/pi"
-import { PiHouseLineLight } from "react-icons/pi"
-import { PiNotePencilLight } from "react-icons/pi"
-import { PiListChecksLight, PiMagnifyingGlassLight } from "react-icons/pi"
+import { PiChalkboardTeacherLight } from 'react-icons/pi';
+import { PiHouseLineLight } from 'react-icons/pi';
+import { PiNotePencilLight } from 'react-icons/pi';
+import { PiListChecksLight, PiMagnifyingGlassLight } from 'react-icons/pi';
 
 function Navigation() {
   return (
@@ -83,5 +84,5 @@ function Navigation() {
         Search
       </SidebarItem>
     </div>
-  )
+  );
 }

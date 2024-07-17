@@ -1,24 +1,24 @@
-"use server"
+'use server';
 
-import { axiosTokenInstance } from "@/lib/axios"
+import { axiosTokenInstance } from '@/lib/axios';
 
-export async function getClasses(userId = "user_1") {
-  const axios = await axiosTokenInstance()
+export async function getClasses(userId = 'user_1') {
+  const axios = await axiosTokenInstance();
 
   return await axios
-    .get("/classes", {
+    .get('/classes', {
       data: {
         user_id: userId,
       },
     })
     .then((res) => res.data)
     .catch((error) => {
-      console.log("ERROR:", error)
-    })
+      console.log('ERROR:', error);
+    });
 }
 
 export async function createClass(userId, name, professor, details) {
-  const axios = await axiosTokenInstance()
+  const axios = await axiosTokenInstance();
   return await axios
     .post(`/classes`, {
       user_id: userId,
@@ -28,12 +28,12 @@ export async function createClass(userId, name, professor, details) {
     })
     .then((res) => res.data)
     .catch((error) => {
-      console.log("ERROR:", error.response.data)
-    })
+      console.log('ERROR:', error.response.data);
+    });
 }
 
-export async function deleteClass(classId = "class_1") {
-  const axios = await axiosTokenInstance()
+export async function deleteClass(classId = 'class_1') {
+  const axios = await axiosTokenInstance();
   return await axios
     .delete(`/classes/${classId}`, {
       params: {
@@ -42,12 +42,12 @@ export async function deleteClass(classId = "class_1") {
     })
     .then((res) => res.data)
     .catch((error) => {
-      console.log("ERROR:", error.response.data)
-    })
+      console.log('ERROR:', error.response.data);
+    });
 }
 
 export async function updateClass(classId, name, professor, details) {
-  const axios = await axiosTokenInstance()
+  const axios = await axiosTokenInstance();
   return await axios
     .put(`/classes/${classId}`, {
       name,
@@ -56,6 +56,6 @@ export async function updateClass(classId, name, professor, details) {
     })
     .then((res) => res.data)
     .catch((error) => {
-      console.log("ERROR:", error.response.data)
-    })
+      console.log('ERROR:', error.response.data);
+    });
 }

@@ -1,8 +1,8 @@
-import AssessmentActionButton from "@/components/assessments/assessment-button"
-import AssessmentCard from "@/components/assessments/assessment-card"
-import ClassActionButton from "@/components/classes/class-button"
+import AssessmentActionButton from '@/components/assessments/assessment-button';
+import AssessmentCard from '@/components/assessments/assessment-card';
+import ClassActionButton from '@/components/classes/class-button';
 
-import ClassCard from "@/components/classes/class-card"
+import ClassCard from '@/components/classes/class-card';
 
 export default function TestPage() {
   return (
@@ -14,5 +14,5 @@ export default function TestPage() {
 
       <ClassActionButton />
     </div>
-  )
+  );
 }
