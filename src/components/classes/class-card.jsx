@@ -14,8 +14,8 @@ export default function ClassCard({
   // noteCount,
 }) {
   const { class_id, name, professor, details } = classData;
-  const [assessmentCount, setAssessmentCount] = useState(0);
-  const [noteCount, setNoteCount] = useState(0);
+  const [assessmentCount, setAssessmentCount] = useState('...');
+  const [noteCount, setNoteCount] = useState('...');
 
   async function getResources() {
     // get assessment and note count in parallel
