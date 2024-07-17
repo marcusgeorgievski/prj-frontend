@@ -46,10 +46,6 @@ export function AssessmentsTable({ title, assessments, onDelete }) {
     return " ↑↓";
   };
 
-  const handleRowClick = (assessmentId) => {
-    window.location.href = `/notes/#${assessmentId}`;
-  };
-
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-bold">{title}</h3>
@@ -81,8 +77,6 @@ export function AssessmentsTable({ title, assessments, onDelete }) {
             {sortedAssessments.map((assessment) => (
               <tr
                 key={assessment.assessment_id}
-                className="hover:bg-gray-50 cursor-pointer"
-                onClick={() => handleRowClick(assessment.id)}
               >
                 <td className="px-6 py-1 whitespace-nowrap text-sm text-gray-500">
                   <span
