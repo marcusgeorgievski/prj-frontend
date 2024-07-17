@@ -59,7 +59,9 @@ export function DashboardTemplate({ classes, notes, assessments }) {
 
       {/* Recent Classes */}
       <div className="w-full mt-8">
-        <Heading icon={PiChalkboardTeacherLight}>Recent Classes</Heading>
+        <PageTitle icon={PiChalkboardTeacherLight} sub>
+          Recent Classes
+        </PageTitle>
         {classes.length === 0 ? (
           <div className="text-center">
             <p className="pt-[2vh]">No classes yet!</p>
@@ -98,7 +100,9 @@ export function DashboardTemplate({ classes, notes, assessments }) {
 
       {/* Recent Assessments */}
       <div className="w-full mb-8">
-        <Heading icon={PiListChecksLight}>Recent Assessments</Heading>
+        <PageTitle icon={PiListChecksLight} sub>
+          Recent Assessments
+        </PageTitle>
         {assessments.length === 0 ? (
           <div className="text-center">
             <p className="pt-[2vh]">No assessments yet!</p>
@@ -131,7 +135,10 @@ export function DashboardTemplate({ classes, notes, assessments }) {
 
       {/* Recent Notes */}
       <div className="w-full mb-8">
-        <Heading icon={PiNotePencilLight}>Recent Notes</Heading>
+        <PageTitle icon={PiNotePencilLight} sub>
+          Recent Notes
+        </PageTitle>
+
         {notes.length === 0 ? (
           <div className="text-center">
             <p className="pt-[2vh]">No notes yet!</p>

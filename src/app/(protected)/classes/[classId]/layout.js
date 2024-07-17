@@ -4,6 +4,9 @@ import { AssessmentsTab } from '@/components/assessments/assessment-tab';
 import NotesTab from './notes-tab';
 import SearchParamButtons from './search-params-buttons';
 import { getClassById } from '@/actions/classes';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 export default async function ClassSlugLayout({
   children,
@@ -32,6 +35,15 @@ export default async function ClassSlugLayout({
 
   return (
     <div>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="flex items-center gap-2 mb-4 text-muted-foreground"
+      >
+        <ArrowLeft size={14} />
+        <Link href="/classes">All classes</Link>
+      </Button>
+
       <div className="mb-5">
         <h1 className="text-3xl font-bold">{classData.name}</h1>
         <p className="text-muted-foreground">{classData.professor}</p>
