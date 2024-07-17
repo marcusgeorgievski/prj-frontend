@@ -57,3 +57,37 @@
     @apply bg-background text-foreground;
   }
 }
+
+.tiptap ol {
+  @apply list-decimal pl-6;
+}
+
+.tiptap ul {
+  @apply list-disc pl-6;
+}
+
+.tiptap blockquote {
+  @apply border-l-4 border-slate-300 pl-4;
+}
+
+.tiptap h1 {
+  @apply text-3xl font-bold;
+}
+.tiptap h2 {
+  @apply text-2xl font-bold;
+}
+.tiptap h3 {
+  @apply text-xl font-semibold;
+}
+
+.tiptap > * {
+  @apply mb-4;
+}
+
+.tiptap pre {
+  @apply bg-slate-100 text-sm text-slate-800 p-4 rounded-lg;
+}
+
+.tiptap > p > code {
+  @apply bg-slate-100 text-sm text-slate-800 p-1 rounded;
+}
