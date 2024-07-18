@@ -22,7 +22,7 @@ const getUniqueValues = (array, key) => {
   return [...new Set(array.map((item) => item[key]))];
 };
 
-export function AssessmentsTab({ classId }) {
+export function AssessmentsTab({ classId, classesList }) {
   const [classData, setClassData] = useState(null);
   const [assessments, setAssessments] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -69,16 +69,12 @@ export function AssessmentsTab({ classId }) {
     }
   }, [classData]);
 
-   //get class list for create assessment
-   const classesList = classData ? [{
-    class_id: classData.class_id,
-    name: classData.name,
-  }] : [];
+   
 
   let uniqueStatuses = [];
   let filteredAssessments = [];
 
-  //console.log(uniqueStatuses);
+  
 
   // Filter assessment
   if (assessments) {
@@ -122,6 +118,26 @@ export function AssessmentsTab({ classId }) {
         newAssessment.class_name = selectedClass.name;
       }
       setAssessments((prevAssessments) => [...prevAssessments, newAssessment]);
+    } catch (error) {
+      console.error('Error fetching class data or updating assessments:', error);
+    }
+  };
+
+  const onEdit = async (editedAssessment) => {
+    try {
+      const classes = await getClasses(userId);
+      const selectedClass = classes.find((c) => c.class_id === editedAssessment.class_id);
+      
+      if (selectedClass) {
+        editedAssessment.class_name = selectedClass.name;
+      }
+      setAssessments((prevAssessments) => 
+        prevAssessments.map((assessment) => 
+          assessment.assessment_id === editedAssessment.assessment_id 
+            ? editedAssessment 
+            : assessment
+        )
+      );
     } catch (error) {
       console.error('Error fetching class data or updating assessments:', error);
     }
@@ -176,6 +192,8 @@ export function AssessmentsTab({ classId }) {
           <AssessmentsTable
             assessments={filteredAssessments}
             onDelete={handleDeleteAssessment}
+            classesList={classesList}
+            onEdit={onEdit}
           />
         </div>
       )}

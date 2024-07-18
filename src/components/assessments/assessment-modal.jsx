@@ -19,9 +19,11 @@ export function AssessmentModal({
   action = 'create',
   classesList,
   onCreate,
+  onEdit
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [submitFn, setSubmitFn] = useState(null);
+
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -42,6 +44,7 @@ export function AssessmentModal({
           setSubmitFn={setSubmitFn}
           classesList={classesList}
           onCreate={onCreate}
+          onEdit={onEdit}
         />
 
         <DialogFooter className="gap-2 mt-6">

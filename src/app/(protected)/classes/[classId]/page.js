@@ -4,7 +4,7 @@ import { currentUser } from '@clerk/nextjs/server';
 import NoteActionButton from '@/components/notes/note-button';
 import NoteCard from '@/components/notes/note-card';
 import { AssessmentsTab } from './assessment-tab';
-
+import { getClasses } from "@/actions/classes"
 
 export default async function ClassSlugPage({
   params: { classId },
@@ -16,6 +16,16 @@ export default async function ClassSlugPage({
   if (!user || tab == null) {
     return null;
   }
+
+  //get class list for create assessmeny
+  const classes = await getClasses(user.id);
+
+  const classesList = classes.map((classTemp) => {
+    return {
+      class_id: classTemp.class_id,
+      name: classTemp.name,
+    };
+  });
 
   // Display notes
 
@@ -44,7 +54,7 @@ export default async function ClassSlugPage({
   if (tab === 'assessments') {
     return (
       <div className="w-full">
-        <AssessmentsTab classId={classId} />
+        <AssessmentsTab classId={classId} classesList={classesList} />
       </div>
     );
   }

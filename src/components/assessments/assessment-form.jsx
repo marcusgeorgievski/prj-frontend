@@ -62,7 +62,8 @@ export default function AssessmentForm({
   assessmentData,
   classesList,
   setDialogOpen,
-  onCreate
+  onCreate,
+  onEdit,
 }) {
   const { userId } = useAuth();
   const router = useRouter();
@@ -107,10 +108,14 @@ export default function AssessmentForm({
   async function onSubmit(values) {
     try {
       if (action === 'update') {
-        await updateAssessment(assessment_id, {
+        const updatedAssessment = await updateAssessment(assessment_id, {
           ...values,
           classId: values.class,
-        });
+        })    
+        console.log(onEdit)
+        if (onEdit){
+          onEdit(updatedAssessment);
+        }
       } else if (action === 'create') {
         const newAssessment = await createAssessment(userId, {
           ...values,

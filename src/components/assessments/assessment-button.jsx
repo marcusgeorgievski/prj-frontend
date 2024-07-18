@@ -6,9 +6,11 @@ import { DialogTrigger } from '../ui/dialog';
 
 export default function AssessmentActionButton({
   action = 'create',
+  assessmentData,
   button = true,
   classesList,
   onCreate,
+  onEdit
 }) {
   if (!button) {
     return (
@@ -17,7 +19,7 @@ export default function AssessmentActionButton({
           {
             create: (
               <>
-                <PiPlus />C
+                <PiPlus /> Create
               </>
             ),
             update: (
@@ -32,7 +34,13 @@ export default function AssessmentActionButton({
   }
 
   return (
-    <AssessmentModal classesList={classesList} onCreate={onCreate}>
+    <AssessmentModal 
+      classesList={classesList} 
+      action={action}
+      assessmentData={assessmentData}
+      onCreate={onCreate}
+      onEdit={onEdit}
+      >
       <DialogTrigger asChild>
         <Button variant="ghost" className="gap-2">
           <PiPlus />
