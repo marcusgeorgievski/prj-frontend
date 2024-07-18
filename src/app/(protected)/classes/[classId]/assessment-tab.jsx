@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { getAssessmentsByClassId } from '@/actions/assessments';
+import { getClasses } from "@/actions/classes"
 import { AssessmentsTable } from '@/components/assessments/assessment-table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -13,45 +14,67 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { DatePickerWithRange } from '@/components/ui/date-picker';
-import AssessmentActionButton from './assessment-button';
+import { useAuth } from "@clerk/nextjs"
+import AssessmentActionButton from '@/components/assessments/assessment-button';
+import { useRouter } from 'next/navigation';
 
 const getUniqueValues = (array, key) => {
   return [...new Set(array.map((item) => item[key]))];
 };
 
-export function AssessmentsTab({ classId, classData }) {
+export function AssessmentsTab({ classId, classesList }) {
+  const [classData, setClassData] = useState(null);
   const [assessments, setAssessments] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [statusFilter, setStatusFilter] = useState('');
   const [dueDateFilter, setDueDateFilter] = useState(null);
 
-  console.log({ classData });
-
+  const { userId } = useAuth()
+  const router = useRouter();
+  
   useEffect(() => {
-    const fetchAssessments = async () => {
+    const fetchClassData = async () => {
       try {
-        const assessmentsData = await getAssessmentsByClassId(classId);
-        //assessment with class name
-        const updatedAssessments = assessmentsData.map((assessment) => ({
-          ...assessment,
-          class_name: classData.name,
-        }));
-        setAssessments(updatedAssessments);
+        const classes = await getClasses(userId);
+        const c = classes.find((c) => c.class_id === classId);
+        setClassData(c);
       } catch (error) {
-        console.error('Error fetching assessments:', error);
-      } finally {
-        setLoading(false);
+        console.error('Error fetching class data:', error);
       }
     };
 
-    fetchAssessments();
-  }, [classId]);
+    fetchClassData();
+  }, [classId, userId]);
+
+  const fetchAssessments = async () => {
+    setLoading(true)
+    try {
+      const assessmentsData = await getAssessmentsByClassId(classId);
+      const updatedAssessments = assessmentsData.map((assessment) => ({
+        ...assessment,
+        class_name: classData?.name,
+      }));
+      setAssessments(updatedAssessments);
+    } catch (error) {
+      console.error('Error fetching assessments:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (classData) {
+      fetchAssessments();
+    }
+  }, [classData]);
+
+   
 
   let uniqueStatuses = [];
   let filteredAssessments = [];
 
-  console.log(uniqueStatuses);
+  
 
   // Filter assessment
   if (assessments) {
@@ -86,13 +109,54 @@ export function AssessmentsTab({ classId, classData }) {
     );
   };
 
+  const onCreate = async (newAssessment) => {
+    try {
+      const classes = await getClasses(userId);
+      const selectedClass = classes.find((c) => c.class_id === newAssessment.class_id);
+  
+      if (selectedClass) {
+        newAssessment.class_name = selectedClass.name;
+      }
+      setAssessments((prevAssessments) => [...prevAssessments, newAssessment]);
+    } catch (error) {
+      console.error('Error fetching class data or updating assessments:', error);
+    }
+  };
+
+  const onEdit = async (editedAssessment) => {
+    try {
+      const classes = await getClasses(userId);
+      const selectedClass = classes.find((c) => c.class_id === editedAssessment.class_id);
+      
+      if (selectedClass) {
+        editedAssessment.class_name = selectedClass.name;
+      }
+      setAssessments((prevAssessments) => 
+        prevAssessments.map((assessment) => 
+          assessment.assessment_id === editedAssessment.assessment_id 
+            ? editedAssessment 
+            : assessment
+        )
+      );
+    } catch (error) {
+      console.error('Error fetching class data or updating assessments:', error);
+    }
+  };
+
   if (loading) {
     return <Skeleton />; // Return Skeleton while data is being fetched
   }
 
   return (
     <div className="mt-6">
-      {/* <AssessmentActionButton />  */}
+       <div>
+        <AssessmentActionButton
+          action="create"
+          button={true}
+          classesList={classesList}
+          onCreate={onCreate}
+        />
+      </div>
       <div className="flex items-center ml-auto space-x-2">
         <DropdownMenu>
           <DropdownMenuTrigger>
@@ -128,6 +192,8 @@ export function AssessmentsTab({ classId, classData }) {
           <AssessmentsTable
             assessments={filteredAssessments}
             onDelete={handleDeleteAssessment}
+            classesList={classesList}
+            onEdit={onEdit}
           />
         </div>
       )}

@@ -53,6 +53,13 @@ export function DashboardTemplate({ classes, notes, assessments }) {
     }
   });
 
+  const classesList = classes.map((classTemp) => {
+    return {
+      class_id: classTemp.class_id,
+      name: classTemp.name,
+    };
+  });
+
   return (
     <div className="w-full">
       <PageTitle icon={PiHouseLineLight}>Dashboard</PageTitle>
@@ -116,6 +123,7 @@ export function DashboardTemplate({ classes, notes, assessments }) {
               <AssessmentsTable
                 assessments={recentAssessments}
                 isDashboard={true}
+                classesList={classesList}
               />
             </div>
             <div className="flex justify-center mt-6">

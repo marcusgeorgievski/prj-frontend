@@ -51,7 +51,7 @@ export function AssessmentsTemplate({ assessments, classesList }) {
     const dueDate = new Date(assessment.due_date);
 
     return (
-      assessment.status.toLowerCase() !== 'completed' &&
+      assessment.status.toLowerCase() !== 'completed' && assessment.status.toLowerCase() !== 'overdue' &&
       (statusFilter === '' ||
         assessment.status
           .toLowerCase()
@@ -60,7 +60,8 @@ export function AssessmentsTemplate({ assessments, classesList }) {
         assessment.class_name.includes(classFilter)) &&
       (!dueDateFilter ||
         (dueDate >= dueDateFilter.from && dueDate <= dueDateFilter.to)) &&
-      dueDate <= dueSoonDate
+        dueDate >= today &&
+        dueDate <= dueSoonDate
     );
   });
 
@@ -158,16 +159,19 @@ export function AssessmentsTemplate({ assessments, classesList }) {
       <AssessmentsTable
         title="Due Soon"
         assessments={dueSoonAssessments}
+        classesList={classesList}
       />
 
       <AssessmentsTable
         title="All Assessments"
         assessments={filteredAssessments}
+        classesList={classesList}
       />
 
       <AssessmentsTable
         title="Archive Assessment"
         assessments={archiveAssessments}
+        classesList={classesList}
       />
     </div>
   );

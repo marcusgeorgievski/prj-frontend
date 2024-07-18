@@ -62,6 +62,7 @@ export async function createAssessment(userId, values) {
 
 export async function updateAssessment(assessmentId, values) {
   try {
+    console.log('UPDATE ASSESSMENT CALLED');
     const axios = await axiosTokenInstance(); // Ensure axios instance is used here
     console.log('Updating assessment with values:', values); // Debugging log
     const response = await axios.put(
