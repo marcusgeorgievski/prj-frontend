@@ -32,6 +32,7 @@ export default function AIPage() {
 
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
+  const [classId, setClassId] = useState(null);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit
   const MAX_TEXT_SIZE = 2000; // 200 word limit (5 pages single spaced)
@@ -143,7 +144,7 @@ export default function AIPage() {
       // Create class and get its id
       const classInfo = await createClass(userId, name, professor, null);
 
-      console.log({ classInfo });
+      setClassId(classInfo.class_id);
 
       // Create assignments and link them to the class id with `status: not started` and `due date: today`
       assessments.forEach(async (assessment) => {
@@ -324,7 +325,7 @@ export default function AIPage() {
 
           {isCreated && (
             <Link
-              href={`/classes/${result.class_info.class_id}`}
+              href={`/classes/${classId}`}
               className="flex items-center gap-2"
             >
               <Button className="pl-6 pr-3 ml-9 mt-2 " disabled={!result}>

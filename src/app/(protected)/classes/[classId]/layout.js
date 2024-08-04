@@ -32,6 +32,14 @@ export default async function ClassSlugLayout({
   let classData = await getClassById(classId);
   classData = classData[0];
 
+  if (!classData) {
+    return (
+      <div className="flex items-center justify-center my-20">
+        Class does not exist
+      </div>
+    );
+  }
+
   return (
     <div>
       <Link href="/classes">
