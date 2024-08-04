@@ -2,8 +2,6 @@ import { getClasses } from '@/actions/classes';
 import ClassActionButton from '@/components/classes/class-button';
 import ClassCard from '@/components/classes/class-card';
 import PageTitle from '@/components/page-title';
-import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
 import { currentUser } from '@clerk/nextjs/server';
 import { PiChalkboardTeacherLight } from 'react-icons/pi';
 import { getAssessmentsByUserId } from '@/actions/assessments';
@@ -15,8 +13,19 @@ export default async function ClassesPage() {
     return null;
   }
 
-  const classes = await getClasses(user.id);
-  const assessments = await getAssessmentsByUserId(user.id);
+  let classes = [];
+  let assessments = [];
+
+  classes = await getClasses(user.id);
+  assessments = await getAssessmentsByUserId(user.id);
+
+  if (!classes || !assessments) {
+    return (
+      <p className="text-center py-20">
+        Could not fetch classes and/or assessments
+      </p>
+    );
+  }
 
   // sort classes by created_at
   classes.sort((a, b) => {
@@ -33,14 +42,6 @@ export default async function ClassesPage() {
       classAssessmentCounts[assessment.class_id] = 1;
     }
   });
-
-  // notes.forEach((note) => {
-  //   if (classNoteCounts[note.class_id]) {
-  //     classNoteCounts[note.class_id]++;
-  //   } else {
-  //     classNoteCounts[note.class_id] = 1;
-  //   }
-  // });
 
   return (
     <div className="w-full ">

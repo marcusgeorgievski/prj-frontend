@@ -14,13 +14,16 @@ export default function Header() {
       {/* Sidebar toggle */}
       <button
         onClick={(e) => {
-          e.stopPropagation();
           toggleSidebar();
+          e.stopPropagation();
         }}
         id="sidebar-toggle"
         className="bg-muted-foreground/20 px-1.5 py-0 rounded transition-all absolute left-3 "
       >
-        <ArrowRightLeftIcon className="w-3 text-muted-foreground" />
+        <ArrowRightLeftIcon
+          id="sidebar-toggle"
+          className="w-3 text-muted-foreground"
+        />
       </button>
 
       <Link href={'/'} className="ml-4">

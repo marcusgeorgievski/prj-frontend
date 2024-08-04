@@ -17,8 +17,15 @@ export default async function AssessmentsPage() {
   }
 
   const classes = await getClasses(user.id);
-
   const assessments = await getAssessmentsByUserId(user.id);
+
+  if (!classes || !assessments) {
+    return (
+      <p className="text-center py-20">
+        Could not fetch classes and/or assessments
+      </p>
+    );
+  }
 
   const assessmentsWithClassName = assessments.map((assessment) => {
     const classInfo = classes.find(

@@ -16,9 +16,11 @@ export default function Sidebar({ classes }) {
         sidebarRef.current &&
         !sidebarRef.current.contains(e.target) &&
         window.innerWidth < 768 &&
-        e.target.getAttribute('id') !== 'sidebar-toggle'
+        e.target.getAttribute('id') !== 'sidebar-toggle' &&
+        e.target.tagName !== 'path'
       ) {
         toggleSidebar();
+        e.stopPropagation();
       }
     }
 
@@ -60,7 +62,7 @@ export default function Sidebar({ classes }) {
   );
 }
 
-import { PiChalkboardTeacherLight } from 'react-icons/pi';
+import { PiBrainLight, PiChalkboardTeacherLight } from 'react-icons/pi';
 import { PiHouseLineLight } from 'react-icons/pi';
 import { PiNotePencilLight } from 'react-icons/pi';
 import { PiListChecksLight, PiMagnifyingGlassLight } from 'react-icons/pi';
@@ -82,6 +84,9 @@ function Navigation() {
       </SidebarItem>
       <SidebarItem icon={<PiMagnifyingGlassLight />} href="#">
         Search
+      </SidebarItem>
+      <SidebarItem icon={<PiBrainLight />} href="/ai">
+        AI Generation
       </SidebarItem>
     </div>
   );

@@ -20,6 +20,14 @@ export default async function Dashboard() {
     getNotesByUserId(user.id),
   ]);
 
+  if (!classes || !assessments || !notes) {
+    return (
+      <p className="text-center py-20">
+        Could not fetch classes and/or assessments
+      </p>
+    );
+  }
+
   const assessmentsWithClassName = assessments.map((assessment) => {
     const classInfo = classes.find(
       (classTemp) => classTemp.class_id === assessment.class_id

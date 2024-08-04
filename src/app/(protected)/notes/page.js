@@ -14,6 +14,10 @@ export default async function NotesPage() {
 
   const notes = await getNotesByUserId(user.id);
 
+  if (!notes) {
+    return <p className="text-center py-20">Could not fetch notes</p>;
+  }
+
   return (
     <div className="w-full ">
       <PageTitle icon={PiNotePencilLight}>Notes</PageTitle>
