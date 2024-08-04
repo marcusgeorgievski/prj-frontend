@@ -7,19 +7,31 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import JSZip from 'jszip';
+import { getAIResults } from '@/actions/ai';
+import { AiOutlineLoading } from 'react-icons/ai';
+import { createClass } from '@/actions/classes';
+import { createAssessment } from '@/actions/assessments';
+import { useAuth } from '@clerk/nextjs';
+import Link from 'next/link';
+import { ArrowUpRightIcon, Plus } from 'lucide-react';
 
 const jetbrains = JetBrains_Mono({
   subsets: ['latin'],
 });
 
 export default function AIPage() {
+  const { userId } = useAuth();
+
   const [type, setType] = useState('file');
 
   const [file, setFile] = useState(null);
   const [text, setText] = useState('');
 
+  const [isCreated, setIsCreated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [error, setError] = useState(null);
-  const [f, setF] = useState(null);
+  const [result, setResult] = useState(null);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit
   const MAX_TEXT_SIZE = 2000; // 200 word limit (5 pages single spaced)
@@ -88,14 +100,15 @@ export default function AIPage() {
         setError('Unsupported file type');
         return;
       }
-      setF(extractedText);
+
+      await fetchResults(extractedText);
     } catch (error) {
       setError('Failed to extract text from file', error);
       console.error(error);
     }
   }
 
-  function handleTextGeneration() {
+  async function handleTextGeneration() {
     if (!text) {
       setError('Please paste valid text content');
       return;
@@ -105,13 +118,68 @@ export default function AIPage() {
       return;
     }
 
-    // Handle here
+    await fetchResults(text);
+  }
 
-    setF(text);
+  async function fetchResults(content) {
+    setIsLoading(true);
+    try {
+      const results = await getAIResults(content);
+      console.log(results);
+      setResult(results);
+    } catch (error) {
+      setError('Failed to generate AI results', error);
+      console.error(error);
+    }
+    setIsLoading(false);
+  }
+
+  async function handleConfirm() {
+    // Organize date
+    const { name, professor } = result.class_info;
+    const assessments = result.assessments;
+
+    try {
+      // Create class and get its id
+      const classInfo = await createClass(userId, name, professor, null);
+
+      console.log({ classInfo });
+
+      // Create assignments and link them to the class id with `status: not started` and `due date: today`
+      assessments.forEach(async (assessment) => {
+        const payload = {
+          userId: userId,
+          classId: classInfo.class_id,
+          name: assessment.name,
+          status: 'Not Started',
+          weight: assessment.weight,
+          description: '',
+          dueDate: new Date().toISOString(),
+        };
+        await createAssessment(userId, payload);
+      });
+
+      setIsCreated(true);
+    } catch (err) {
+      setError('Failed to create class and assignments', err);
+      console.error(err);
+    }
+  }
+
+  function handleReset() {
+    setType('file');
+
+    setFile(null);
+    setText('');
+
+    setIsCreated(false);
+    setIsLoading(false);
+    setError(null);
+    setResult(null);
   }
 
   return (
-    <div>
+    <div className="pb-16">
       <PageTitle icon={PiBrainLight} sub>
         AI Generation
       </PageTitle>
@@ -120,60 +188,82 @@ export default function AIPage() {
         Auto-generate a class and assignments with the power of AI.
       </p>
 
+      <Button
+        variant="outline"
+        className="mt-6"
+        onClick={handleReset}
+        disabled={isLoading}
+      >
+        Reset
+      </Button>
+
       <div className="my-12">
         <p className={cn(jetbrains.className, 'mb-2 text-sm font-medium')}>
           (1) Either Upload a DOCX file of your addendum{' '}
           <span className="underline">or</span> copy and paste its text
           content.
         </p>
-        <div className="text-xs overflow-hidden w-fit text-slate-700 rounded border border-slate-300 mb-4 flex items-center justify-between">
-          <button
-            className={cn(
-              'z-20 px-2 py-[2px]',
-              type == 'file' && 'bg-slate-700 text-white'
-            )}
-            onClick={() => setType('file')}
-          >
-            File
-          </button>
-          <button
-            className={cn(
-              'z-20 px-2 py-[2px]',
-              type == 'text' && 'bg-slate-700 text-white'
-            )}
-            onClick={() => setType('text')}
-          >
-            Text
-          </button>
-        </div>
+        <div className="ml-9 mt-6">
+          <div className="text-xs overflow-hidden w-fit text-slate-700 rounded border border-slate-300 mb-4 flex items-center justify-between">
+            <button
+              className={cn(
+                'z-20 px-2 py-[2px]',
+                type == 'file' && 'bg-slate-700 text-white'
+              )}
+              onClick={() => setType('file')}
+              disabled={isLoading}
+            >
+              File
+            </button>
+            <button
+              className={cn(
+                'z-20 px-2 py-[2px]',
+                type == 'text' && 'bg-slate-700 text-white'
+              )}
+              onClick={() => setType('text')}
+              disabled={isLoading}
+            >
+              Text
+            </button>
+          </div>
 
-        {type === 'file' ? (
-          <div className="max-w-md flex items-center gap-2">
-            <Input
-              id="file"
-              type="file"
-              accept=".docx"
-              onChange={handleFileChange}
-              className="cursor-pointer"
-            />
-            <Button className="px-10" onClick={handleFileGeneration}>
-              Generate
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <textarea
-              onChange={handleTextChange}
-              value={text}
-              placeholder="Paste text content here"
-              className="w-full mb-2 border rounded resize-none p-2"
-            />
-            <Button className="px-10" onClick={handleTextGeneration}>
-              Generate
-            </Button>
-          </div>
-        )}
-        <p className="text-sm text-red-700 mt-1">{error}</p>
+          {type === 'file' ? (
+            <div className="max-w-md flex items-center gap-2">
+              <Input
+                id="file"
+                type="file"
+                accept=".docx"
+                onChange={handleFileChange}
+                className="cursor-pointer"
+                disabled={isLoading}
+              />
+              <Button
+                className="px-10"
+                onClick={handleFileGeneration}
+                disabled={isLoading || !file}
+              >
+                Generate
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <textarea
+                onChange={handleTextChange}
+                value={text}
+                placeholder="Paste text content here"
+                className="w-full mb-2 border rounded resize-none p-2"
+              />
+              <Button
+                className="px-10"
+                onClick={handleTextGeneration}
+                disabled={isLoading}
+              >
+                Generate
+              </Button>
+            </div>
+          )}
+          <p className="text-sm text-red-700 mt-1">{error}</p>
+        </div>
       </div>
 
       <div className="my-12">
@@ -181,14 +271,69 @@ export default function AIPage() {
           (2) Review extracted details
         </p>
 
-        <div>{f}</div>
+        {isLoading && (
+          <div className="flex items-center gap-2 justify-center my-12">
+            <AiOutlineLoading className="animate-spin" />
+            Loading{' '}
+          </div>
+        )}
+
+        {result && (
+          <div className="ml-9 mt-6">
+            <div className="my-3">
+              <p className="text-slate-700 text-xs">Class Name:</p>
+              <p className="text-sm font-medium">
+                {result.class_info.name}
+              </p>
+            </div>
+
+            <div className="my-3">
+              <p className="text-slate-700 text-xs">Professor:</p>
+              <p className="text-sm font-medium">
+                {result.class_info.professor}
+              </p>
+            </div>
+
+            {result.assessments.map((assessment, index) => (
+              <div key={index} className="my-3">
+                <p className="text-slate-700 text-xs">
+                  Assessment {index + 1}:
+                </p>
+                <p className="text-sm font-medium">
+                  {assessment.weight}% - {assessment.name}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="my-12">
         <p className={cn(jetbrains.className, 'mb-2 text-sm font-medium')}>
           (3) Confirm
         </p>
-        <Button className="px-10">Confirm</Button>
+        <div className="flex">
+          <Button
+            className="pr-6 pl-4 ml-9 mt-2"
+            onClick={handleConfirm}
+            disabled={isLoading || !result}
+          >
+            <Plus className="h-5 mr-2" />
+            Confirm & Create
+          </Button>
+
+          {isCreated && (
+            <Link
+              href={`/classes/${result.class_info.class_id}`}
+              className="flex items-center gap-2"
+            >
+              <Button className="pl-6 pr-3 ml-9 mt-2 " disabled={!result}>
+                See new class
+                <ArrowUpRightIcon className="h-5 ml-3 animate-bounce" />
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
