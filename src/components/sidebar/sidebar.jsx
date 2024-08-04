@@ -80,7 +80,7 @@ function Navigation() {
       <SidebarItem icon={<PiNotePencilLight />} href="/notes">
         Notes
       </SidebarItem>
-      <SidebarItem icon={<PiMagnifyingGlassLight />} href="#">
+      <SidebarItem icon={<PiMagnifyingGlassLight />} href="/search">
         Search
       </SidebarItem>
     </div>
