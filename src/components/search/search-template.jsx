@@ -111,7 +111,7 @@ export function SearchTemplate({ classes, notes, assessments }) {
           </div>
 
           {/* Filtered Assessments */}
-          <div className="w-full mb-8">
+          <div className="w-full mb-8 mt-8">
             <PageTitle icon={PiListChecksLight} sub>
               Assessments
             </PageTitle>
