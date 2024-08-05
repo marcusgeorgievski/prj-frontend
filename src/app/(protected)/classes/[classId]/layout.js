@@ -1,6 +1,4 @@
-// import { getClasses } from '@/actions/classes';
 import { currentUser } from '@clerk/nextjs/server';
-import NotesTab from './notes-tab';
 import SearchParamButtons from './search-params-buttons';
 import { getClassById } from '@/actions/classes';
 import { Button } from '@/components/ui/button';

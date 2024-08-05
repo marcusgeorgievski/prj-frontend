@@ -1,7 +1,6 @@
 'use client';
 
 import PageTitle from '@/components/page-title';
-import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -12,14 +11,8 @@ import {
 } from 'react-icons/pi';
 
 import { AssessmentsTable } from '@/components/assessments/assessment-table';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Separator } from '@/components/ui/separator';
 import ClassActionButton from '@/components/classes/class-button';
 import ClassCard from '@/components/classes/class-card';
-// import NoteCard from "@/components/notes/note-card";
-// import AssessmentCard from "@/components/assessments/assessment-card";
-//import { NoteCard } from "../notes/page";
-//import { AssessmentCard } from "../assessments/page";
 import { recentItems } from '@/lib/utils';
 import NoteCard from '../notes/note-card';
 

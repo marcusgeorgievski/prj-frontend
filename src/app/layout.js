@@ -6,7 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Study Home',
+  title: 'StudyHome',
   description: 'The all-in-one Student Management Platform',
 };
 

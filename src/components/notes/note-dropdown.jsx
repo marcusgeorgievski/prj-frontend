@@ -10,7 +10,6 @@ import { Button } from '../ui/button';
 import { VscKebabVertical } from 'react-icons/vsc';
 import { DialogTrigger } from '../ui/dialog';
 import { PiTrash } from 'react-icons/pi';
-import { deleteClass } from '@/actions/classes';
 import { useRouter } from 'next/navigation';
 import NoteActionButton from './note-button';
 import { deleteNote } from '@/actions/notes';

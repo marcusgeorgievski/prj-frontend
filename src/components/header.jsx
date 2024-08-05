@@ -10,7 +10,7 @@ export default function Header() {
   const { toggleSidebar } = useSidebar();
 
   return (
-    <header className="flex items-center justify-between h-12 px-10 border border-b">
+    <header className="flex justify-between h-12 px-10 border border-b items -center">
       {/* Sidebar toggle */}
       <button
         onClick={(e) => {

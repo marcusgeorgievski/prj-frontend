@@ -6,7 +6,6 @@ import NoteModal from './note-modal';
 import NoteDropdown from './note-dropdown';
 import { useEffect, useState } from 'react';
 import { getClassById } from '@/actions/classes';
-// import { ClassDropdown } from './class-dropdown';
 
 export default function NoteCard({ noteData = exampleNoteData }) {
   const [classname, setClassname] = useState(null);

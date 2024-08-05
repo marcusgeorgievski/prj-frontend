@@ -1,7 +1,6 @@
 import { getClassById } from '@/actions/classes';
 import { getNoteById } from '@/actions/notes';
 import Editor from '@/components/notes/editor';
-import Loading from '../loading';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';

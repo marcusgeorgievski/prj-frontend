@@ -35,7 +35,8 @@ export default function AIPage() {
   const [classId, setClassId] = useState(null);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit
-  const MAX_TEXT_SIZE = 2000; // 200 word limit (5 pages single spaced)
+  const MAX_TEXT_SIZE = 3000; // 3000 word limit (~5 pages single spaced)
+  const MIN_TEXT_SIZE = 200; // minimum 200 words
 
   // Extract text
   async function extractTextFromDocx(file) {
@@ -73,7 +74,7 @@ export default function AIPage() {
   function handleTextChange(e) {
     const value = e.target.value;
     if (value.length > MAX_TEXT_SIZE) {
-      setError('Text content exceeds the 200 word limit');
+      setError('Text content exceeds the 3000 word limit');
       setText('');
       return;
     }
@@ -115,7 +116,11 @@ export default function AIPage() {
       return;
     }
     if (text.length > MAX_TEXT_SIZE) {
-      setError('Text content exceeds the 200 word limit');
+      setError('Text content exceeds the 3000 word limit');
+      return;
+    }
+    if (text.length < MIN_TEXT_SIZE) {
+      setError('Text content is too short');
       return;
     }
 
@@ -185,7 +190,7 @@ export default function AIPage() {
         AI Generation
       </PageTitle>
 
-      <p className="text-slate-800 font-medium">
+      <p className="font-medium text-slate-800">
         Auto-generate a class and assignments with the power of AI.
       </p>
 
@@ -204,8 +209,8 @@ export default function AIPage() {
           <span className="underline">or</span> copy and paste its text
           content.
         </p>
-        <div className="ml-9 mt-6">
-          <div className="text-xs overflow-hidden w-fit text-slate-700 rounded border border-slate-300 mb-4 flex items-center justify-between">
+        <div className="mt-6 ml-9">
+          <div className="flex items-center justify-between mb-4 overflow-hidden text-xs border rounded w-fit text-slate-700 border-slate-300">
             <button
               className={cn(
                 'z-20 px-2 py-[2px]',
@@ -229,7 +234,7 @@ export default function AIPage() {
           </div>
 
           {type === 'file' ? (
-            <div className="max-w-md flex items-center gap-2">
+            <div className="flex items-center max-w-md gap-2">
               <Input
                 id="file"
                 type="file"
@@ -252,18 +257,18 @@ export default function AIPage() {
                 onChange={handleTextChange}
                 value={text}
                 placeholder="Paste text content here"
-                className="w-full mb-2 border rounded resize-none p-2"
+                className="w-full p-2 mb-2 border rounded resize-none"
               />
               <Button
                 className="px-10"
                 onClick={handleTextGeneration}
-                disabled={isLoading}
+                disabled={isLoading || !text}
               >
                 Generate
               </Button>
             </div>
           )}
-          <p className="text-sm text-red-700 mt-1">{error}</p>
+          <p className="mt-1 text-sm text-red-700">{error}</p>
         </div>
       </div>
 
@@ -273,23 +278,23 @@ export default function AIPage() {
         </p>
 
         {isLoading && (
-          <div className="flex items-center gap-2 justify-center my-12">
+          <div className="flex items-center justify-center gap-2 my-12">
             <AiOutlineLoading className="animate-spin" />
             Loading{' '}
           </div>
         )}
 
         {result && (
-          <div className="ml-9 mt-6">
+          <div className="mt-6 ml-9">
             <div className="my-3">
-              <p className="text-slate-700 text-xs">Class Name:</p>
+              <p className="text-xs text-slate-700">Class Name:</p>
               <p className="text-sm font-medium">
                 {result.class_info.name}
               </p>
             </div>
 
             <div className="my-3">
-              <p className="text-slate-700 text-xs">Professor:</p>
+              <p className="text-xs text-slate-700">Professor:</p>
               <p className="text-sm font-medium">
                 {result.class_info.professor}
               </p>
@@ -297,7 +302,7 @@ export default function AIPage() {
 
             {result.assessments.map((assessment, index) => (
               <div key={index} className="my-3">
-                <p className="text-slate-700 text-xs">
+                <p className="text-xs text-slate-700">
                   Assessment {index + 1}:
                 </p>
                 <p className="text-sm font-medium">
@@ -315,7 +320,7 @@ export default function AIPage() {
         </p>
         <div className="flex">
           <Button
-            className="pr-6 pl-4 ml-9 mt-2"
+            className="pl-4 pr-6 mt-2 ml-9"
             onClick={handleConfirm}
             disabled={isLoading || !result}
           >
@@ -328,7 +333,7 @@ export default function AIPage() {
               href={`/classes/${classId}`}
               className="flex items-center gap-2"
             >
-              <Button className="pl-6 pr-3 ml-9 mt-2 " disabled={!result}>
+              <Button className="pl-6 pr-3 mt-2 ml-9 " disabled={!result}>
                 See new class
                 <ArrowUpRightIcon className="h-5 ml-3 animate-bounce" />
               </Button>

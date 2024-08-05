@@ -1,5 +1,5 @@
 // src/components/assessments/assessment-form.jsx
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
@@ -17,7 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -111,9 +110,9 @@ export default function AssessmentForm({
         const updatedAssessment = await updateAssessment(assessment_id, {
           ...values,
           classId: values.class,
-        })    
-        console.log(onEdit)
-        if (onEdit){
+        });
+        console.log(onEdit);
+        if (onEdit) {
           onEdit(updatedAssessment);
         }
       } else if (action === 'create') {
@@ -121,7 +120,7 @@ export default function AssessmentForm({
           ...values,
           classId: values.class,
         });
-        if (onCreate){
+        if (onCreate) {
           onCreate(newAssessment);
         }
       }

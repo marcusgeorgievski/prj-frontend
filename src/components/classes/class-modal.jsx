@@ -11,7 +11,6 @@ import { Button } from '../ui/button';
 import { DialogClose } from '@radix-ui/react-dialog';
 import ClassForm from './class-form';
 import { useState } from 'react';
-import { set } from 'react-hook-form';
 
 export default function ClassModal({
   children,

@@ -5,11 +5,6 @@ import { useSidebar } from '@/state/sidebar-state';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-// interface SidebarItemProps {
-//     icon?: React.ReactNode
-//     href?: string
-//     children?: React.ReactNode
-// }
 
 export function SidebarItem({ icon, href, children }) {
   const { isOpen } = useSidebar();

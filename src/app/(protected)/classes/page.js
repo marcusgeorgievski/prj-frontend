@@ -21,7 +21,7 @@ export default async function ClassesPage() {
 
   if (!classes || !assessments) {
     return (
-      <p className="text-center py-20">
+      <p className="py-20 text-center">
         Could not fetch classes and/or assessments
       </p>
     );

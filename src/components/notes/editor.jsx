@@ -9,15 +9,12 @@ import Paragraph from '@tiptap/extension-paragraph';
 import Text from '@tiptap/extension-text';
 import ListItem from '@tiptap/extension-list-item';
 import Toolbar from './toolbar';
-import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Trash } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 export default function Editor({ note }) {
   const [content, setContent] = useState(note.content);
-  const [title, setTitle] = useState(note.name);
-  const [classId, setClassId] = useState(note.class_id);
 
   console.log(note);
 

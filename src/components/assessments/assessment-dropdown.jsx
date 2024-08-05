@@ -1,13 +1,12 @@
 // src/components/assessments/assessment-dropdown.jsx
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '../ui/button';
 import { FaPencilAlt } from 'react-icons/fa';
 import { Dialog } from '../ui/dialog';
 import { deleteAssessment } from '@/actions/assessments';
@@ -15,7 +14,12 @@ import { useRouter } from 'next/navigation';
 import { PiTrash, PiNotePencil } from 'react-icons/pi';
 import AssessmentActionButton from '@/components/assessments/assessment-button';
 
-export function AssessmentDropdown({ assessmentData, onDelete, classesList, onEdit }) {
+export function AssessmentDropdown({
+  assessmentData,
+  onDelete,
+  classesList,
+  onEdit,
+}) {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -54,12 +58,12 @@ export function AssessmentDropdown({ assessmentData, onDelete, classesList, onEd
         <DropdownMenuContent align="end">
           {/*Edit*/}
           <AssessmentActionButton
-          action="update"
-          button={true}
-          classesList={classesList}
-          assessmentData={assessmentData}
-          onEdit={onEdit}
-        />
+            action="update"
+            button={true}
+            classesList={classesList}
+            assessmentData={assessmentData}
+            onEdit={onEdit}
+          />
           {/* <DropdownMenuItem asChild>
             <button
               onClick={handleDialogOpen}

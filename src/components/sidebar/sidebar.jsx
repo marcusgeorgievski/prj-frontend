@@ -1,8 +1,6 @@
 import { cn } from '@/lib/utils';
 import { useSidebar } from '@/state/sidebar-state';
 import React, { useEffect } from 'react';
-import { ArrowRightLeftIcon } from 'lucide-react';
-import { Separator } from '../ui/separator';
 import { SidebarItem } from './sidebar-item';
 
 export default function Sidebar({ classes }) {

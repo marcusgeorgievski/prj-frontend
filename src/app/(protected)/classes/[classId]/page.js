@@ -1,10 +1,9 @@
 import { getNotesByClassId } from '@/actions/notes';
-import NotesTab from './notes-tab';
 import { currentUser } from '@clerk/nextjs/server';
 import NoteActionButton from '@/components/notes/note-button';
 import NoteCard from '@/components/notes/note-card';
 import { AssessmentsTab } from './assessment-tab';
-import { getClasses } from "@/actions/classes"
+import { getClasses } from '@/actions/classes';
 
 export default async function ClassSlugPage({
   params: { classId },

@@ -1,4 +1,4 @@
-import { getNoteById, getNotesByUserId } from '@/actions/notes';
+import { getNotesByUserId } from '@/actions/notes';
 import NoteActionButton from '@/components/notes/note-button';
 import NoteCard from '@/components/notes/note-card';
 import PageTitle from '@/components/page-title';
@@ -15,7 +15,7 @@ export default async function NotesPage() {
   const notes = await getNotesByUserId(user.id);
 
   if (!notes) {
-    return <p className="text-center py-20">Could not fetch notes</p>;
+    return <p className="py-20 text-center">Could not fetch notes</p>;
   }
 
   return (

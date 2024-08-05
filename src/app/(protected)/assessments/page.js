@@ -1,13 +1,7 @@
-import { Card, CardHeader } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-
 import { AssessmentsTemplate } from '@/components/assessments/assessment-template';
 import { getClasses } from '@/actions/classes';
 import { getAssessmentsByUserId } from '@/actions/assessments';
 import { currentUser } from '@clerk/nextjs/server';
-import { getAssessmentsByClassId } from '@/actions/assessments';
-import Loading from './loading';
 
 export default async function AssessmentsPage() {
   const user = await currentUser();
@@ -21,7 +15,7 @@ export default async function AssessmentsPage() {
 
   if (!classes || !assessments) {
     return (
-      <p className="text-center py-20">
+      <p className="py-20 text-center">
         Could not fetch classes and/or assessments
       </p>
     );

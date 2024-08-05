@@ -9,9 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
 import { DialogClose } from '@radix-ui/react-dialog';
-// import ClassForm from './class-form';
 import { useState } from 'react';
-import { set } from 'react-hook-form';
 import NoteForm from './note-form';
 
 export default function NoteModal({

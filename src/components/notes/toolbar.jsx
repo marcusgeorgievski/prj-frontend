@@ -7,10 +7,6 @@ import {
   Heading1,
   Heading2,
   Heading3,
-  Underline,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
   List,
   ListOrdered,
 } from 'lucide-react';

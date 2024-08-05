@@ -63,7 +63,7 @@ export default async function Home() {
 
       <div className="grid-flow-col md:grid grid-cols-3 mt-20  max-w-[800px] gap-4 space-y-4 md:space-y-0 p-4">
         <InfoBox title="Features" icon={RiDashboardFill}>
-          Keep track of all your assignments on a single platform
+          Keep track of all your assessments on a single platform
         </InfoBox>
 
         <InfoBox title="Features" icon={LuFileType2}>
@@ -72,7 +72,8 @@ export default async function Home() {
         </InfoBox>
 
         <InfoBox title="Features" icon={RiRobot2Fill}>
-          Use the power of AI to help you organize your assessments
+          Use the power of AI to help you automate creating your classes
+          and assessments
         </InfoBox>
       </div>
     </main>
