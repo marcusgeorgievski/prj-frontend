@@ -13,6 +13,7 @@ import { deleteAssessment } from '@/actions/assessments';
 import { useRouter } from 'next/navigation';
 import { PiTrash, PiNotePencil } from 'react-icons/pi';
 import AssessmentActionButton from '@/components/assessments/assessment-button';
+import { VscKebabVertical } from 'react-icons/vsc';
 
 export function AssessmentDropdown({
   assessmentData,
@@ -52,7 +53,7 @@ export function AssessmentDropdown({
       <DropdownMenu>
         <DropdownMenuTrigger>
           <span className="cursor-pointer">
-            <FaPencilAlt onClick={handleDialogOpen} />
+            <VscKebabVertical onClick={handleDialogOpen}/>
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
