@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PageTitle from '@/components/page-title';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ import {
 } from 'react-icons/pi';
 
 import { AssessmentsTable } from '@/components/assessments/assessment-table';
-import ClassActionButton from '@/components/classes/class-button';
+//import ClassActionButton from '@/components/classes/class-button';
 import ClassCard from '@/components/classes/class-card';
 import NoteCard from '../notes/note-card';
 
@@ -33,11 +33,14 @@ export function SearchTemplate({ classes, notes, assessments }) {
   const [filteredClasses, setFilteredClasses] = useState([]);
   const [filteredAssessments, setFilteredAssessments] = useState([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
+  const [showClasses, setShowClasses] = useState(true);
+  const [showAssessments, setShowAssessments] = useState(true);
+  const [showNotes, setShowNotes] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
-
+  useEffect(() => {
+    const query = searchQuery.toLowerCase();
+    
     setFilteredClasses(
       classes.filter((c) =>
         c.name.toLowerCase().includes(query) || c.details.toLowerCase().includes(query) || c.professor.toLowerCase().includes(query)
@@ -55,7 +58,18 @@ export function SearchTemplate({ classes, notes, assessments }) {
         n.name.toLowerCase().includes(query) || n.content.toLowerCase().includes(query)
       )
     );
+  }, [searchQuery, classes, assessments, notes]);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
   };
+
+  const classesList = classes.map((classTemp) => {
+    return {
+      class_id: classTemp.class_id,
+      name: classTemp.name,
+    };
+  });
 
   return (
     <div className="w-full">
@@ -67,8 +81,45 @@ export function SearchTemplate({ classes, notes, assessments }) {
           value={searchQuery}
           onChange={handleSearch}
           placeholder="Search..."
-          className="w-full p-2 mb-4 border border-gray-300 rounded"
+          className="w-full p-2 mb-8 border border-gray-300 rounded"
         />
+      </div>
+
+      <div className="w-full flex items-center space-x-4">
+        <button
+          className="p-2 border border-gray-300 rounded"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          Filter Options
+        </button>
+        {isDropdownOpen && (
+          <div className="flex space-x-4">
+            <label>
+              <input
+                type="checkbox"
+                checked={showClasses}
+                onChange={(e) => setShowClasses(e.target.checked)}
+              />
+              Classes
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={showAssessments}
+                onChange={(e) => setShowAssessments(e.target.checked)}
+              />
+              Assessments
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={showNotes}
+                onChange={(e) => setShowNotes(e.target.checked)}
+              />
+              Notes
+            </label>
+          </div>
+        )}
       </div>
 
       {!searchQuery ? (
@@ -78,7 +129,8 @@ export function SearchTemplate({ classes, notes, assessments }) {
       ) : (
         <>
           {/* Filtered Classes */}
-          <div className="w-full mt-8">
+          {showClasses && (
+          <div className={`w-full mt-8 ${!showAssessments ? 'mb-8' : ''}`}>
             <PageTitle icon={PiChalkboardTeacherLight} sub>
               Classes
             </PageTitle>
@@ -96,12 +148,7 @@ export function SearchTemplate({ classes, notes, assessments }) {
                     <div key={c.id}>
                       <ClassCard
                         key={c.id}
-                        classData={{
-                          ...c,
-                          name: <span>{highlightText(c.name, searchQuery)}</span>,
-                          details: <span>{highlightText(c.details, searchQuery)}</span>,
-                          professor: <span>{highlightText(c.professor, searchQuery)}</span>,
-                        }}
+                        classData={c}
                       />
                     </div>
                   ))}
@@ -109,8 +156,11 @@ export function SearchTemplate({ classes, notes, assessments }) {
               </div>
             )}
           </div>
+          )}
 
+          
           {/* Filtered Assessments */}
+          {showAssessments && (
           <div className="w-full mb-8 mt-8">
             <PageTitle icon={PiListChecksLight} sub>
               Assessments
@@ -126,20 +176,19 @@ export function SearchTemplate({ classes, notes, assessments }) {
               <div>
                 <div className="grid items-center">
                   <AssessmentsTable
-                    assessments={filteredAssessments.map(a => ({
-                      ...a,
-                      name: <span>{highlightText(a.name, searchQuery)}</span>,
-                      description: <span>{highlightText(a.description, searchQuery)}</span>,
-                    }))}
-                    isDashboard={true}
+                    assessments={filteredAssessments}
+                    classesList={classesList}
                   />
                 </div>
               </div>
             )}
           </div>
+          )}
+
 
           {/* Filtered Notes */}
-          <div className="w-full mb-8">
+          {showNotes && (
+          <div className={`w-full mb-8 ${!showAssessments ? 'mt-8' : ''}`}>
             <PageTitle icon={PiNotePencilLight} sub>
               Notes
             </PageTitle>
@@ -158,11 +207,7 @@ export function SearchTemplate({ classes, notes, assessments }) {
                     <div key={n.id}>
                       <NoteCard
                         key={n.id}
-                        noteData={{
-                          ...n,
-                          name: <span>{highlightText(n.name, searchQuery)}</span>,
-                          content: <span>{highlightText(n.content, searchQuery)}</span>,
-                        }}
+                        noteData={n}
                       />
                     </div>
                   ))}
@@ -170,6 +215,7 @@ export function SearchTemplate({ classes, notes, assessments }) {
               </div>
             )}
           </div>
+          )}
         </>
       )}
     </div>
