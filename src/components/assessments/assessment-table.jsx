@@ -54,6 +54,13 @@ export function AssessmentsTable({ title, assessments, onDelete, classesList, on
     // window.location.href = `/notes/#${assessmentId}`;
   };
 
+  const truncateText = (text, maxLength = 15) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+    return text;
+  };
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-bold">{title}</h3>
@@ -62,19 +69,19 @@ export function AssessmentsTable({ title, assessments, onDelete, classesList, on
           <thead className="bg-gray-50">
             <tr>
               {[
-                'status',
-                'class_name',
-                'name',
-                'description',
-                'weight',
-                'due_date',
-              ].map((key) => (
+                { key: 'status', label: 'Status', width: 'w-1/6' },
+                { key: 'class_name', label: 'Class Name', width: 'w-1/6' },
+                { key: 'name', label: 'Name', width: 'w-1/6' },
+                { key: 'description', label: 'Description', width: 'w-1/6' },
+                { key: 'weight', label: 'Weight', width: 'w-1/6' },
+                { key: 'due_date', label: 'Due Date', width: 'w-1/6' },
+              ].map(({ key, label, width }) => (
                 <th
                   key={key}
-                  className="px-6 py-1 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer"
+                  className={`px-4 py-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer ${width}`}
                   onClick={() => onSort(key)}
                 >
-                  {key.replace('_', ' ')}
+                  {label}
                   {getSortArrow(key)}
                 </th>
               ))}
@@ -88,25 +95,25 @@ export function AssessmentsTable({ title, assessments, onDelete, classesList, on
                 className="hover:bg-gray-50"
                 onClick={() => handleRowClick(assessment.id)}
               >
-                <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
+                 <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
                   <span
                     className={`inline-block w-3 h-3 mr-2 rounded-full ${getStatusColor(
                       assessment.status
                     )}`}
                   ></span>
-                  {assessment.status}
+                  {truncateText(assessment.status)}
                 </td>
                 <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  {assessment.class_name}
+                  {truncateText(assessment.class_name)}
                 </td>
                 <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  {assessment.name}
+                  {truncateText(assessment.name)}
                 </td>
                 <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  {assessment.description}
+                  {truncateText(assessment.description)}
                 </td>
                 <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  {assessment.weight} %
+                  {truncateText(`${assessment.weight} %`)}
                 </td>
                 <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
                   {new Date(assessment.due_date).toLocaleDateString(
