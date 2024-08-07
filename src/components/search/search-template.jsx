@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import PageTitle from '@/components/page-title';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ import {
 } from 'react-icons/pi';
 
 import { AssessmentsTable } from '@/components/assessments/assessment-table';
-//import ClassActionButton from '@/components/classes/class-button';
+import ClassActionButton from '@/components/classes/class-button';
 import ClassCard from '@/components/classes/class-card';
 import NoteCard from '../notes/note-card';
 
@@ -42,22 +42,32 @@ export function SearchTemplate({ classes, notes, assessments }) {
     const query = searchQuery.toLowerCase();
     
     setFilteredClasses(
-      classes.filter((c) =>
-        c.name.toLowerCase().includes(query) || c.details.toLowerCase().includes(query) || c.professor.toLowerCase().includes(query)
-      )
-    );
+    classes.filter((c) => {
+      const nameMatches = c.name && c.name.toLowerCase().includes(query);
+      const detailsMatches = c.details && c.details.toLowerCase().includes(query);
+      const professorMatches = c.professor && c.professor.toLowerCase().includes(query);
 
-    setFilteredAssessments(
-      assessments.filter((a) =>
-        a.name.toLowerCase().includes(query) || a.description.toLowerCase().includes(query)
-      )
-    );
+      return nameMatches || detailsMatches || professorMatches;
+    })
+  );
 
-    setFilteredNotes(
-      notes.filter((n) =>
-        n.name.toLowerCase().includes(query) || n.content.toLowerCase().includes(query)
-      )
-    );
+  setFilteredAssessments(
+    assessments.filter((a) => {
+      const nameMatches = a.name && a.name.toLowerCase().includes(query);
+      const descriptionMatches = a.description && a.description.toLowerCase().includes(query);
+
+      return nameMatches || descriptionMatches;
+    })
+  );
+
+  setFilteredNotes(
+    notes.filter((n) => {
+      const nameMatches = n.name && n.name.toLowerCase().includes(query);
+      const contentMatches = n.content && n.content.toLowerCase().includes(query);
+
+      return nameMatches || contentMatches;
+    })
+  );
   }, [searchQuery, classes, assessments, notes]);
 
   const handleSearch = (e) => {
