@@ -13,12 +13,12 @@ import ClassActionButton from './class-button';
 import { PiTrash } from 'react-icons/pi';
 import { deleteClass } from '@/actions/classes';
 import { useRouter } from 'next/navigation';
+import DeleteActionButton from '../delete-button';
 
 export function ClassDropdown({ classData }) {
   const router = useRouter();
 
-  async function handleDelete(e) {
-    e.stopPropagation();
+  async function handleDelete() {
     await deleteClass(classData.class_id);
     router.refresh();
   }
@@ -43,13 +43,11 @@ export function ClassDropdown({ classData }) {
 
         {/* Delete */}
         <DropdownMenuItem asChild>
-          <button
-            onClick={handleDelete}
-            className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
-          >
-            <PiTrash /> Delete
-          </button>
-        </DropdownMenuItem>
+          <DeleteActionButton 
+            onConfirm={handleDelete}
+            title="Delete Assessment"
+          />
+          </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

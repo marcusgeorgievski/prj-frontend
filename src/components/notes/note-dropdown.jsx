@@ -6,6 +6,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+import { useState } from 'react';
 import { Button } from '../ui/button';
 import { VscKebabVertical } from 'react-icons/vsc';
 import { DialogTrigger } from '../ui/dialog';
@@ -13,12 +14,13 @@ import { PiTrash } from 'react-icons/pi';
 import { useRouter } from 'next/navigation';
 import NoteActionButton from './note-button';
 import { deleteNote } from '@/actions/notes';
+import DeleteActionButton from '../delete-button';
 
 export default function NoteDropdown({ noteData }) {
   const router = useRouter();
 
-  async function handleDelete(e) {
-    e.stopPropagation();
+
+  async function handleDelete() {
     await deleteNote(noteData.note_id);
     router.refresh();
   }
@@ -43,13 +45,11 @@ export default function NoteDropdown({ noteData }) {
 
         {/* Delete */}
         <DropdownMenuItem asChild>
-          <button
-            onClick={handleDelete}
-            className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
-          >
-            <PiTrash /> Delete
-          </button>
-        </DropdownMenuItem>
+          <DeleteActionButton 
+            onConfirm={handleDelete}
+            title="Delete Assessment"
+          />
+          </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
