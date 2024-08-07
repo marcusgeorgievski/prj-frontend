@@ -10,7 +10,7 @@ export default function AssessmentActionButton({
   button = true,
   classesList,
   onCreate,
-  onEdit
+  onEdit,
 }) {
   if (!button) {
     return (
@@ -34,26 +34,30 @@ export default function AssessmentActionButton({
   }
 
   return (
-    <AssessmentModal 
-      classesList={classesList} 
+    <AssessmentModal
+      classesList={classesList}
       action={action}
       assessmentData={assessmentData}
       onCreate={onCreate}
       onEdit={onEdit}
-      >
+    >
       <DialogTrigger asChild>
-        <Button variant="ghost" className="gap-2">
-        {action === 'create' ? (
-          <>
-            <PiPlus />
-            Create Assessment
-          </>
-        ) : (
-          <>
-            <PiPencil />
-            Edit Assessment
-          </>
-        )}
+        {/* Cursor none for consistency */}
+        <Button
+          variant="ghost"
+          className="gap-2 px-2 text-sm font-normal cursor-none"
+        >
+          {action === 'create' ? (
+            <>
+              <PiPlus />
+              Create Assessment
+            </>
+          ) : (
+            <>
+              <PiPencil />
+              Edit Assessment
+            </>
+          )}
         </Button>
       </DialogTrigger>
     </AssessmentModal>

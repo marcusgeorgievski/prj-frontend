@@ -1,7 +1,13 @@
 import { AssessmentDropdown } from '@/components/assessments/assessment-dropdown';
 import { useState, useEffect } from 'react';
 
-export function AssessmentsTable({ title, assessments, onDelete, classesList, onEdit }) {
+export function AssessmentsTable({
+  title,
+  assessments,
+  onDelete,
+  classesList,
+  onEdit,
+}) {
   const [sortedAssessments, setSortedAssessments] = useState([
     ...assessments,
   ]);
@@ -72,7 +78,11 @@ export function AssessmentsTable({ title, assessments, onDelete, classesList, on
                 { key: 'status', label: 'Status', width: 'w-1/6' },
                 { key: 'class_name', label: 'Class Name', width: 'w-1/6' },
                 { key: 'name', label: 'Name', width: 'w-1/6' },
-                { key: 'description', label: 'Description', width: 'w-1/6' },
+                {
+                  key: 'description',
+                  label: 'Description',
+                  width: 'w-1/6',
+                },
                 { key: 'weight', label: 'Weight', width: 'w-1/6' },
                 { key: 'due_date', label: 'Due Date', width: 'w-1/6' },
               ].map(({ key, label, width }) => (
@@ -95,7 +105,7 @@ export function AssessmentsTable({ title, assessments, onDelete, classesList, on
                 className="hover:bg-gray-50"
                 onClick={() => handleRowClick(assessment.id)}
               >
-                 <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
+                <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
                   <span
                     className={`inline-block w-3 h-3 mr-2 rounded-full ${getStatusColor(
                       assessment.status
@@ -126,7 +136,7 @@ export function AssessmentsTable({ title, assessments, onDelete, classesList, on
                     }
                   )}
                 </td>
-                <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
+                <td className="px-4 py-1 text-sm text-gray-500 whitespace-nowrap">
                   <AssessmentDropdown
                     assessmentData={assessment}
                     onDelete={onDelete}

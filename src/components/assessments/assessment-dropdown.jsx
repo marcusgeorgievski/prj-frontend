@@ -15,6 +15,8 @@ import { PiTrash, PiNotePencil } from 'react-icons/pi';
 import AssessmentActionButton from '@/components/assessments/assessment-button';
 import { VscKebabVertical } from 'react-icons/vsc';
 import DeleteActionButton from '../delete-button';
+import { Button } from '../ui/button';
+import { cn } from '@/lib/utils';
 
 export function AssessmentDropdown({
   assessmentData,
@@ -46,16 +48,26 @@ export function AssessmentDropdown({
     } catch (error) {
       console.error('Failed to delete assessment:', error);
     }
-    setIsDialogOpen(false); 
+    setIsDialogOpen(false);
   }
+
+  console.log(isDialogOpen);
 
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          <span className="cursor-pointer">
-            <VscKebabVertical onClick={handleDialogOpen}/>
-          </span>
+        <DropdownMenuTrigger asChild>
+          <button
+            onClick={handleDialogOpen}
+            className={cn(
+              'flex items-center justify-center px-[3px] py-[2px] transition-colors rounded hover:bg-accent outline-none'
+            )}
+          >
+            <VscKebabVertical
+              onClick={handleDialogOpen}
+              className="-translate-x-[1px]"
+            />
+          </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align={'end'}>
           {/*Edit*/}
@@ -67,8 +79,8 @@ export function AssessmentDropdown({
             onEdit={onEdit}
           />
 
-         {/*Delete*/}
-         <DropdownMenuItem asChild>
+          {/*Delete*/}
+          <DropdownMenuItem asChild>
             <button
               onClick={handleDelete}
               className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
