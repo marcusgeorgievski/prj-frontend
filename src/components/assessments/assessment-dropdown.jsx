@@ -59,7 +59,6 @@ export function AssessmentDropdown({
         <DropdownMenuContent align={'end'}>
           {/*Edit*/}
           <DropdownMenuItem asChild>
-            <div className="flex items-center justify-between">
               <AssessmentActionButton
                 action="update"
                 button={true}
@@ -67,7 +66,6 @@ export function AssessmentDropdown({
                 assessmentData={assessmentData}
                 onEdit={onEdit}
               />
-            </div>
           </DropdownMenuItem>
 
           {/*Delete*/}
