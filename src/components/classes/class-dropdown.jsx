@@ -18,11 +18,12 @@ import DeleteActionButton from '../delete-button';
 export function ClassDropdown({ classData }) {
   const router = useRouter();
 
-  async function handleDelete() {
+  async function handleDelete(e) {
+    e.stopPropagation();
     await deleteClass(classData.class_id);
     router.refresh();
   }
-
+  
   return (
     <DropdownMenu>
       {/* TRIGGER */}

@@ -35,7 +35,8 @@ export function AssessmentDropdown({
     setIsDialogOpen(false);
   };
 
-  async function handleDelete() {
+  async function handleDelete(e) {
+    e.stopPropagation();
     try {
       await deleteAssessment(assessmentData.assessment_id);
       router.refresh();

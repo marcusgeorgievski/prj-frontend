@@ -51,7 +51,7 @@ export default function AssessmentActionButton({
         ) : (
           <>
             <PiPencil />
-            Update Assessment
+            Edit Assessment
           </>
         )}
         </Button>

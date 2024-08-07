@@ -20,7 +20,8 @@ export default function NoteDropdown({ noteData }) {
   const router = useRouter();
 
 
-  async function handleDelete() {
+  async function handleDelete(e) {
+    e.stopPropagation();
     await deleteNote(noteData.note_id);
     router.refresh();
   }
