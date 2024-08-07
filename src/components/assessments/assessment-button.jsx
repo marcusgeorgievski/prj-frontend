@@ -43,13 +43,17 @@ export default function AssessmentActionButton({
       >
       <DialogTrigger asChild>
         <Button variant="ghost" className="gap-2">
-          <PiPlus />
-          {
-            {
-              create: 'Create Assessment',
-              update: 'Update Assessment',
-            }[action]
-          }
+        {action === 'create' ? (
+          <>
+            <PiPlus />
+            Create Assessment
+          </>
+        ) : (
+          <>
+            <PiPencil />
+            Edit Assessment
+          </>
+        )}
         </Button>
       </DialogTrigger>
     </AssessmentModal>

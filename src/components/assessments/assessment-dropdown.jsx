@@ -13,6 +13,8 @@ import { deleteAssessment } from '@/actions/assessments';
 import { useRouter } from 'next/navigation';
 import { PiTrash, PiNotePencil } from 'react-icons/pi';
 import AssessmentActionButton from '@/components/assessments/assessment-button';
+import { VscKebabVertical } from 'react-icons/vsc';
+import DeleteActionButton from '../delete-button';
 
 export function AssessmentDropdown({
   assessmentData,
@@ -37,7 +39,6 @@ export function AssessmentDropdown({
     e.stopPropagation();
     try {
       await deleteAssessment(assessmentData.assessment_id);
-      //ensure router refresh
       router.refresh();
       if (onDelete) {
         onDelete(assessmentData.assessment_id);
@@ -45,6 +46,7 @@ export function AssessmentDropdown({
     } catch (error) {
       console.error('Failed to delete assessment:', error);
     }
+    setIsDialogOpen(false); 
   }
 
   return (
@@ -52,10 +54,10 @@ export function AssessmentDropdown({
       <DropdownMenu>
         <DropdownMenuTrigger>
           <span className="cursor-pointer">
-            <FaPencilAlt onClick={handleDialogOpen} />
+            <VscKebabVertical onClick={handleDialogOpen}/>
           </span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align={'end'}>
           {/*Edit*/}
           <AssessmentActionButton
             action="update"
@@ -64,17 +66,9 @@ export function AssessmentDropdown({
             assessmentData={assessmentData}
             onEdit={onEdit}
           />
-          {/* <DropdownMenuItem asChild>
-            <button
-              onClick={handleDialogOpen}
-              className="flex items-center w-full gap-2"
-            >
-              <PiNotePencil /> Edit
-            </button>
-          </DropdownMenuItem> */}
 
-          {/*Delete*/}
-          <DropdownMenuItem asChild>
+         {/*Delete*/}
+         <DropdownMenuItem asChild>
             <button
               onClick={handleDelete}
               className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"

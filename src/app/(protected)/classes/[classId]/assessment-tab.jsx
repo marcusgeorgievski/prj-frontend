@@ -138,6 +138,7 @@ export function AssessmentsTab({ classId, classesList }) {
             : assessment
         )
       );
+      fetchAssessments();
     } catch (error) {
       console.error('Error fetching class data or updating assessments:', error);
     }
