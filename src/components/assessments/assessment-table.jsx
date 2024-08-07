@@ -71,83 +71,88 @@ export function AssessmentsTable({
     <div className="space-y-4">
       <h3 className="text-lg font-bold">{title}</h3>
       {sortedAssessments.length > 0 ? (
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              {[
-                { key: 'status', label: 'Status', width: 'w-1/6' },
-                { key: 'class_name', label: 'Class Name', width: 'w-1/6' },
-                { key: 'name', label: 'Name', width: 'w-1/6' },
-                {
-                  key: 'description',
-                  label: 'Description',
-                  width: 'w-1/6',
-                },
-                { key: 'weight', label: 'Weight', width: 'w-1/6' },
-                { key: 'due_date', label: 'Due Date', width: 'w-1/6' },
-              ].map(({ key, label, width }) => (
-                <th
-                  key={key}
-                  className={`px-4 py-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer ${width}`}
-                  onClick={() => onSort(key)}
-                >
-                  {label}
-                  {getSortArrow(key)}
-                </th>
-              ))}
-              <th></th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {sortedAssessments.map((assessment) => (
-              <tr
-                key={assessment.assessment_id}
-                className="hover:bg-gray-50"
-                onClick={() => handleRowClick(assessment.id)}
-              >
-                <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  <span
-                    className={`inline-block w-3 h-3 mr-2 rounded-full ${getStatusColor(
-                      assessment.status
-                    )}`}
-                  ></span>
-                  {truncateText(assessment.status)}
-                </td>
-                <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  {truncateText(assessment.class_name)}
-                </td>
-                <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  {truncateText(assessment.name)}
-                </td>
-                <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  {truncateText(assessment.description)}
-                </td>
-                <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  {truncateText(`${assessment.weight} %`)}
-                </td>
-                <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  {new Date(assessment.due_date).toLocaleDateString(
-                    'en-US',
-                    {
-                      month: 'long',
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: 'numeric',
-                    }
-                  )}
-                </td>
-                <td className="px-4 py-1 text-sm text-gray-500 whitespace-nowrap">
-                  <AssessmentDropdown
-                    assessmentData={assessment}
-                    onDelete={onDelete}
-                    classesList={classesList}
-                    onEdit={onEdit}
-                  />
-                </td>
+        <div className="w-full overflow-x-scroll">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr className="text-nowrap">
+                {[
+                  { key: 'status', label: 'Status', width: 'w-1/6' },
+                  {
+                    key: 'class_name',
+                    label: 'Class Name',
+                    width: 'w-1/6',
+                  },
+                  { key: 'name', label: 'Name', width: 'w-1/6' },
+                  {
+                    key: 'description',
+                    label: 'Description',
+                    width: 'w-1/6',
+                  },
+                  { key: 'weight', label: 'Weight', width: 'w-1/6' },
+                  { key: 'due_date', label: 'Due Date', width: 'w-1/6' },
+                ].map(({ key, label, width }) => (
+                  <th
+                    key={key}
+                    className={`px-4  py-2 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer ${width}`}
+                    onClick={() => onSort(key)}
+                  >
+                    {label} {getSortArrow(key)}
+                  </th>
+                ))}
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {sortedAssessments.map((assessment) => (
+                <tr
+                  key={assessment.assessment_id}
+                  className=" hover:bg-gray-50"
+                  onClick={() => handleRowClick(assessment.id)}
+                >
+                  <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
+                    <span
+                      className={`inline-block w-3 h-3 mr-2 rounded-full ${getStatusColor(
+                        assessment.status
+                      )}`}
+                    ></span>
+                    {truncateText(assessment.status)}
+                  </td>
+                  <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
+                    {truncateText(assessment.class_name)}
+                  </td>
+                  <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
+                    {truncateText(assessment.name)}
+                  </td>
+                  <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
+                    {truncateText(assessment.description)}
+                  </td>
+                  <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
+                    {truncateText(`${assessment.weight} %`)}
+                  </td>
+                  <td className="px-6 py-1 text-sm text-gray-500 whitespace-nowrap">
+                    {new Date(assessment.due_date).toLocaleDateString(
+                      'en-US',
+                      {
+                        month: 'long',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                      }
+                    )}
+                  </td>
+                  <td className="px-4 py-1 text-sm text-gray-500 whitespace-nowrap">
+                    <AssessmentDropdown
+                      assessmentData={assessment}
+                      onDelete={onDelete}
+                      classesList={classesList}
+                      onEdit={onEdit}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <p className="text-center text-gray-500 col-span-full">
           No assessments found

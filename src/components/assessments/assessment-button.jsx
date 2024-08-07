@@ -43,7 +43,11 @@ export default function AssessmentActionButton({
     >
       <DialogTrigger asChild>
         {/* Cursor auto (not pointer) for consistency */}
-        <Button variant="ghost" className="gap-2" size="sm">
+        <Button
+          variant="ghost"
+          className="gap-2 text-sm font-normal"
+          size="sm"
+        >
           {action === 'create' ? (
             <>
               <PiPlus />

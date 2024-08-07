@@ -22,7 +22,7 @@ export default function ProtectedLayout({ children }) {
     <div className="min-h-screen">
       <Header />
       <SignedIn>
-        <main className="flex h-[calc(100vh-48px)]">
+        <main className="flex h-[calc(100vh-48px)] overflow-hidden">
           <div>
             <Sidebar />
           </div>
