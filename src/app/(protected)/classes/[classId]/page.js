@@ -31,7 +31,7 @@ export default async function ClassSlugPage({
   if (tab === 'notes') {
     return (
       <div className="w-full">
-        <div className="my-4">
+        <div className="mt-6 mb-4">
           <NoteActionButton button />
         </div>
 

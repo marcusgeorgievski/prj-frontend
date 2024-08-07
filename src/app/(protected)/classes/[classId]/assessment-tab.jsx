@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { getAssessmentsByClassId } from '@/actions/assessments';
-import { getClasses } from "@/actions/classes"
+import { getClasses } from '@/actions/classes';
 import { AssessmentsTable } from '@/components/assessments/assessment-table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { DatePickerWithRange } from '@/components/ui/date-picker';
-import { useAuth } from "@clerk/nextjs"
+import { useAuth } from '@clerk/nextjs';
 import AssessmentActionButton from '@/components/assessments/assessment-button';
 import { useRouter } from 'next/navigation';
 
@@ -30,9 +30,9 @@ export function AssessmentsTab({ classId, classesList }) {
   const [statusFilter, setStatusFilter] = useState('');
   const [dueDateFilter, setDueDateFilter] = useState(null);
 
-  const { userId } = useAuth()
+  const { userId } = useAuth();
   const router = useRouter();
-  
+
   useEffect(() => {
     const fetchClassData = async () => {
       try {
@@ -48,7 +48,7 @@ export function AssessmentsTab({ classId, classesList }) {
   }, [classId, userId]);
 
   const fetchAssessments = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const assessmentsData = await getAssessmentsByClassId(classId);
       const updatedAssessments = assessmentsData.map((assessment) => ({
@@ -69,12 +69,8 @@ export function AssessmentsTab({ classId, classesList }) {
     }
   }, [classData]);
 
-   
-
   let uniqueStatuses = [];
   let filteredAssessments = [];
-
-  
 
   // Filter assessment
   if (assessments) {
@@ -112,35 +108,48 @@ export function AssessmentsTab({ classId, classesList }) {
   const onCreate = async (newAssessment) => {
     try {
       const classes = await getClasses(userId);
-      const selectedClass = classes.find((c) => c.class_id === newAssessment.class_id);
-  
+      const selectedClass = classes.find(
+        (c) => c.class_id === newAssessment.class_id
+      );
+
       if (selectedClass) {
         newAssessment.class_name = selectedClass.name;
       }
-      setAssessments((prevAssessments) => [...prevAssessments, newAssessment]);
+      setAssessments((prevAssessments) => [
+        ...prevAssessments,
+        newAssessment,
+      ]);
     } catch (error) {
-      console.error('Error fetching class data or updating assessments:', error);
+      console.error(
+        'Error fetching class data or updating assessments:',
+        error
+      );
     }
   };
 
   const onEdit = async (editedAssessment) => {
     try {
       const classes = await getClasses(userId);
-      const selectedClass = classes.find((c) => c.class_id === editedAssessment.class_id);
-      
+      const selectedClass = classes.find(
+        (c) => c.class_id === editedAssessment.class_id
+      );
+
       if (selectedClass) {
         editedAssessment.class_name = selectedClass.name;
       }
-      setAssessments((prevAssessments) => 
-        prevAssessments.map((assessment) => 
-          assessment.assessment_id === editedAssessment.assessment_id 
-            ? editedAssessment 
+      setAssessments((prevAssessments) =>
+        prevAssessments.map((assessment) =>
+          assessment.assessment_id === editedAssessment.assessment_id
+            ? editedAssessment
             : assessment
         )
       );
       fetchAssessments();
     } catch (error) {
-      console.error('Error fetching class data or updating assessments:', error);
+      console.error(
+        'Error fetching class data or updating assessments:',
+        error
+      );
     }
   };
 
@@ -150,7 +159,7 @@ export function AssessmentsTab({ classId, classesList }) {
 
   return (
     <div className="mt-6">
-       <div>
+      <div className="mb-4">
         <AssessmentActionButton
           action="create"
           button={true}

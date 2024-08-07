@@ -21,7 +21,7 @@ export default function NotesTab({ userId, classId }) {
 
   return (
     <div className="w-full">
-      <div className="my-4">
+      <div className="mt-6 mb-4">
         <NoteActionButton button />
       </div>
 

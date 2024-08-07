@@ -42,11 +42,8 @@ export default function AssessmentActionButton({
       onEdit={onEdit}
     >
       <DialogTrigger asChild>
-        {/* Cursor none for consistency */}
-        <Button
-          variant="ghost"
-          className="gap-2 px-2 text-sm font-normal cursor-none"
-        >
+        {/* Cursor auto (not pointer) for consistency */}
+        <Button variant="ghost" className="gap-2" size="sm">
           {action === 'create' ? (
             <>
               <PiPlus />
