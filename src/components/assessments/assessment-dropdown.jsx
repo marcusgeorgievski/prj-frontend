@@ -58,22 +58,22 @@ export function AssessmentDropdown({
         </DropdownMenuTrigger>
         <DropdownMenuContent align={'end'}>
           {/*Edit*/}
-          <DropdownMenuItem asChild>
-              <AssessmentActionButton
-                action="update"
-                button={true}
-                classesList={classesList}
-                assessmentData={assessmentData}
-                onEdit={onEdit}
-              />
-          </DropdownMenuItem>
-
-          {/*Delete*/}
-          <DropdownMenuItem asChild>
-          <DeleteActionButton 
-            onConfirm={handleDelete}
-            title="Delete Assessment"
+          <AssessmentActionButton
+            action="update"
+            button={true}
+            classesList={classesList}
+            assessmentData={assessmentData}
+            onEdit={onEdit}
           />
+
+         {/*Delete*/}
+         <DropdownMenuItem asChild>
+            <button
+              onClick={handleDelete}
+              className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
+            >
+              <PiTrash /> Delete
+            </button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

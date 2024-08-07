@@ -41,13 +41,15 @@ export function ClassDropdown({ classData }) {
           </DropdownMenuItem>
         </DialogTrigger>
 
-        {/* Delete */}
-        <DropdownMenuItem asChild>
-          <DeleteActionButton 
-            onConfirm={handleDelete}
-            title="Delete Assessment"
-          />
-          </DropdownMenuItem>
+         {/* Delete */}
+         <DropdownMenuItem asChild>
+          <button
+            onClick={handleDelete}
+            className="flex items-center w-full gap-2 text-red-600 hover:!text-red-600"
+          >
+            <PiTrash /> Delete
+          </button>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
