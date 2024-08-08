@@ -1,4 +1,3 @@
-// src/components/assessments/assessment-form.jsx
 import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
@@ -45,6 +44,18 @@ const formSchema = z.object({
   dueDate: z.date({
     required_error: 'Please select a due date.',
   }),
+}).refine((data) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
+  
+  if (data.status === 'overdue') {
+    return true; // Allow past dates for 'overdue' status
+  } else {
+    return data.dueDate >= today;
+  }
+}, {
+  message: "Can't have an assessment due in the past unless its status is overdue.",
+  path: ['dueDate'], // This will make the error appear on the dueDate field
 });
 
 // Mapping for status names
@@ -89,7 +100,7 @@ export default function AssessmentForm({
     status: status || 'not started',
     description: description || '',
     weight: weight || 0,
-    dueDate: dueDate ? new Date(dueDate) : new Date(),
+    dueDate: null,
   };
 
   const form = useForm({
@@ -97,12 +108,42 @@ export default function AssessmentForm({
     defaultValues,
   });
 
+  // useEffect(() => {
+  //   if (assessmentData) {
+  //     form.reset(defaultValues);
+  //   }
+  //   setSubmitFn(() => form.handleSubmit(onSubmit));
+  // }, [assessmentData]);
+
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === 'status' || name === 'dueDate') {
+        form.trigger(['status', 'dueDate']);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
+
   useEffect(() => {
     if (assessmentData) {
+      const formattedDueDate = assessmentData.dueDate 
+        ? new Date(assessmentData.dueDate) 
+        : new Date();
+      
+      form.reset({
+        ...defaultValues,
+        name: assessmentData.name || '',
+        class: assessmentData.class || '',
+        status: assessmentData.status || 'not started',
+        description: assessmentData.description || '',
+        weight: assessmentData.weight || 0,
+        dueDate: formattedDueDate,
+      });
+    } else {
       form.reset(defaultValues);
     }
     setSubmitFn(() => form.handleSubmit(onSubmit));
-  }, [assessmentData]);
+  }, [assessmentData, form, setSubmitFn]);
 
   async function onSubmit(values) {
     try {
@@ -111,7 +152,6 @@ export default function AssessmentForm({
           ...values,
           classId: values.class,
         });
-        console.log(onEdit);
         if (onEdit) {
           onEdit(updatedAssessment);
         }
@@ -240,12 +280,19 @@ export default function AssessmentForm({
             name="dueDate"
             control={form.control}
             render={({ field }) => (
-              <Calendar
+              <>
+                <Calendar
                 mode="single"
-                selected={field.value}
-                onSelect={field.onChange}
+                selected={field.value || new Date()}  // Use new Date() as fallback
+                onSelect={(date) => field.onChange(date || new Date())}
                 className="border rounded-md"
               />
+                {form.formState.errors.dueDate && (
+                  <p className="mt-2 text-sm text-red-600">
+                    {form.formState.errors.dueDate.message}
+                  </p>
+                )}
+              </>
             )}
           />
         </div>
