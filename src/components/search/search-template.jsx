@@ -9,6 +9,8 @@ import {
   PiMagnifyingGlassLight,
   PiNotePencilLight,
   PiListChecksLight,
+  PiCaretLeft,
+  PiCaretRight,
   PiCheck,
   PiX,
   PiMagnifyingGlassBold,
@@ -118,6 +120,11 @@ export function SearchTemplate({ classes, notes, assessments }) {
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           Filter Options
+          {isDropdownOpen ? (
+            <PiCaretLeft className="ml-1 inline" />
+          ) : (
+            <PiCaretRight className="ml-1 inline" />
+          )}
         </Button>
 
         {isDropdownOpen && (

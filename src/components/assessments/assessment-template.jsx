@@ -2,7 +2,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import PageTitle from '@/components/page-title';
-import { PiListChecksLight } from 'react-icons/pi';
+import { PiListChecksLight, PiCaretDown, PiArrowCounterClockwiseBold } from 'react-icons/pi';
 import { DatePickerWithRange } from '@/components/ui/date-picker';
 import { Button } from '@/components/ui/button';
 import {
@@ -108,6 +108,7 @@ export function AssessmentsTemplate({ assessments, classesList }) {
           <DropdownMenuTrigger>
             <div className="px-2 py-1 border border-gray-300 rounded cursor-pointer text-md">
               {statusFilter || 'Status'}
+              <PiCaretDown className="ml-1 inline" />
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -131,6 +132,7 @@ export function AssessmentsTemplate({ assessments, classesList }) {
           <DropdownMenuTrigger>
             <div className="px-2 py-1 border border-gray-300 rounded cursor-pointer text-md">
               {classFilter || 'Classes'}
+              <PiCaretDown className="ml-1 inline" />
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -152,7 +154,8 @@ export function AssessmentsTemplate({ assessments, classesList }) {
 
         <DatePickerWithRange onSetDueDateFilter={setDueDateFilter} />
         <Button onClick={resetFilters} variant="outline">
-          Reset Filters
+          <PiArrowCounterClockwiseBold className="mr-1 inline" />
+           Reset Filters
         </Button>
       </div>
 
