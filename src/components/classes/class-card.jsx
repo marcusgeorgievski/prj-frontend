@@ -34,6 +34,10 @@ export default function ClassCard({
     });
   }, [class_id]);
 
+  
+
+
+
   return (
     <Link href={`/classes/${class_id}`}>
       <Card
