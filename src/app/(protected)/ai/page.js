@@ -35,8 +35,8 @@ export default function AIPage() {
   const [classId, setClassId] = useState(null);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit
-  const MAX_TEXT_SIZE = 3000; // 3000 word limit (~5 pages single spaced)
-  const MIN_TEXT_SIZE = 200; // minimum 200 words
+  const MAX_TEXT_SIZE = 30000; // 30000 char limit
+  const MIN_TEXT_SIZE = 200; // minimum 200 chars
 
   // Extract text
   async function extractTextFromDocx(file) {
