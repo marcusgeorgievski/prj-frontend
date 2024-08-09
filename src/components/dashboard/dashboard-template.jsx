@@ -8,6 +8,7 @@ import {
   PiHouseLineLight,
   PiNotePencilLight,
   PiListChecksLight,
+  PiPlus,
 } from 'react-icons/pi';
 
 import { AssessmentsTable } from '@/components/assessments/assessment-table';
@@ -15,6 +16,8 @@ import ClassActionButton from '@/components/classes/class-button';
 import ClassCard from '@/components/classes/class-card';
 import { recentItems } from '@/lib/utils';
 import NoteCard from '../notes/note-card';
+import AssessmentActionButton from '../assessments/assessment-button';
+import NoteActionButton from '../notes/note-button';
 
 export function DashboardTemplate({ classes, notes, assessments }) {
   // Process recent items
@@ -106,9 +109,16 @@ export function DashboardTemplate({ classes, notes, assessments }) {
         {assessments.length === 0 ? (
           <div className="text-center">
             <p className="pt-[2vh]">No assessments yet!</p>
-            <Link href="/assessments" className="text-lg">
-              <Button className="mt-4">Create an Assessment</Button>
-            </Link>
+            <div className="flex justify-center mt-4">
+              {/* <AssessmentActionButton action="create" button /> */}
+              <Link href="/assessments" className="text-lg">
+                <Button variant="ghost" className="gap-2" size="sm">
+                  <PiPlus />
+                  Create Assessment
+                </Button>
+              </Link>
+            </div>
+            {/* <Button className="mt-4">Create an Assessment</Button> */}
           </div>
         ) : (
           <div>
@@ -143,9 +153,9 @@ export function DashboardTemplate({ classes, notes, assessments }) {
         {notes.length === 0 ? (
           <div className="text-center">
             <p className="pt-[2vh]">No notes yet!</p>
-            <Link href="/notes/" className="text-lg">
-              <Button className="mt-4">Create a Note</Button>
-            </Link>
+            <div className="flex justify-center mt-4">
+              <NoteActionButton action="create" button />
+            </div>
           </div>
         ) : (
           <div>
