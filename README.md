@@ -1,30 +1,33 @@
-# PRJ Frontend
+# StudyHome Frontend
 
-## Usage
+`GitHub`: https://github.com/marcusgeorgievski/prj-frontend \
+`Live`: https://prj-frontend.vercel.app
 
-Run the development server:
+## Local Usage
+
+**1. Clone repository and install dependencies**
 
 ```bash
-npm run dev
+git clone https://github.com/marcusgeorgievski/prj-frontend.git
+cd prj-frontend
+npm i
 ```
 
-## Development
+**2. Include .env file with environment variables**
 
-### Auth
+*Reach out to a team member for this private data.*
 
-[Clerk](https://clerk.com/) is a hosted authentication solution. It provides storage and management of users which can be accessed from the Clerk admin panel for the given project. Clerk also provides react components for both visual and functional purposes.
+**3. Run the code**
 
-[Clerk's Express middleware](https://clerk.com/docs/references/nodejs/overview) will be implemented to only allow authenticated user to make requests to the backend.
+```bash
+# Option 1 - Development environment
+npm run dev
 
-- [Clerk Next.js SDK Reference](https://clerk.com/docs/references/nextjs/overview)
-- [Clerk React Component Reference](https://clerk.com/docs/components/overview)
+# Option 2 - Production environment
+npm run build
+npm run start
+```
 
-### Database
+**4. Access the site**
 
-[Neon](https://neon.tech/) is a serverless Postgres database.
-
-- Obtain the DB credentials through the MS Teams char
-
-[postgres](https://www.npmjs.com/package/postgres) is a fast and lightweight query builder for CRUD operations inside the code.
-
-- Refer to the table of contents on the page from the link above for usage
+Access the site at [http://localhost:3000](http://localhost:3000) and login with your Google account.
