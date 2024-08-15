@@ -48,7 +48,7 @@ const formSchema = z.object({
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
   
-  if (data.status === 'overdue') {
+  if (data.status === 'overdue' || data.status === 'completed') {
     return true; // Allow past dates for 'overdue' status
   } else {
     return data.dueDate >= today;
@@ -100,7 +100,7 @@ export default function AssessmentForm({
     status: status || 'not started',
     description: description || '',
     weight: weight || 0,
-    dueDate: null,
+    dueDate: dueDate ? new Date(dueDate) : new Date(),
   };
 
   const form = useForm({
